@@ -360,10 +360,10 @@ export const sidebarsExamples = (): DefaultTheme.SidebarItem[] => [
 ]
 
 export default defineConfig({
-  lang: 'en-US',
+  lang: 'zh-CN',
   title: 'Hono',
   description:
-    'Web framework built on Web Standards for Cloudflare Workers, Fastly Compute, Deno, Bun, Vercel, Node.js, and others. Fast, but not only fast.',
+    '基于 Web 标准构建的 Web 框架，适用于 Cloudflare Workers、Fastly Compute、Deno、Bun、Vercel、Node.js 等平台。快速，但不止于快速。',
   lastUpdated: true,
   ignoreDeadLinks: true,
   cleanUrls: true,
@@ -396,19 +396,19 @@ export default defineConfig({
       { icon: 'bluesky', link: 'https://bsky.app/profile/hono.dev' },
     ],
     editLink: {
-      pattern: 'https://github.com/honojs/website/edit/main/:path',
-      text: 'Edit this page on GitHub',
+      pattern: 'https://github.com/taosin/hono-cn/edit/main/:path',
+      text: '在 GitHub 上编辑此页面',
     },
     footer: {
-      message: 'Released under the MIT License.',
+      message: '基于 MIT 许可证发布',
       copyright:
-        'Copyright © 2022-present Yusuke Wada & Hono contributors. "kawaii" logo is created by SAWARATSUKI.',
+        '版权所有 © 2022-present Yusuke Wada & Hono 贡献者。"kawaii" logo 由 SAWARATSUKI 创作。',
     },
     nav: [
-      { text: 'Docs', link: '/docs/' },
-      { text: 'Examples', link: '/examples/' },
+      { text: '文档', link: '/docs/' },
+      { text: '示例', link: '/examples/' },
       {
-        text: 'Discussions',
+        text: '讨论区',
         link: 'https://github.com/orgs/honojs/discussions',
       },
     ],
