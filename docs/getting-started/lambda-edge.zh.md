@@ -2,15 +2,13 @@
 
 [Lambda@Edge](https://aws.amazon.com/lambda/edge/) 是 Amazon Web Services 的无服务器平台。它允许你在 Amazon CloudFront 的边缘位置运行 Lambda 函数，使你能够自定义 HTTP 请求/响应的行为。
 
-Hono 支持在 Node.js 18+ 环境中使用 Lambda@Edge。
+Hono 支持 Node.js 18+ 环境的 Lambda@Edge。
 
-## 1. 设置
+## 1. Setup
 
-在 Lambda@Edge 上创建应用程序时，
-[CDK](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-cdk.html)
-可用于设置 CloudFront、IAM Role、API Gateway 等函数。
+在 Lambda@Edge 上创建应用程序时，使用 [CDK](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-cdk.html) 来设置 CloudFront、IAM Role、API Gateway 等功能很有用。
 
-使用 `cdk` CLI 初始化你的项目。
+使用 `cdk` CLI 初始化项目。
 
 ::: code-group
 
@@ -63,7 +61,7 @@ app.get('/', (c) => c.text('Hello Hono on Lambda@Edge!'))
 export const handler = handle(app)
 ```
 
-## 3. 部署
+## 3. Deploy
 
 编辑 `bin/my-app.ts`。
 
@@ -104,7 +102,7 @@ export class MyAppStack extends cdk.Stack {
       runtime: lambda.Runtime.NODEJS_20_X,
     })
 
-    // 上传任何 html
+    // Upload any html
     const originBucket = new s3.Bucket(this, 'originBucket')
 
     new cloudfront.Distribution(this, 'Cdn', {
@@ -122,7 +120,7 @@ export class MyAppStack extends cdk.Stack {
 }
 ```
 
-最后，运行命令进行部署：
+最后，运行命令部署：
 
 ```sh
 cdk deploy
@@ -130,7 +128,7 @@ cdk deploy
 
 ## Callback
 
-如果你想添加 Basic Auth 并在验证后继续处理请求，你可以使用 `c.env.callback()`
+如果你想添加 Basic Auth 并在验证后继续处理请求，可以使用 `c.env.callback()`
 
 ```ts
 import { Hono } from 'hono'

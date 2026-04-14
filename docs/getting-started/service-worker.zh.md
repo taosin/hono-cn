@@ -1,10 +1,10 @@
 # Service Worker
 
-[Service Worker](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) 是在浏览器后台运行的脚本，用于处理缓存和推送通知等任务。使用 Service Worker 适配器，你可以在浏览器内将 Hono 创建的应用程序作为 [FetchEvent](https://developer.mozilla.org/en-US/docs/Web/API/FetchEvent) 处理器运行。
+[Service Worker](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) 是一个在浏览器后台运行的脚本，处理缓存和推送通知等任务。使用 Service Worker adapter，你可以在浏览器内作为 [FetchEvent](https://developer.mozilla.org/en-US/docs/Web/API/FetchEvent) 处理器运行用 Hono 制作的应用程序。
 
 本页面展示使用 [Vite](https://vitejs.dev/) 创建项目的示例。
 
-## 1. 设置
+## 1. Setup
 
 首先，创建并进入你的项目目录：
 
@@ -13,7 +13,7 @@ mkdir my-app
 cd my-app
 ```
 
-创建项目所需的文件。创建 `package.json` 文件，内容如下：
+创建项目所需的文件。使用以下内容创建 `package.json` 文件：
 
 ```json
 {
@@ -26,7 +26,7 @@ cd my-app
 }
 ```
 
-同样，创建 `tsconfig.json` 文件，内容如下：
+同样，使用以下内容创建 `tsconfig.json` 文件：
 
 ```json
 {
@@ -110,7 +110,7 @@ function start() {
 start()
 ```
 
-在 `sw.ts` 中，使用 Hono 创建应用程序，并通过 Service Worker 适配器的 `handle` 函数将其注册到 `fetch` 事件。这使得 Hono 应用程序可以拦截对 `/sw` 的访问。
+在 `sw.ts` 中，使用 Hono 创建应用程序，并使用 Service Worker adapter 的 `handle` 函数将其注册到 `fetch` 事件。这允许 Hono 应用程序拦截对 `/sw` 的访问。
 
 ```ts
 // 支持类型
@@ -126,9 +126,9 @@ app.get('/', (c) => c.text('Hello World'))
 self.addEventListener('fetch', handle(app))
 ```
 
-### 使用 `fire()`
+### Using `fire()`
 
-`fire()` 函数会自动为你调用 `addEventListener('fetch', handle(app))`，使代码更简洁。
+`fire()` 函数自动为你调用 `addEventListener('fetch', handle(app))`，使代码更简洁。
 
 ```ts
 import { Hono } from 'hono'
@@ -140,7 +140,7 @@ app.get('/', (c) => c.text('Hello World'))
 fire(app)
 ```
 
-## 3. 运行
+## 3. Run
 
 启动开发服务器。
 

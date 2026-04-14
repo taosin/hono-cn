@@ -1,15 +1,12 @@
 # Next.js
 
-Next.js 是一个灵活的 React 框架，为你提供构建快速 Web 应用程序的模块。
+Next.js 是一个灵活的 React 框架，为你提供构建快速 web 应用程序的构建块。
 
-使用 Node.js 运行时，你可以在 Next.js 上运行 Hono。\
-在 Vercel 上，使用 Vercel Functions 可以轻松部署带有 Hono 的 Next.js。
+当使用 Node.js runtime 时，你可以在 Next.js 上运行 Hono。在 Vercel 上，使用 Vercel Functions 可以轻松部署带有 Hono 的 Next.js。
 
-## 1. 设置
+## 1. Setup
 
-Next.js 有一个可用的 starter。
-使用 "create-hono" 命令开始你的项目。
-本例选择 `nextjs` 模板。
+Next.js 有一个 starter。使用 "create-hono" 命令开始你的项目。为此示例选择 `nextjs` template。
 
 ::: code-group
 
@@ -35,7 +32,7 @@ deno init --npm hono my-app
 
 :::
 
-进入 `my-app` 并安装依赖。
+进入 `my-app` 并安装依赖项。
 
 ::: code-group
 
@@ -63,7 +60,7 @@ bun i
 
 ## 2. Hello World
 
-如果你使用 App Router，编辑 `app/api/[[...route]]/route.ts`。有关更多选项，请参考 [支持的 HTTP 方法](https://nextjs.org/docs/app/building-your-application/routing/route-handlers#supported-http-methods) 部分。
+如果你使用 App Router，编辑 `app/api/[[...route]]/route.ts`。更多信息参考 [Supported HTTP Methods](https://nextjs.org/docs/app/building-your-application/routing/route-handlers#supported-http-methods) 部分。
 
 ```ts
 import { Hono } from 'hono'
@@ -81,9 +78,9 @@ export const GET = handle(app)
 export const POST = handle(app)
 ```
 
-## 3. 运行
+## 3. Run
 
-在本地运行开发服务器。然后在你的 Web 浏览器中访问 `http://localhost:3000`。
+在本地运行开发服务器。然后在 Web 浏览器中访问 `http://localhost:3000`。
 
 ::: code-group
 
@@ -105,15 +102,15 @@ bun run dev
 
 :::
 
-现在，`/api/hello` 只返回 JSON，但如果你构建 React UI，你可以使用 Hono 创建全栈应用程序。
+现在，`/api/hello` 只返回 JSON，但如果你构建 React UIs，你可以用 Hono 创建全栈应用程序。
 
-## 4. 部署
+## 4. Deploy
 
 如果你有 Vercel 账户，你可以通过链接 Git 仓库进行部署。
 
 ## Pages Router
 
-如果你使用 Pages Router，你需要先安装 Node.js 适配器。
+如果你使用 Pages Router，你需要首先安装 Node.js adapter。
 
 ::: code-group
 
@@ -159,7 +156,7 @@ app.get('/hello', (c) => {
 export default handle(app)
 ```
 
-为了让这在 Pages Router 中工作，重要的是通过在项目仪表板或 `.env` 文件中设置环境变量来禁用 Vercel Node.js 助手。
+为了使其与 Pages Router 一起工作，重要的是通过在你的项目 dashboard 或 `.env` 文件中设置环境变量来禁用 Vercel Node.js helpers。
 
 ```text
 NODEJS_HELPERS=0

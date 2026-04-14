@@ -1,14 +1,12 @@
 # Netlify
 
-Netlify 提供静态网站托管和无服务器后端服务。[Edge Functions](https://docs.netlify.com/edge-functions/overview/) 使我们能够使网页动态化。
+Netlify 提供静态站点托管和无服务器后端服务。[Edge Functions](https://docs.netlify.com/edge-functions/overview/) 使我们能够使网页动态化。
 
-Edge Functions 支持使用 Deno 和 TypeScript 编写，并通过 [Netlify CLI](https://docs.netlify.com/cli/get-started/) 轻松部署。使用 Hono，你可以为 Netlify Edge Functions 创建应用程序。
+Edge Functions 支持用 Deno 和 TypeScript 编写，通过 [Netlify CLI](https://docs.netlify.com/cli/get-started/) 轻松完成部署。使用 Hono，你可以为 Netlify Edge Functions 创建应用程序。
 
-## 1. 设置
+## 1. Setup
 
-Netlify 有一个可用的 starter。
-使用 "create-hono" 命令开始你的项目。
-本例选择 `netlify` 模板。
+Netlify 有一个 starter。使用 "create-hono" 命令开始你的项目。为此示例选择 `netlify` template。
 
 ::: code-group
 
@@ -34,7 +32,7 @@ deno init --npm hono my-app
 
 :::
 
-进入 `my-app` 目录。
+进入 `my-app`。
 
 ## 2. Hello World
 
@@ -53,17 +51,17 @@ app.get('/', (c) => {
 export default handle(app)
 ```
 
-## 3. 运行
+## 3. Run
 
-使用 Netlify CLI 运行开发服务器。然后在你的 Web 浏览器中访问 `http://localhost:8888`。
+使用 Netlify CLI 运行开发服务器。然后在 Web 浏览器中访问 `http://localhost:8888`。
 
 ```sh
 netlify dev
 ```
 
-## 4. 部署
+## 4. Deploy
 
-你可以使用 `netlify deploy` 命令进行部署。
+你可以使用 `netlify deploy` 命令部署。
 
 ```sh
 netlify deploy --prod
