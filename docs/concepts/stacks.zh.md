@@ -1,24 +1,21 @@
-# Hono 技术栈
+# Hono Stacks
 
-Hono 让简单的事情变得简单，让困难的事情变得简单。
-它不仅适合返回 JSON，还非常适合构建全栈应用程序，包括 REST API 服务器和客户端。
+Hono 使简单的事情变得简单，复杂的事情也变得简单。它不仅适合返回 JSON，还非常适合构建全栈应用程序，包括 REST API 服务器和客户端。
 
 ## RPC
 
-Hono 的 RPC 功能允许你几乎无需更改代码即可共享 API 规范。
-由 `hc` 生成的客户端将读取规范并类型安全地访问端点。
+Hono 的 RPC 功能允许你几乎无需更改代码即可共享 API 规范。由 `hc` 生成的客户端将读取规范并类型安全地访问端点。
 
-以下库使这成为可能。
+以下库使其成为可能：
 
-- Hono - API 服务器
-- [Zod](https://zod.dev) - 验证器
-- [Zod Validator 中间件](https://github.com/honojs/middleware/tree/main/packages/zod-validator)
-- `hc` - HTTP 客户端
+- Hono - API Server
+- [Zod](https://zod.dev) - Validator
+- [Zod Validator Middleware](https://github.com/honojs/middleware/tree/main/packages/zod-validator)
+- `hc` - HTTP Client
 
-我们可以称这组组件为 **Hono 技术栈**。
-现在让我们用它创建一个 API 服务器和客户端。
+我们可以称这组组件为 **Hono Stack**。现在让我们用它创建一个 API 服务器和客户端。
 
-## 编写 API
+## Writing API
 
 首先，编写一个接收 GET 请求并返回 JSON 的端点。
 
@@ -34,7 +31,7 @@ app.get('/hello', (c) => {
 })
 ```
 
-## 使用 Zod 验证
+## Validation with Zod
 
 使用 Zod 验证以接收查询参数的值。
 
@@ -61,13 +58,13 @@ app.get(
 )
 ```
 
-## 共享类型
+## Sharing the Types
 
 要发出端点规范，导出其类型。
 
 ::: warning
 
-为了使 RPC 正确推断路由，所有包含的方法必须链接，并且端点或应用程序类型必须从声明的变量推断。更多信息，请参阅 [RPC 最佳实践](https://hono.dev/docs/guides/best-practices#if-you-want-to-use-rpc-features)。
+为了使 RPC 正确推断 routes，所有包含的方法必须是链式的，并且端点或 app 类型必须从声明的变量中推断。更多信息见 [Best Practices for RPC](https://hono.dev/docs/guides/best-practices#if-you-want-to-use-rpc-features)。
 
 :::
 
@@ -91,11 +88,9 @@ const route = app.get(
 export type AppType = typeof route
 ```
 
-## 客户端
+## Client
 
-接下来，客户端实现。
-通过将 `AppType` 类型作为泛型传递给 `hc` 来创建客户端对象。
-然后，神奇地，自动补全生效，端点路径和请求类型被建议。
+接下来是客户端实现。通过将 `AppType` 类型作为泛型传递给 `hc` 来创建客户端对象。然后，神奇地，completion 可以工作，并建议端点路径和请求类型。
 
 ![](/images/sc03.gif)
 
@@ -111,7 +106,7 @@ const res = await client.hello.$get({
 })
 ```
 
-`Response` 与 fetch API 兼容，但使用 `json()` 检索的数据具有类型。
+`Response` 与 fetch API 兼容，但使用 `json()` 获取的数据具有类型。
 
 ![](/images/sc04.gif)
 
@@ -120,11 +115,11 @@ const data = await res.json()
 console.log(`${data.message}`)
 ```
 
-共享 API 规范意味着你可以意识到服务器端的变化。
+共享 API 规范意味着你可以意识到服务器端的更改。
 
 ![](/images/ss03.png)
 
-## 与 React 一起使用
+## With React
 
 你可以使用 React 在 Cloudflare Pages 上创建应用程序。
 

@@ -1,17 +1,14 @@
 # AWS Lambda
 
-AWS Lambda 是亚马逊 Web 服务的无服务器平台。
-你可以在响应事件时运行代码，并自动管理底层计算资源。
+AWS Lambda 是 Amazon Web Services 的无服务器平台。你可以在响应事件时运行代码，并自动为你管理底层计算资源。
 
-Hono 可以在 Node.js 18+ 环境下的 AWS Lambda 上运行。
+Hono 可以在 Node.js 18+ 环境的 AWS Lambda 上运行。
 
-## 1. 设置
+## 1. Setup
 
-在 AWS Lambda 上创建应用程序时，
-使用 [CDK](https://docs.aws.amazon.com/cdk/v2/guide/home.html)
-来设置 IAM Role、API Gateway 等功能很有用。
+在 AWS Lambda 上创建应用程序时，使用 [CDK](https://docs.aws.amazon.com/cdk/v2/guide/home.html) 来设置 IAM Role、API Gateway 等功能很有用。
 
-使用 `cdk` CLI 初始化你的项目。
+使用 `cdk` CLI 初始化项目。
 
 ::: code-group
 
@@ -72,7 +69,7 @@ app.get('/', (c) => c.text('Hello Hono!'))
 export const handler = handle(app)
 ```
 
-## 3. 部署
+## 3. Deploy
 
 编辑 `lib/my-app-stack.ts`。
 
@@ -107,11 +104,9 @@ export class MyAppStack extends cdk.Stack {
 cdk deploy
 ```
 
-## 提供二进制数据
+## Serve Binary data
 
-Hono 支持二进制数据作为响应。
-在 Lambda 中，返回二进制数据需要 base64 编码。
-一旦在 `Content-Type` 头部设置二进制类型，Hono 会自动将数据编码为 base64。
+Hono 支持二进制数据作为响应。在 Lambda 中，需要 base64 编码来返回二进制数据。一旦在 `Content-Type` header 中设置了二进制类型，Hono 会自动将数据编码为 base64。
 
 ```ts
 app.get('/binary', async (c) => {
@@ -122,9 +117,9 @@ app.get('/binary', async (c) => {
 })
 ```
 
-## 访问 AWS Lambda 对象
+## Access AWS Lambda Object
 
-在 Hono 中，你可以通过绑定 `LambdaEvent`、`LambdaContext` 类型并使用 `c.env` 来访问 AWS Lambda 事件和上下文。
+在 Hono 中，你可以通过绑定 `LambdaEvent`、`LambdaContext` 类型并使用 `c.env` 来访问 AWS Lambda Events 和 Context。
 
 ```ts
 import { Hono } from 'hono'
@@ -148,9 +143,9 @@ app.get('/aws-lambda-info/', (c) => {
 export const handler = handle(app)
 ```
 
-## 访问 RequestContext
+## Access RequestContext
 
-在 Hono 中，你可以通过绑定 `LambdaEvent` 类型并使用 `c.env.event.requestContext` 来访问 AWS Lambda 请求上下文。
+在 Hono 中，你可以通过绑定 `LambdaEvent` 类型并使用 `c.env.event.requestContext` 来访问 AWS Lambda request context。
 
 ```ts
 import { Hono } from 'hono'
@@ -171,9 +166,9 @@ app.get('/custom-context/', (c) => {
 export const handler = handle(app)
 ```
 
-### 3.10.0 之前版本（已弃用）
+### Before v3.10.0 (deprecated)
 
-你可以通过绑定 `ApiGatewayRequestContext` 类型并使用 `c.env.` 来访问 AWS Lambda 请求上下文。
+你可以通过绑定 `ApiGatewayRequestContext` 类型并使用 `c.env.` 来访问 AWS Lambda request context。
 
 ```ts
 import { Hono } from 'hono'
@@ -194,9 +189,9 @@ app.get('/custom-context/', (c) => {
 export const handler = handle(app)
 ```
 
-## Lambda 响应流
+## Lambda response streaming
 
-通过更改 AWS Lambda 的调用模式，你可以实现 [流式响应](https://aws.amazon.com/blogs/compute/introducing-aws-lambda-response-streaming/)。
+通过更改 AWS Lambda 的调用模式，你可以实现 [Streaming Response](https://aws.amazon.com/blogs/compute/introducing-aws-lambda-response-streaming/)。
 
 ```diff
 fn.addFunctionUrl({
@@ -205,7 +200,7 @@ fn.addFunctionUrl({
 })
 ```
 
-通常，实现需要使用 awslambda.streamifyResponse 将块写入 NodeJS.WritableStream，但使用 AWS Lambda 适配器，你可以通过使用 streamHandle 而不是 handle 来实现 Hono 的传统流式响应。
+通常，实现需要使用 awslambda.streamifyResponse 将 chunks 写入 NodeJS.WritableStream，但使用 AWS Lambda Adaptor，你可以通过使用 streamHandle 而不是 handle 来实现 Hono 的传统流式响应。
 
 ```ts
 import { Hono } from 'hono'

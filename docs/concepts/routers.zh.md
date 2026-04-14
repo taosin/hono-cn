@@ -1,61 +1,53 @@
-# 路由器
+# Routers
 
-路由器是 Hono 最重要的功能。
+routers 是 Hono 最重要的功能。
 
-Hono 有五个路由器。
+Hono 有五个 routers。
 
 ## RegExpRouter
 
-**RegExpRouter** 是 JavaScript 世界中最快的路由器。
+**RegExpRouter** 是 JavaScript 世界中最快的 router。
 
-虽然这被称为 "RegExp"，但它不是使用 [path-to-regexp](https://github.com/pillarjs/path-to-regexp) 的类 Express 实现。
-它们使用线性循环。
-因此，将对所有路由执行正则表达式匹配，随着路由增多，性能会下降。
+虽然这被称为 "RegExp"，但它不是使用 [path-to-regexp](https://github.com/pillarjs/path-to-regexp) 的 Express 风格实现。它们使用线性循环。因此，正则表达式匹配将对所有 routes 执行，随着 routes 增多，性能会下降。
 
 ![](/images/router-linear.jpg)
 
-Hono 的 RegExpRouter 将路由模式转换为"一个大型正则表达式"。
-然后它可以通过一次性匹配获得结果。
+Hono 的 RegExpRouter 将 route 模式转换为 "一个大型正则表达式"。然后它可以通过一次性匹配获取结果。
 
 ![](/images/router-regexp.jpg)
 
-这在大多数情况下比使用基于树的算法（如基数树）的方法更快。
+这在大多数情况下比使用基于树的算法（如 radix-tree）的方法更快。
 
-然而，RegExpRouter 不支持所有路由模式，所以它通常与其他支持所有路由模式的路由器之一结合使用。
+但是，RegExpRouter 不支持所有路由模式，所以它通常与其他支持所有路由模式的 routers 之一结合使用。
 
 ## TrieRouter
 
-**TrieRouter** 是使用 Trie 树算法的路由器。
-与 RegExpRouter 一样，它不使用线性循环。
+**TrieRouter** 是使用 Trie-tree 算法的 router。像 RegExpRouter 一样，它不使用线性循环。
 
 ![](/images/router-tree.jpg)
 
-这个路由器没有 RegExpRouter 快，但比 Express 路由器快得多。
-TrieRouter 支持所有模式。
+这个 router 不如 RegExpRouter 快，但比 Express router 快得多。TrieRouter 支持所有模式。
 
 ## SmartRouter
 
-**SmartRouter** 在使用多个路由器时很有用。它通过从注册的路由器推断来选择最佳路由器。
-Hono 默认使用 SmartRouter、RegExpRouter 和 TrieRouter：
+**SmartRouter** 在你使用多个 routers 时很有用。它通过推断注册的 routers 来选择最佳的 router。Hono 默认使用 SmartRouter、RegExpRouter 和 TrieRouter：
 
 ```ts
-// 在 Hono 的核心内部。
+// 在 Hono 核心内部。
 readonly defaultRouter: Router = new SmartRouter({
   routers: [new RegExpRouter(), new TrieRouter()],
 })
 ```
 
-当应用程序启动时，SmartRouter 根据路由检测最快的路由器并继续使用它。
+当应用程序启动时，SmartRouter 根据路由检测最快的 router 并继续使用它。
 
 ## LinearRouter
 
-RegExpRouter 很快，但路由注册阶段可能稍慢。
-因此，它不适合每次请求都初始化的环境。
+RegExpRouter 很快，但路由注册阶段可能稍慢。因此，它不适合每次请求都初始化的环境。
 
-**LinearRouter** 针对"一次性"情况进行了优化。
-路由注册比 RegExpRouter 快得多，因为它使用线性方法添加路由而不编译字符串。
+**LinearRouter** 针对 "one shot" 情况进行了优化。路由注册比 RegExpRouter 快得多，因为它使用线性方法添加路由而无需编译字符串。
 
-以下是基准测试结果之一，包括路由注册阶段。
+以下是基准测试结果之一，其中包括路由注册阶段。
 
 ```console
 • GET /user/lookup/username/hey
@@ -76,11 +68,11 @@ summary for GET /user/lookup/username/hey
 
 ## PatternRouter
 
-**PatternRouter** 是 Hono 路由器中最小的。
+**PatternRouter** 是 Hono routers 中最小的。
 
-虽然 Hono 已经很紧凑，但如果你需要在资源有限的环境中使其更小，使用 PatternRouter。
+虽然 Hono 已经很紧凑，但如果你需要在资源有限的环境中使它更小，请使用 PatternRouter。
 
-仅使用 PatternRouter 的应用程序大小小于 15KB。
+仅使用 PatternRouter 的应用程序大小在 15KB 以下。
 
 ```console
 $ npx wrangler deploy --minify ./src/index.ts

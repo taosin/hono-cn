@@ -1,14 +1,14 @@
 # Google Cloud Run
 
-[Google Cloud Run](https://cloud.google.com/run) 是 Google Cloud 构建的无服务器平台。你可以运行代码来响应事件，Google 会自动管理底层计算资源。
+[Google Cloud Run](https://cloud.google.com/run) 是由 Google Cloud 构建的无服务器平台。你可以在响应事件时运行代码，Google 会自动为你管理底层计算资源。
 
-Google Cloud Run 使用容器来运行你的服务。这意味着你可以通过提供 Dockerfile 来使用任何你喜欢的运行时（例如 Deno 或 Bun）。如果未提供 Dockerfile，Google Cloud Run 将使用默认的 Node.js buildpack。
+Google Cloud Run 使用容器来运行你的服务。这意味着你可以通过提供 Dockerfile 来使用任何你喜欢的 runtime（例如，Deno 或 Bun）。如果未提供 Dockerfile，Google Cloud Run 将使用默认的 Node.js buildpack。
 
 本指南假设你已经拥有 Google Cloud 账户和计费账户。
 
-## 1. 安装 CLI
+## 1. Install the CLI
 
-使用 Google Cloud Platform 时，最简单的方法是使用 [gcloud CLI](https://cloud.google.com/sdk/docs/install)。
+当使用 Google Cloud Platform 时，使用 [gcloud CLI](https://cloud.google.com/sdk/docs/install) 最简单。
 
 例如，在 MacOS 上使用 Homebrew：
 
@@ -22,15 +22,15 @@ brew install --cask gcloud-cli
 gcloud auth login
 ```
 
-## 2. 项目设置
+## 2. Project setup
 
-创建项目。在提示时接受自动生成的项目 ID。
+创建项目。在提示符处接受自动生成的项目 ID。
 
 ```sh
 gcloud projects create --set-as-default --name="my app"
 ```
 
-为你的项目 ID 和项目编号创建环境变量以便重复使用。执行 `gcloud projects list` 命令后可能需要约 30 秒才能成功返回项目。
+为你的项目 ID 和项目号创建环境变量以便于重复使用。可能需要约 30 秒后项目才能通过 `gcloud projects list` 命令成功返回。
 
 ```sh
 PROJECT_ID=$(gcloud projects list \
@@ -50,14 +50,14 @@ echo $PROJECT_ID $PROJECT_NUMBER
 gcloud billing accounts list
 ```
 
-将上一步中的计费账户添加到项目。
+将之前命令中的计费账户添加到项目。
 
 ```sh
 gcloud billing projects link $PROJECT_ID \
     --billing-account=[billing_account_id]
 ```
 
-启用所需的 API。
+启用所需的 APIs。
 
 ```sh
 gcloud services enable run.googleapis.com \
@@ -80,7 +80,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 npm create hono@latest my-app
 ```
 
-进入 `my-app` 并安装依赖。
+进入 `my-app` 并安装依赖项。
 
 ```sh
 cd my-app
@@ -109,23 +109,23 @@ serve({
 })
 ```
 
-在本地运行开发服务器。然后在你的 Web 浏览器中访问 http://localhost:8080。
+在本地运行开发服务器。然后在 Web 浏览器中访问 http://localhost:8080。
 
 ```sh
 npm run dev
 ```
 
-## 4. 部署
+## 4. Deploy
 
-开始部署并按照交互式提示操作（例如，选择区域）。
+开始部署并按照交互式提示操作（例如，选择一个 region）。
 
 ```sh
 gcloud run deploy my-app --source . --allow-unauthenticated
 ```
 
-## 更改运行时
+## Changing runtimes
 
-如果你想使用 Deno 或 Bun 运行时（或自定义的 Node.js 容器）进行部署，请添加包含所需环境的 `Dockerfile`（以及可选的 `.dockerignore`）。
+如果你想使用 Deno 或 Bun runtimes（或定制的 Nodejs 容器）进行部署，添加一个 `Dockerfile`（可选 `.dockerignore`）与你所需的环境。
 
 有关容器化的信息，请参考：
 

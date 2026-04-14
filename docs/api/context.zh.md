@@ -1,10 +1,10 @@
 # Context
 
-`Context` 对象为每个请求实例化并保留到响应返回。你可以在其中放置值，设置想要返回的头部和状态码，并访问 HonoRequest 和 Response 对象。
+`Context` 对象为每个请求创建，并在响应返回之前一直保持。你可以在其中存放值，设置要返回的头部和状态码，并访问 HonoRequest 和 Response 对象。
 
 ## req
 
-`req` 是 HonoRequest 的实例。更多详情，请参阅 [HonoRequest](/docs/api/request)。
+`req` 是 HonoRequest 的实例。更多详情见 [HonoRequest](/docs/api/request)。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -21,7 +21,7 @@ app.get('/hello', (c) => {
 
 ## status()
 
-你可以使用 `c.status()` 设置 HTTP 状态码。默认是 `200`。如果代码是 `200`，你不需要使用 `c.status()`。
+你可以使用 `c.status()` 设置 HTTP 状态码。默认值是 `200`。如果状态码是 `200`，则不必使用 `c.status()`。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -36,14 +36,14 @@ app.post('/posts', (c) => {
 
 ## header()
 
-你可以为响应设置 HTTP 头部。
+你可以为响应设置 HTTP Headers。
 
 ```ts twoslash
 import { Hono } from 'hono'
 const app = new Hono()
 // ---cut---
 app.get('/', (c) => {
-  // 设置头部
+  // 设置 headers
   c.header('X-Message', 'My custom message')
   return c.text('Hello!')
 })
@@ -82,7 +82,7 @@ app.get('/welcome', (c) => {
 })
 ```
 
-响应与以下 `Response` 对象相同。
+响应与下面的 `Response` 对象相同：
 
 ```ts twoslash
 new Response('Thank you for coming', {
@@ -96,7 +96,7 @@ new Response('Thank you for coming', {
 
 ## text()
 
-将文本渲染为 `Content-Type: text/plain`。
+渲染文本，`Content-Type: text/plain`。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -109,7 +109,7 @@ app.get('/say', (c) => {
 
 ## json()
 
-将 JSON 渲染为 `Content-Type: application/json`。
+渲染 JSON，`Content-Type: application/json`。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -122,7 +122,7 @@ app.get('/api', (c) => {
 
 ## html()
 
-将 HTML 渲染为 `Content-Type: text/html`。
+渲染 HTML，`Content-Type: text/html`。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -181,7 +181,7 @@ app.use('/', async (c, next) => {
 
 ## set() / get()
 
-获取和设置任意键值对，生命周期为当前请求。这允许在中间件之间或从中间件到路由处理程序传递特定值。
+获取和设置任意的键值对，生命周期为当前请求。这允许在中间件之间或从中间件到路由处理器传递特定值。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -210,7 +210,7 @@ type Variables = {
 const app = new Hono<{ Variables: Variables }>()
 ```
 
-`c.set` / `c.get` 的值仅在同一请求内保留。它们不能跨不同请求共享或持久化。
+`c.set` / `c.get` 的值仅在同一请求内保留。它们不能在不同的请求之间共享或持久化。
 
 ## var
 
@@ -223,8 +223,7 @@ declare const c: Context
 const result = c.var.client.oneMethod()
 ```
 
-如果你想创建提供自定义方法的中间件，
-像下面这样写：
+如果你想创建一个提供自定义方法的中间件，可以这样写：
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -248,8 +247,7 @@ app.get('/echo', echoMiddleware, (c) => {
 })
 ```
 
-如果你想在多个处理程序中使用中间件，可以使用 `app.use()`。
-然后，你必须将 `Env` 作为泛型传递给 `Hono` 的构造函数以使其类型安全。
+如果你想在多个处理器中使用该中间件，可以使用 `app.use()`。然后，你需要将 `Env` 作为泛型传递给 `Hono` 的构造函数以使其类型安全。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -272,7 +270,7 @@ app.get('/echo', (c) => {
 
 ## render() / setRenderer()
 
-你可以使用 `c.setRenderer()` 在自定义中间件中设置布局。
+你可以在自定义中间件中使用 `c.setRenderer()` 设置布局。
 
 ```tsx twoslash
 /** @jsx jsx */
@@ -294,7 +292,7 @@ app.use(async (c, next) => {
 })
 ```
 
-然后，你可以利用 `c.render()` 在此布局中创建响应。
+然后，你可以使用 `c.render()` 在此布局中创建响应。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -315,8 +313,7 @@ app.get('/', (c) => {
 </html>
 ```
 
-此外，此功能提供了自定义参数的灵活性。
-为确保类型安全，可以定义类型为：
+此外，此功能提供了自定义参数的灵活性。为了确保类型安全，可以定义类型：
 
 ```ts
 declare module 'hono' {
@@ -329,7 +326,7 @@ declare module 'hono' {
 }
 ```
 
-以下是如何使用此功能的示例：
+以下是使用示例：
 
 ```ts
 app.use('/pages/*', async (c, next) => {
@@ -383,7 +380,7 @@ app.get('/foo', async (c) => {
 })
 ```
 
-`ExecutionContext` 还有一个 [`exports`](https://developers.cloudflare.com/workers/runtime-apis/context/#exports) 字段。要使用 Wrangler 生成的类型获得自动补全，你可以使用模块增强：
+`ExecutionContext` 还有一个 [`exports`](https://developers.cloudflare.com/workers/runtime-apis/context/#exports) 字段。要获得 Wrangler 生成类型的自动补全，你可以使用模块 augmentation：
 
 ```ts
 import 'hono'
@@ -397,7 +394,7 @@ declare module 'hono' {
 
 ## event
 
-你可以访问 Cloudflare Workers 特定的 `FetchEvent`。这在 "Service Worker" 语法中使用。但现在不推荐。
+你可以访问 Cloudflare Workers 特定的 `FetchEvent`。这在 "Service Worker" 语法中使用。但现在不推荐使用。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -421,8 +418,7 @@ app.get('/foo', async (c) => {
 
 ## env
 
-在 Cloudflare Workers 中，绑定到 worker 的环境变量、密钥、KV 命名空间、D1 数据库、R2 存储桶等称为绑定。
-无论类型如何，绑定始终可作为全局变量使用，并可以通过上下文 `c.env.BINDING_KEY` 访问。
+在 Cloudflare Workers 环境变量中，绑定到 worker 的 secrets、KV namespaces、D1 database、R2 bucket 等被称为 bindings。无论类型如何，bindings 始终可作为全局变量使用，并可以通过上下文 `c.env.BINDING_KEY` 访问。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -444,8 +440,7 @@ app.get('/', async (c) => {
 
 ## error
 
-如果处理程序抛出错误，错误对象放在 `c.error` 中。
-你可以在中间件中访问它。
+如果 Handler 抛出错误，错误对象会放置在 `c.error` 中。你可以在中间件中访问它。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -454,14 +449,14 @@ const app = new Hono()
 app.use(async (c, next) => {
   await next()
   if (c.error) {
-    // 做一些事情...
+    // do something...
   }
 })
 ```
 
 ## ContextVariableMap
 
-例如，如果你想在特定中间件使用时向变量添加类型定义，你可以扩展 `ContextVariableMap`。例如：
+例如，如果你想在使用特定中间件时为变量添加类型定义，可以扩展 `ContextVariableMap`。例如：
 
 ```ts
 declare module 'hono' {
@@ -477,19 +472,19 @@ declare module 'hono' {
 import { createMiddleware } from 'hono/factory'
 // ---cut---
 const mw = createMiddleware(async (c, next) => {
-  c.set('result', 'some values') // result 是 string
+  c.set('result', 'some values') // result 是 string 类型
   await next()
 })
 ```
 
-在处理程序中，变量被推断为适当的类型：
+在处理器中，变量会被推断为正确的类型：
 
 ```ts twoslash
 import { Hono } from 'hono'
 const app = new Hono<{ Variables: { result: string } }>()
 // ---cut---
 app.get('/', (c) => {
-  const val = c.get('result') // val 是 string
+  const val = c.get('result') // val 是 string 类型
   // ...
   return c.json({ result: val })
 })

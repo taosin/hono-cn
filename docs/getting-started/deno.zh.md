@@ -1,25 +1,22 @@
 # Deno
 
-[Deno](https://deno.com/) 是一个基于 V8 构建的 JavaScript 运行时。它不是 Node.js。
-Hono 也可以在 Deno 上运行。
+[Deno](https://deno.com/) 是一个基于 V8 的 JavaScript runtime。它不是 Node.js。Hono 也可以在 Deno 上运行。
 
-你可以使用 Hono，用 TypeScript 编写代码，使用 `deno` 命令运行应用程序，并将其部署到 "Deno Deploy"。
+你可以使用 Hono，用 TypeScript 编写代码，使用 `deno` 命令运行应用程序，并部署到 "Deno Deploy"。
 
-## 1. 安装 Deno
+## 1. Install Deno
 
-首先，安装 `deno` 命令。
-请参考 [官方文档](https://docs.deno.com/runtime/getting_started/installation/)。
+首先，安装 `deno` 命令。请参考 [官方文档](https://docs.deno.com/runtime/getting_started/installation/)。
 
-## 2. 设置
+## 2. Setup
 
-Deno 有入门模板。
-使用 [`deno init`](https://docs.deno.com/runtime/reference/cli/init/) 命令开始你的项目。
+Deno 有一个 starter。使用 [`deno init`](https://docs.deno.com/runtime/reference/cli/init/) 命令开始你的项目。
 
 ```sh
 deno init --npm hono --template=deno my-app
 ```
 
-进入 `my-app`。对于 Deno，你不需要显式安装 Hono。
+进入 `my-app`。对于 Deno，你不必显式安装 Hono。
 
 ```sh
 cd my-app
@@ -39,15 +36,15 @@ app.get('/', (c) => c.text('Hello Deno!'))
 Deno.serve(app.fetch)
 ```
 
-## 4. 运行
+## 4. Run
 
-在本地运行开发服务器。然后，在浏览器中访问 `http://localhost:8000`。
+在本地运行开发服务器。然后在 Web 浏览器中访问 `http://localhost:8000`。
 
 ```sh
 deno task start
 ```
 
-## 更改端口号
+## Change port number
 
 你可以通过更新 `main.ts` 中 `Deno.serve` 的参数来指定端口号：
 
@@ -56,7 +53,7 @@ Deno.serve(app.fetch) // [!code --]
 Deno.serve({ port: 8787 }, app.fetch) // [!code ++]
 ```
 
-## 提供静态文件
+## Serve static files
 
 要提供静态文件，使用从 `hono/deno` 导入的 `serveStatic`。
 
@@ -153,7 +150,7 @@ app.get(
 
 ### `precompressed`
 
-`precompressed` 选项检查具有 `.br` 或 `.gz` 等扩展名的文件是否可用，并根据 `Accept-Encoding` 头部提供它们。它优先使用 Brotli，然后是 Zstd 和 Gzip。如果都不可用，则提供原始文件。
+`precompressed` 选项检查具有 `.br` 或 `.gz` 等扩展名的文件是否可用，并根据 `Accept-Encoding` header 提供它们。它优先考虑 Brotli，然后是 Zstd 和 Gzip。如果都不可用，则提供原始文件。
 
 ```ts
 app.get(
@@ -166,15 +163,13 @@ app.get(
 
 ## Deno Deploy
 
-Deno Deploy 是一个用于在云中运行 JavaScript 和 TypeScript 应用程序的无服务器平台。
-它通过 GitHub 部署等集成提供管理和运行应用程序的管理平面。
+Deno Deploy 是一个用于在云中运行 JavaScript 和 TypeScript 应用程序的无服务器平台。它通过 GitHub 部署等集成为部署和运行应用程序提供管理平面。
 
 Hono 也可以在 Deno Deploy 上运行。请参考 [官方文档](https://docs.deno.com/deploy/manual/)。
 
-## 测试
+## Testing
 
-在 Deno 上测试应用程序很简单。
-你可以使用 `Deno.test` 编写测试，并使用 [@std/assert](https://jsr.io/@std/assert) 中的 `assert` 或 `assertEquals`。
+在 Deno 上测试应用程序很容易。你可以使用 `Deno.test` 编写，并使用 [@std/assert](https://jsr.io/@std/assert) 中的 `assert` 或 `assertEquals`。
 
 ```sh
 deno add jsr:@std/assert
@@ -199,7 +194,7 @@ Deno.test('Hello World', async () => {
 deno test hello.ts
 ```
 
-## npm 和 JSR
+## npm and JSR
 
 Hono 在 [npm](https://www.npmjs.com/package/hono) 和 [JSR](https://jsr.io/@hono/hono)（JavaScript Registry）上都可用。你可以在 `deno.json` 中使用 `npm:hono` 或 `jsr:@hono/hono`：
 
@@ -212,7 +207,7 @@ Hono 在 [npm](https://www.npmjs.com/package/hono) 和 [JSR](https://jsr.io/@hon
 }
 ```
 
-要使用中间件，你需要在导入中使用 [Deno 目录](https://docs.deno.com/runtime/fundamentals/configuration/#custom-path-mappings) 语法。
+要使用中间件，你需要在导入中使用 [Deno directory](https://docs.deno.com/runtime/fundamentals/configuration/#custom-path-mappings) 语法。
 
 ```json
 {
@@ -222,7 +217,7 @@ Hono 在 [npm](https://www.npmjs.com/package/hono) 和 [JSR](https://jsr.io/@hon
 }
 ```
 
-使用第三方中间件时，为了正确的 TypeScript 类型推断，你可能需要使用与中间件相同注册表的 Hono。例如，如果使用 npm 中的中间件，你也应该使用 npm 中的 Hono：
+当使用第三方中间件时，你可能需要使用与中间件相同 registry 的 Hono 以获得正确的 TypeScript 类型推断。例如，如果使用 npm 的中间件，你也应该使用 npm 的 Hono：
 
 ```json
 {
@@ -234,7 +229,7 @@ Hono 在 [npm](https://www.npmjs.com/package/hono) 和 [JSR](https://jsr.io/@hon
 }
 ```
 
-我们还在 [JSR](https://jsr.io/@hono) 上提供许多第三方中间件包。使用 JSR 上的中间件时，使用 JSR 中的 Hono：
+我们还在 [JSR](https://jsr.io/@hono) 上提供许多第三方中间件包。当使用 JSR 上的中间件时，使用 JSR 的 Hono：
 
 ```json
 {

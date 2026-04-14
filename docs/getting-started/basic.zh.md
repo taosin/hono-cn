@@ -1,10 +1,10 @@
-# 开始使用
+# Getting Started
 
-使用 Hono 非常简单。我们可以设置项目、编写代码、使用本地服务器开发并快速部署。相同的代码可以在任何运行时上运行，只是入口点不同。让我们看看 Hono 的基本用法。
+使用 Hono 非常简单。我们可以设置项目、编写代码、在本地服务器上开发并快速部署。相同的代码可以在任何 runtime 上运行，只是入口点不同。让我们看看 Hono 的基本用法。
 
-## 入门
+## Starter
 
-每个平台都有入门模板。使用以下 "create-hono" 命令。
+每个平台都有可用的 Starter templates。使用以下 "create-hono" 命令。
 
 ::: code-group
 
@@ -30,8 +30,7 @@ deno init --npm hono@latest my-app
 
 :::
 
-然后会询问你想要使用哪个模板。
-在这个示例中，我们选择 Cloudflare Workers。
+然后你会被问到想要使用哪个 template。让我们选择 Cloudflare Workers 作为示例。
 
 ```
 ? Which template do you want to use?
@@ -46,7 +45,7 @@ deno init --npm hono@latest my-app
     vercel
 ```
 
-模板将被拉取到 `my-app` 目录，所以进入该目录并安装依赖。
+template 将被拉取到 `my-app` 中，所以进入其中并安装依赖项。
 
 ::: code-group
 
@@ -96,12 +95,11 @@ bun run dev
 
 ## Hello World
 
-你可以使用 Cloudflare Workers 开发工具 "Wrangler"、Deno、Bun 或其他工具用 TypeScript 编写代码，而无需担心转译。
+你可以使用 TypeScript 编写代码，通过 Cloudflare Workers 开发工具 "Wrangler"、Deno、Bun 等，无需考虑转译。
 
-在 `src/index.ts` 中编写你的第一个 Hono 应用程序。下面的示例是一个入门级 Hono 应用程序。
+在 `src/index.ts` 中编写你的第一个应用程序。下面的示例是一个入门级 Hono 应用程序。
 
-`import` 和最后的 `export default` 部分可能因运行时而异，
-但所有应用程序代码都将在任何地方运行相同的代码。
+`import` 和最后的 `export default` 部分可能因 runtime 而异，但所有应用程序代码都将在任何地方运行相同的代码。
 
 ```ts
 import { Hono } from 'hono'
@@ -115,7 +113,7 @@ app.get('/', (c) => {
 export default app
 ```
 
-启动开发服务器并用浏览器访问 `http://localhost:8787`。
+启动开发服务器并在浏览器中访问 `http://localhost:8787`。
 
 ::: code-group
 
@@ -137,7 +135,7 @@ bun run dev
 
 :::
 
-## 返回 JSON
+## Return JSON
 
 返回 JSON 也很容易。以下是处理对 `/api/hello` 的 GET 请求并返回 `application/json` 响应的示例。
 
@@ -150,9 +148,9 @@ app.get('/api/hello', (c) => {
 })
 ```
 
-## 请求和响应
+## Request and Response
 
-获取路径参数、URL 查询值和附加响应头部的写法如下。
+获取路径参数、URL 查询值和附加响应 header 的写法如下。
 
 ```ts
 app.get('/posts/:id', (c) => {
@@ -172,9 +170,9 @@ app.delete('/posts/:id', (c) =>
 )
 ```
 
-## 返回 HTML
+## Return HTML
 
-你可以使用 [html 辅助函数](/docs/helpers/html) 或使用 [JSX](/docs/guides/jsx) 语法编写 HTML。如果想使用 JSX，将文件重命名为 `src/index.tsx` 并进行配置（具体配置因运行时而异）。下面是使用 JSX 的示例。
+你可以使用 [html Helper](/docs/helpers/html) 或使用 [JSX](/docs/guides/jsx) 语法编写 HTML。如果你想使用 JSX，将文件重命名为 `src/index.tsx` 并配置它（具体取决于每个 runtime）。以下是使用 JSX 的示例。
 
 ```tsx
 const View = () => {
@@ -192,9 +190,9 @@ app.get('/page', (c) => {
 })
 ```
 
-## 返回原始 Response
+## Return raw Response
 
-你也可以返回原始的 [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response)。
+你也可以返回原始 [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response)。
 
 ```ts
 app.get('/', () => {
@@ -202,10 +200,9 @@ app.get('/', () => {
 })
 ```
 
-## 使用中间件
+## Using Middleware
 
-中间件可以为你完成困难的工作。
-例如，添加基本认证。
+Middleware 可以为你完成艰巨的工作。例如，添加 Basic Authentication。
 
 ```ts
 import { basicAuth } from 'hono/basic-auth'
@@ -225,14 +222,11 @@ app.get('/admin', (c) => {
 })
 ```
 
-Hono 提供有用的内置中间件，包括 Bearer 认证、使用 JWT 的认证、CORS 和 ETag。
-Hono 还提供使用外部库（如 GraphQL Server 和 Firebase Auth）的第三方中间件。
-此外，你还可以创建自己的中间件。
+有有用的内置中间件，包括 Bearer 和使用 JWT 的身份验证、CORS 和 ETag。Hono 还提供使用外部库（如 GraphQL Server 和 Firebase Auth）的第三方中间件。而且，你可以创建自己的中间件。
 
-## 适配器
+## Adapter
 
-有针对平台特定功能的适配器，例如处理静态文件或 WebSocket。
-例如，要在 Cloudflare Workers 中处理 WebSocket，导入 `hono/cloudflare-workers`。
+有适用于平台特定功能的 Adapters，例如处理静态文件或 WebSocket。例如，要在 Cloudflare Workers 中处理 WebSocket，导入 `hono/cloudflare-workers`。
 
 ```ts
 import { upgradeWebSocket } from 'hono/cloudflare-workers'
@@ -245,8 +239,6 @@ app.get(
 )
 ```
 
-## 下一步
+## Next step
 
-大多数代码适用于任何平台，但每个平台都有指南。
-例如，如何设置项目或如何部署。
-请查看你想要使用的确切平台的页面来创建你的应用程序！
+大多数代码可以在任何平台上运行，但每个平台都有指南。例如，如何设置项目或如何部署。请查看你想要用于创建应用程序的确切平台页面！

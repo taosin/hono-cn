@@ -10,14 +10,14 @@
 import { Hono } from 'hono'
 const app = new Hono()
 // ---cut---
-// 捕获的参数
+// 捕获的 params
 app.get('/entry/:id', async (c) => {
   const id = c.req.param('id')
   //    ^?
   // ...
 })
 
-// 一次性获取所有参数
+// 一次性获取所有 params
 app.get('/entry/:id/comment/:commentId', async (c) => {
   const { id, commentId } = c.req.param()
   //      ^?
@@ -26,19 +26,19 @@ app.get('/entry/:id/comment/:commentId', async (c) => {
 
 ## query()
 
-获取查询字符串参数。
+获取 querystring 参数。
 
 ```ts twoslash
 import { Hono } from 'hono'
 const app = new Hono()
 // ---cut---
-// 查询参数
+// Query params
 app.get('/search', async (c) => {
   const query = c.req.query('q')
   //     ^?
 })
 
-// 一次性获取所有参数
+// 一次性获取所有 params
 app.get('/search', async (c) => {
   const { q, limit, offset } = c.req.query()
   //      ^?
@@ -47,7 +47,7 @@ app.get('/search', async (c) => {
 
 ## queries()
 
-获取多个查询字符串参数值，例如 `/search?tags=A&tags=B`
+获取多个 querystring 参数值，例如 `/search?tags=A&tags=B`
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -63,7 +63,7 @@ app.get('/search', async (c) => {
 
 ## header()
 
-获取请求头部值。
+获取请求 header 值。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -77,10 +77,9 @@ app.get('/', (c) => {
 ```
 
 ::: warning
-当 `c.req.header()` 不带参数调用时，返回记录中的所有键都是**小写**的。
+当 `c.req.header()` 不带参数调用时，返回的记录中的所有键都是**小写的**。
 
-如果你想获取大写名称头部的值，
-使用 `c.req.header("X-Foo")`。
+如果你想获取大写名称的 header 值，使用 `c.req.header("X-Foo")`。
 
 ```ts
 // ❌ 不会工作
@@ -95,7 +94,7 @@ const foo = c.req.header('X-Foo')
 
 ## parseBody()
 
-解析 `multipart/form-data` 或 `application/x-www-form-urlencoded` 类型的请求体。
+解析 `multipart/form-data` 或 `application/x-www-form-urlencoded` 类型的 Request body
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -122,7 +121,7 @@ const data = body['foo']
 
 `body['foo']` 是 `(string | File)`。
 
-如果上传多个文件，将使用最后一个。
+如果上传了多个文件，将使用最后一个。
 
 ### 多个文件
 
@@ -140,7 +139,7 @@ body['foo[]']
 
 ### 多个文件或同名字段
 
-如果你有允许多个 `<input type="file" multiple />` 的输入字段或多个同名的复选框 `<input type="checkbox" name="favorites" value="Hono"/>`。
+如果你有一个允许多个 `<input type="file" multiple />` 的输入字段或多个具有相同名称的复选框 `<input type="checkbox" name="favorites" value="Hono"/>`。
 
 ```ts twoslash
 import { Context } from 'hono'
@@ -152,12 +151,12 @@ body['foo']
 
 `all` 选项默认禁用。
 
-- 如果 `body['foo']` 是多个文件，将解析为 `(string | File)[]`。
-- 如果 `body['foo']` 是单个文件，将解析为 `(string | File)`。
+- 如果 `body['foo']` 是多个文件，它将被解析为 `(string | File)[]`。
+- 如果 `body['foo']` 是单个文件，它将被解析为 `(string | File)`。
 
-### 点符号
+### 点表示法
 
-如果你将 `dot` 选项设置为 `true`，返回值将根据点符号结构化。
+如果你将 `dot` 选项设置为 `true`，返回值将根据点表示法进行结构化。
 
 想象接收以下数据：
 
@@ -167,7 +166,7 @@ data.append('obj.key1', 'value1')
 data.append('obj.key2', 'value2')
 ```
 
-你可以通过将 `dot` 选项设置为 `true` 来获取结构化的值：
+你可以通过设置 `dot` 选项为 `true` 来获取结构化值：
 
 ```ts twoslash
 import { Context } from 'hono'
@@ -179,7 +178,7 @@ const body = await c.req.parseBody({ dot: true })
 
 ## json()
 
-解析 `application/json` 类型的请求体。
+解析 `application/json` 类型的请求 body
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -193,7 +192,7 @@ app.post('/entry', async (c) => {
 
 ## text()
 
-解析 `text/plain` 类型的请求体。
+解析 `text/plain` 类型的请求 body
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -207,7 +206,7 @@ app.post('/entry', async (c) => {
 
 ## arrayBuffer()
 
-将请求体解析为 `ArrayBuffer`。
+将请求 body 解析为 `ArrayBuffer`
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -221,7 +220,7 @@ app.post('/entry', async (c) => {
 
 ## blob()
 
-将请求体解析为 `Blob`。
+将请求 body 解析为 `Blob`。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -235,7 +234,7 @@ app.post('/entry', async (c) => {
 
 ## formData()
 
-将请求体解析为 `FormData`。
+将请求 body 解析为 `FormData`。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -258,7 +257,7 @@ app.post('/posts', async (c) => {
 })
 ```
 
-可用目标如下。
+可用目标如下：
 
 - `form`
 - `json`
@@ -267,15 +266,15 @@ app.post('/posts', async (c) => {
 - `cookie`
 - `param`
 
-使用示例请参阅 [验证部分](/docs/guides/validation)。
+使用示例见 [Validation section](/docs/guides/validation)。
 
 ## routePath
 
 ::: warning
-**v4.8.0 中已弃用**：此属性已弃用。改用 [路由辅助函数](/docs/helpers/route) 中的 `routePath()`。
+**在 v4.8.0 中已弃用**：此属性已弃用。改用 [Route Helper](/docs/helpers/route) 中的 `routePath()`。
 :::
 
-你可以像这样在处理程序中获取注册的路径：
+你可以像这样在处理器中检索注册的路径：
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -295,10 +294,10 @@ app.get('/posts/:id', (c) => {
 ## matchedRoutes
 
 ::: warning
-**v4.8.0 中已弃用**：此属性已弃用。改用 [路由辅助函数](/docs/helpers/route) 中的 `matchedRoutes()`。
+**在 v4.8.0 中已弃用**：此属性已弃用。改用 [Route Helper](/docs/helpers/route) 中的 `matchedRoutes()`。
 :::
 
-它在处理程序中返回匹配的路由，这对于调试很有用。
+它在处理器中返回匹配的路由，这对于调试很有用。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -324,7 +323,7 @@ app.use(async function logger(c, next) {
 
 ## path
 
-请求路径名。
+请求 pathname。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -338,7 +337,7 @@ app.get('/about/me', async (c) => {
 
 ## url
 
-请求 URL 字符串。
+请求 url 字符串。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -378,7 +377,7 @@ app.post('/', async (c) => {
 
 ## cloneRawRequest()
 
-从 HonoRequest 克隆原始 Request 对象。即使在请求体已被验证器或 HonoRequest 方法消耗后也能工作。
+从 HonoRequest 克隆原始 Request 对象。即使在请求 body 已被验证器或 HonoRequest 方法消费后也能工作。
 
 ```ts twoslash
 import { Hono } from 'hono'

@@ -1,16 +1,12 @@
 # Cloudflare Pages
 
-[Cloudflare Pages](https://pages.cloudflare.com) 是一个用于全栈 Web 应用程序的边缘平台。
-它提供由 Cloudflare Workers 支持的静态文件和动态内容。
+[Cloudflare Pages](https://pages.cloudflare.com) 是一个用于全栈 web 应用程序的边缘平台。它提供静态文件和由 Cloudflare Workers 提供的动态内容。
 
-Hono 完全支持 Cloudflare Pages。
-它带来了愉快的开发者体验。Vite 的开发服务器很快，使用 Wrangler 部署非常快速。
+Hono 完全支持 Cloudflare Pages。它引入了令人愉快的开发体验。Vite 的 dev server 很快，使用 Wrangler 部署非常快速。
 
-## 1. 设置
+## 1. Setup
 
-Cloudflare Pages 有一个可用的 starter。
-使用 "create-hono" 命令开始你的项目。
-本例选择 `cloudflare-pages` 模板。
+Cloudflare Pages 有一个 starter。使用 "create-hono" 命令开始你的项目。为此示例选择 `cloudflare-pages` template。
 
 ::: code-group
 
@@ -36,7 +32,7 @@ deno init --npm hono my-app
 
 :::
 
-进入 `my-app` 并安装依赖。
+进入 `my-app` 并安装依赖项。
 
 ::: code-group
 
@@ -62,14 +58,14 @@ bun i
 
 :::
 
-以下是基本的目录结构。
+以下是基本目录结构。
 
 ```text
 ./
 ├── package.json
 ├── public
 │   └── static // 放置你的静态文件。
-│       └── style.css // 你可以通过 `/static/style.css` 引用它。
+│       └── style.css // 你可以通过 `/static/style.css` 访问它。
 ├── src
 │   ├── index.tsx // 服务器端的入口点。
 │   └── renderer.tsx
@@ -96,9 +92,9 @@ app.get('/', (c) => {
 export default app
 ```
 
-## 3. 运行
+## 3. Run
 
-在本地运行开发服务器。然后在你的 Web 浏览器中访问 `http://localhost:5173`。
+在本地运行开发服务器。然后在 Web 浏览器中访问 `http://localhost:5173`。
 
 ::: code-group
 
@@ -120,9 +116,9 @@ bun run dev
 
 :::
 
-## 4. 部署
+## 4. Deploy
 
-如果你有 Cloudflare 账户，你可以部署到 Cloudflare。在 `package.json` 中，`$npm_execpath` 需要更改为你选择的包管理器。
+如果你有 Cloudflare 账户，可以部署到 Cloudflare。在 `package.json` 中，`$npm_execpath` 需要更改为你选择的包管理器。
 
 ::: code-group
 
@@ -144,24 +140,23 @@ bun run deploy
 
 :::
 
-### 通过 Cloudflare 仪表板与 GitHub 部署
+### Deploy via the Cloudflare dashboard with GitHub
 
-1. 登录 [Cloudflare 仪表板](https://dash.cloudflare.com) 并选择你的账户。
+1. 登录 [Cloudflare dashboard](https://dash.cloudflare.com) 并选择你的账户。
 2. 在 Account Home 中，选择 Workers & Pages > Create application > Pages > Connect to Git。
 3. 授权你的 GitHub 账户，并选择仓库。在 Set up builds and deployments 中，提供以下信息：
 
-| 配置选项 | 值 |
+| Configuration option | Value           |
 | -------------------- | --------------- |
-| Production branch | `main` |
-| Build command | `npm run build` |
-| Build directory | `dist` |
+| Production branch    | `main`          |
+| Build command        | `npm run build` |
+| Build directory      | `dist`          |
 
 ## Bindings
 
-你可以使用 Cloudflare Bindings，如 Variables、KV、D1 等。
-在本节中，让我们使用 Variables 和 KV。
+你可以使用 Cloudflare Bindings，如 Variables、KV、D1 等。在本节中，让我们使用 Variables 和 KV。
 
-### 创建 `wrangler.toml`
+### Create `wrangler.toml`
 
 首先，为本地 Bindings 创建 `wrangler.toml`：
 
@@ -169,14 +164,14 @@ bun run deploy
 touch wrangler.toml
 ```
 
-编辑 `wrangler.toml`。指定名称为 `MY_NAME` 的 Variable。
+编辑 `wrangler.toml`。使用名称 `MY_NAME` 指定 Variable。
 
 ```toml
 [vars]
 MY_NAME = "Hono"
 ```
 
-### 创建 KV
+### Create KV
 
 接下来，创建 KV。运行以下 `wrangler` 命令：
 
@@ -184,7 +179,7 @@ MY_NAME = "Hono"
 wrangler kv namespace create MY_KV --preview
 ```
 
-记下 `preview_id`，输出如下：
+记下 `preview_id`，如下输出：
 
 ```
 { binding = "MY_KV", preview_id = "abcdef" }
@@ -198,7 +193,7 @@ binding = "MY_KV"
 id = "abcdef"
 ```
 
-### 编辑 `vite.config.ts`
+### Edit `vite.config.ts`
 
 编辑 `vite.config.ts`：
 
@@ -212,16 +207,16 @@ export default defineConfig({
   plugins: [
     devServer({
       entry: 'src/index.tsx',
-      adapter, // Cloudflare 适配器
+      adapter, // Cloudflare Adapter
     }),
     build(),
   ],
 })
 ```
 
-### 在应用程序中使用 Bindings
+### Use Bindings in your application
 
-在应用程序中使用 Variable 和 KV。设置类型。
+在你的应用程序中使用 Variable 和 KV。设置类型。
 
 ```ts
 type Bindings = {
@@ -242,15 +237,13 @@ app.get('/', async (c) => {
 })
 ```
 
-### 在生产环境中
+### In production
 
-对于 Cloudflare Pages，你将使用 `wrangler.toml` 进行本地开发，但对于生产环境，你将在仪表板中设置 Bindings。
+对于 Cloudflare Pages，你将使用 `wrangler.toml` 进行本地开发，但对于生产环境，你将在 dashboard 中设置 Bindings。
 
-## 客户端
+## Client-side
 
-你可以使用 Vite 的功能编写客户端脚本并将它们导入到应用程序中。
-如果 `/src/client.ts` 是客户端的入口点，只需在 script 标签中编写它。
-此外，`import.meta.env.PROD` 对于检测是在开发服务器上运行还是在构建阶段非常有用。
+你可以使用 Vite 的功能编写客户端脚本并将其导入到应用程序中。如果 `/src/client.ts` 是客户端的入口点，只需在 script 标签中编写它。此外，`import.meta.env.PROD` 对于检测是在 dev server 上运行还是在构建阶段很有用。
 
 ```tsx
 app.get('/', (c) => {
@@ -333,7 +326,7 @@ export const onRequest = handleMiddleware(async (c, next) => {
 })
 ```
 
-你也可以使用 Hono 的内置和第三方中间件。例如，要添加 Basic Authentication，你可以使用 [Hono 的 Basic Authentication Middleware](/docs/middleware/builtin/basic-auth)。
+你也可以使用 Hono 的内置和第三方中间件。例如，要添加 Basic Authentication，你可以使用 [Hono's Basic Authentication Middleware](/docs/middleware/builtin/basic-auth)。
 
 ```ts
 // functions/_middleware.ts
@@ -348,7 +341,7 @@ export const onRequest = handleMiddleware(
 )
 ```
 
-如果你想应用多个中间件，你可以这样写：
+如果你想应用多个中间件，可以这样写：
 
 ```ts
 import { handleMiddleware } from 'hono/cloudflare-pages'
@@ -362,7 +355,7 @@ export const onRequest = [
 ]
 ```
 
-### 访问 `EventContext`
+### Accessing `EventContext`
 
 你可以通过 `handleMiddleware` 中的 `c.env` 访问 [`EventContext`](https://developers.cloudflare.com/pages/functions/api-reference/#eventcontext) 对象。
 

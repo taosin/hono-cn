@@ -1,43 +1,42 @@
-# 路由
+# Routing
 
-Hono 的路由灵活且直观。
-让我们看看。
+Hono 的路由灵活且直观。让我们来看看。
 
-## 基础
+## Basic
 
 ```ts twoslash
 import { Hono } from 'hono'
 const app = new Hono()
 // ---cut---
-// HTTP 方法
+// HTTP Methods
 app.get('/', (c) => c.text('GET /'))
 app.post('/', (c) => c.text('POST /'))
 app.put('/', (c) => c.text('PUT /'))
 app.delete('/', (c) => c.text('DELETE /'))
 
-// 通配符
+// Wildcard
 app.get('/wild/*/card', (c) => {
   return c.text('GET /wild/*/card')
 })
 
-// 任何 HTTP 方法
+// Any HTTP methods
 app.all('/hello', (c) => c.text('Any Method /hello'))
 
-// 自定义 HTTP 方法
+// Custom HTTP method
 app.on('PURGE', '/cache', (c) => c.text('PURGE Method /cache'))
 
-// 多个方法
+// Multiple Method
 app.on(['PUT', 'DELETE'], '/post', (c) =>
   c.text('PUT or DELETE /post')
 )
 
-// 多个路径
+// Multiple Paths
 app.on('GET', ['/hello', '/ja/hello', '/en/hello'], (c) =>
   c.text('Hello')
 )
 ```
 
-## 路径参数
+## Path Parameter
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -63,7 +62,7 @@ app.get('/posts/:id/comment/:comment_id', async (c) => {
 })
 ```
 
-## 可选参数
+## Optional Parameter
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -73,7 +72,7 @@ const app = new Hono()
 app.get('/api/animal/:type?', (c) => c.text('Animal!'))
 ```
 
-## 正则表达式
+## Regexp
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -86,7 +85,7 @@ app.get('/post/:date{[0-9]+}/:title{[a-z]+}', async (c) => {
 })
 ```
 
-## 包含斜杠
+## Including slashes
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -97,7 +96,7 @@ app.get('/posts/:filename{.+\\.png}', async (c) => {
 })
 ```
 
-## 链式路由
+## Chained route
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -115,9 +114,9 @@ app
   })
 ```
 
-## 分组
+## Grouping
 
-你可以使用 Hono 实例对路由进行分组，并使用 route 方法将它们添加到主应用程序。
+你可以使用 Hono 实例对路由进行分组，并使用 route 方法将它们添加到主 app。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -136,9 +135,9 @@ const app = new Hono()
 app.route('/book', book)
 ```
 
-## 不更改基础的分组
+## Grouping without changing base
 
-你也可以在保持基础的同时对多个实例进行分组。
+你也可以在保持 base 的同时对多个实例进行分组。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -156,9 +155,9 @@ app.route('/', book) // 处理 /book
 app.route('/', user) // 处理 /user
 ```
 
-## 基础路径
+## Base path
 
-你可以指定基础路径。
+你可以指定 base path。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -167,9 +166,9 @@ const api = new Hono().basePath('/api')
 api.get('/book', (c) => c.text('List Books')) // GET /api/book
 ```
 
-## 使用主机名路由
+## Routing with hostname
 
-如果包含主机名，它可以正常工作。
+如果包含 hostname，它也能正常工作。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -182,9 +181,9 @@ app.get('/www1.example.com/hello', (c) => c.text('hello www1'))
 app.get('/www2.example.com/hello', (c) => c.text('hello www2'))
 ```
 
-## 使用 `host` 头部值路由
+## Routing with `host` Header value
 
-如果你在 Hono 构造函数中设置 `getPath()` 函数，Hono 可以处理 `host` 头部值。
+如果你在 Hono 构造函数中设置 `getPath()` 函数，Hono 可以处理 `host` header 值。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -204,11 +203,11 @@ app.get('/www1.example.com/hello', (c) => c.text('hello www1'))
 // })
 ```
 
-通过应用这个，例如，你可以通过 `User-Agent` 头部更改路由。
+通过应用这个，例如，你可以通过 `User-Agent` header 改变路由。
 
-## 路由优先级
+## Routing priority
 
-处理程序或中间件将按注册顺序执行。
+Handlers 或 middleware 将按注册顺序执行。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -223,7 +222,7 @@ GET /book/a ---> `a`
 GET /book/b ---> `common`
 ```
 
-当处理程序执行时，进程将停止。
+当 handler 执行时，进程将停止。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -234,10 +233,10 @@ app.get('/foo', (c) => c.text('foo')) // foo
 ```
 
 ```
-GET /foo ---> `common` // foo 不会分发
+GET /foo ---> `common` // foo 将不会 dispatch
 ```
 
-如果你有想要执行的中间件，在处理程序之上编写代码。
+如果你有想要执行的 middleware，请在 handler 上方编写代码。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -248,7 +247,7 @@ app.use(logger())
 app.get('/foo', (c) => c.text('foo'))
 ```
 
-如果你想有一个"_fallback_"处理程序，在其他处理程序之下编写代码。
+如果你想有一个"_fallback_"handler，请在其他 handler 下方编写代码。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -263,10 +262,9 @@ GET /bar ---> `bar`
 GET /foo ---> `fallback`
 ```
 
-## 分组顺序
+## Grouping ordering
 
-注意，分组路由的错误很难注意到。
-`route()` 函数从第二个参数（如 `three` 或 `two`）获取存储的路由并将其添加到自己的（`two` 或 `app`）路由。
+注意，路由分组的错误很难察觉。`route()` 函数从第二个参数（如 `three` 或 `two`）获取存储的路由，并将其添加到自己的（`two` 或 `app`）路由中。
 
 ```ts
 three.get('/hi', (c) => c.text('hi'))
@@ -282,7 +280,7 @@ export default app
 GET /two/three/hi ---> `hi`
 ```
 
-但是，如果它们顺序错误，将返回 404。
+然而，如果顺序错误，它将返回 404。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -291,7 +289,7 @@ const two = new Hono()
 const three = new Hono()
 // ---cut---
 three.get('/hi', (c) => c.text('hi'))
-app.route('/two', two) // `two` 没有路由
+app.route('/two', two) // `two` 没有 routes
 two.route('/three', three)
 
 export default app

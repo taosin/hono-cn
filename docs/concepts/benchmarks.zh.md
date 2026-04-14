@@ -1,11 +1,10 @@
-# 基准测试
+# Benchmarks
 
 基准测试只是基准测试，但对我们来说很重要。
 
-## 路由器
+## Routers
 
-我们测量了许多 JavaScript 路由器的速度。
-例如，`find-my-way` 是 Fastify 内部使用的非常快的路由器。
+我们测量了一堆 JavaScript routers 的速度。例如，`find-my-way` 是 Fastify 内部使用的非常快的 router。
 
 - @medley/router
 - find-my-way
@@ -14,8 +13,7 @@
 - express（包括处理）
 - koa-router
 
-首先，我们将以下路由注册到每个路由器。
-这些类似于现实世界中使用的路由。
+首先，我们在每个 router 中注册了以下路由。这些类似于现实世界中使用的路由。
 
 ```ts twoslash
 interface Route {
@@ -39,7 +37,7 @@ export const routes: Route[] = [
 ]
 ```
 
-然后我们向端点发送请求，如下所示。
+然后我们向以下端点发送请求。
 
 ```ts twoslash
 interface Route {
@@ -88,7 +86,7 @@ const routes: (Route & { name: string })[] = [
 
 让我们看看结果。
 
-### 在 Node.js 上
+### On Node.js
 
 以下截图显示了在 Node.js 上的结果。
 
@@ -108,7 +106,7 @@ const routes: (Route & { name: string })[] = [
 
 ![](/images/bench08.png)
 
-### 在 Bun 上
+### On Bun
 
 以下截图显示了在 Bun 上的结果。
 
@@ -130,10 +128,10 @@ const routes: (Route & { name: string })[] = [
 
 ## Cloudflare Workers
 
-**Hono 是最快的**，与其他 Cloudflare Workers 路由器相比。
+与其他 Cloudflare Workers 的 routers 相比，**Hono 是最快的**。
 
-- 机器：Apple MacBook Pro, 32 GiB, M1 Pro
-- 脚本：[benchmarks/handle-event](https://github.com/honojs/hono/tree/main/benchmarks/handle-event)
+- Machine: Apple MacBook Pro, 32 GiB, M1 Pro
+- Scripts: [benchmarks/handle-event](https://github.com/honojs/hono/tree/main/benchmarks/handle-event)
 
 ```
 Hono x 402,820 ops/sec ±4.78% (80 runs sampled)
@@ -146,26 +144,25 @@ Fastest is Hono
 
 ## Deno
 
-**Hono 是最快的**，与其他 Deno 框架相比。
+与其他 Deno 框架相比，**Hono 是最快的**。
 
-- 机器：Apple MacBook Pro, 32 GiB, M1 Pro, Deno v1.22.0
-- 脚本：[benchmarks/deno](https://github.com/honojs/hono/tree/main/benchmarks/deno)
-- 方法：`bombardier --fasthttp -d 10s -c 100 'http://localhost:8000/user/lookup/username/foo'`
+- Machine: Apple MacBook Pro, 32 GiB, M1 Pro, Deno v1.22.0
+- Scripts: [benchmarks/deno](https://github.com/honojs/hono/tree/main/benchmarks/deno)
+- Method: `bombardier --fasthttp -d 10s -c 100 'http://localhost:8000/user/lookup/username/foo'`
 
-| 框架     |    版本     |                  结果 |
-| -------- | :---------: | --------------------: |
-| **Hono** |    3.0.0    | **Requests/sec: 136112** |
-| Fast     | 4.0.0-beta.1 |     Requests/sec: 103214 |
-| Megalo   |    0.3.0    |      Requests/sec: 64597 |
-| Faster   |    5.7      |      Requests/sec: 54801 |
-| oak      |   10.5.1    |      Requests/sec: 43326 |
-| opine    |   2.2.0     |      Requests/sec: 30700 |
+| Framework |   Version    |                  Results |
+| --------- | :----------: | -----------------------: |
+| **Hono**  |    3.0.0     | **Requests/sec: 136112** |
+| Fast      | 4.0.0-beta.1 |     Requests/sec: 103214 |
+| Megalo    |    0.3.0     |      Requests/sec: 64597 |
+| Faster    |     5.7      |      Requests/sec: 54801 |
+| oak       |    10.5.1    |      Requests/sec: 43326 |
+| opine     |    2.2.0     |      Requests/sec: 30700 |
 
 另一个基准测试结果：[denosaurs/bench](https://github.com/denosaurs/bench)
 
 ## Bun
 
-Hono 是 Bun 最快的框架之一。
-你可以在下面看到。
+Hono 是 Bun 最快的框架之一。你可以在下面看到。
 
 - [SaltyAom/bun-http-framework-benchmark](https://github.com/SaltyAom/bun-http-framework-benchmark)
