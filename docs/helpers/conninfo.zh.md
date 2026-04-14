@@ -1,8 +1,8 @@
-# ConnInfo 辅助工具
+# ConnInfo Helper
 
-ConnInfo 辅助工具有助于你获取连接信息。例如，你可以轻松获取客户端的远程地址。
+ConnInfo Helper 帮助你获取连接信息。例如，你可以轻松获取客户端的远程地址。
 
-## 导入
+## Import
 
 ::: code-group
 
@@ -53,7 +53,7 @@ import { getConnInfo } from '@hono/node-server/conninfo'
 
 :::
 
-## 用法
+## Usage
 
 ```ts
 const app = new Hono()
@@ -64,7 +64,7 @@ app.get('/', (c) => {
 })
 ```
 
-## 类型定义
+## Type Definitions
 
 你可以从 `getConnInfo()` 获取的值的类型定义如下：
 

@@ -1,8 +1,8 @@
-# Cookie 辅助工具
+# Cookie Helper
 
-Cookie 辅助工具提供简单的接口来管理 cookies，使开发人员能够无缝设置、解析和删除 cookies。
+Cookie Helper 提供了一个简单的接口来管理 cookies，使开发人员能够无缝设置、解析和删除 cookies。
 
-## 导入
+## Import
 
 ```ts
 import { Hono } from 'hono'
@@ -17,9 +17,9 @@ import {
 } from 'hono/cookie'
 ```
 
-## 用法
+## Usage
 
-### 普通 cookies
+### Regular cookies
 
 ```ts
 app.get('/cookie', (c) => {
@@ -31,9 +31,9 @@ app.get('/cookie', (c) => {
 })
 ```
 
-### 签名 cookies
+### Signed cookies
 
-**注意**：设置和检索签名 cookies 返回 Promise，因为使用了 WebCrypto API 来创建 HMAC SHA-256 签名，这是异步的。
+**注意**：设置和检索 signed cookies 会返回 Promise，因为使用了 WebCrypto API 的异步特性，该 API 用于创建 HMAC SHA-256 签名。
 
 ```ts
 app.get('/signed-cookie', (c) => {
@@ -46,15 +46,15 @@ app.get('/signed-cookie', (c) => {
     'cookie_name0'
   )
   deleteCookie(c, 'cookie_name0')
-  // `getSignedCookie` 将为指定的 cookie 返回 `false`，如果签名被篡改或无效
+  // 如果签名被篡改或无效，`getSignedCookie` 将对指定的 cookie 返回 `false`
   const allSignedCookies = await getSignedCookie(c, secret)
   // ...
 })
 ```
 
-### Cookie 生成
+### Cookie Generation
 
-`generateCookie` 和 `generateSignedCookie` 函数允许你直接创建 cookie 字符串，而无需将它们设置在响应头中。
+`generateCookie` 和 `generateSignedCookie` 函数允许你直接生成 cookie 字符串，而无需将它们设置在响应 headers 中。
 
 #### `generateCookie`
 
@@ -63,7 +63,7 @@ app.get('/signed-cookie', (c) => {
 const cookie = generateCookie('delicious_cookie', 'macha')
 // 返回：'delicious_cookie=macha; Path=/'
 
-// 带有选项的 cookie
+// 带选项的 cookie
 const cookie = generateCookie('delicious_cookie', 'macha', {
   path: '/',
   secure: true,
@@ -75,14 +75,14 @@ const cookie = generateCookie('delicious_cookie', 'macha', {
 #### `generateSignedCookie`
 
 ```ts
-// 基本签名 cookie 生成
+// 基本 signed cookie 生成
 const signedCookie = await generateSignedCookie(
   'delicious_cookie',
   'macha',
   'secret chocolate chips'
 )
 
-// 带有选项的签名 cookie
+// 带选项的 signed cookie
 const signedCookie = await generateSignedCookie(
   'delicious_cookie',
   'macha',
@@ -95,9 +95,9 @@ const signedCookie = await generateSignedCookie(
 )
 ```
 
-**注意**：与 `setCookie` 和 `setSignedCookie` 不同，这些函数仅生成 cookie 字符串。如果需要，你需要手动将它们设置在头中。
+**注意**：与 `setCookie` 和 `setSignedCookie` 不同，这些函数仅生成 cookie 字符串。如果需要，你需要手动将它们设置在 headers 中。
 
-## 选项
+## Options
 
 ### `setCookie` & `setSignedCookie`
 
@@ -115,7 +115,7 @@ const signedCookie = await generateSignedCookie(
 示例：
 
 ```ts
-// 普通 cookies
+// Regular cookies
 setCookie(c, 'great_cookie', 'banana', {
   path: '/',
   secure: true,
@@ -126,7 +126,7 @@ setCookie(c, 'great_cookie', 'banana', {
   sameSite: 'Strict',
 })
 
-// 签名 cookies
+// Signed cookies
 await setSignedCookie(
   c,
   'fortune_cookie',
@@ -166,11 +166,11 @@ deleteCookie(c, 'banana', {
 const deletedCookie = deleteCookie(c, 'delicious_cookie')
 ```
 
-## `__Secure-` 和 `__Host-` 前缀
+## `__Secure-` and `__Host-` prefix
 
-Cookie 辅助工具支持 cookie 名称的 `__Secure-` 和 `__Host-` 前缀。
+Cookie helper 支持 cookie 名称的 `__Secure-` 和 `__Host-` 前缀。
 
-如果你想验证 cookie 名称是否有前缀，请指定前缀选项。
+如果你想验证 cookie 名称是否有前缀，指定 prefix 选项。
 
 ```ts
 const securePrefixCookie = getCookie(c, 'yummy_cookie', 'secure')
@@ -190,7 +190,7 @@ const hostPrefixSignedCookie = await getSignedCookie(
 )
 ```
 
-另外，如果你想在设置 cookie 时指定前缀，请为前缀选项指定值。
+另外，如果你想在设置 cookie 时指定前缀，为 prefix 选项指定一个值。
 
 ```ts
 setCookie(c, 'delicious_cookie', 'macha', {
@@ -208,9 +208,9 @@ await setSignedCookie(
 )
 ```
 
-## 遵循最佳实践
+## Following the best practices
 
-新的 Cookie RFC（又名 cookie-bis）和 CHIPS 包含一些开发人员应遵循的 Cookie 设置最佳实践。
+新的 Cookie RFC（又称 cookie-bis）和 CHIPS 包含开发人员应遵循的 Cookie 设置最佳实践。
 
 - [RFC6265bis-13](https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-rfc6265bis-13)
   - `Max-Age`/`Expires` 限制
@@ -219,7 +219,7 @@ await setSignedCookie(
   - `Partitioned` 限制
 
 Hono 遵循最佳实践。
-Cookie 辅助工具将在以下条件下解析 cookies 时抛出 `Error`：
+在以下条件下，cookie helper 在解析 cookies 时会抛出 `Error`：
 
 - cookie 名称以 `__Secure-` 开头，但未设置 `secure` 选项。
 - cookie 名称以 `__Host-` 开头，但未设置 `secure` 选项。

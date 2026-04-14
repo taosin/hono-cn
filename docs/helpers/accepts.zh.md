@@ -1,8 +1,8 @@
-# Accepts 辅助工具
+# Accepts Helper
 
-Accepts 辅助工具有助于处理请求中的 Accept headers。
+Accepts Helper 有助于处理请求中的 Accept headers。
 
-## 导入
+## Import
 
 ```ts
 import { Hono } from 'hono'
@@ -11,7 +11,7 @@ import { accepts } from 'hono/accepts'
 
 ## `accepts()`
 
-`accepts()` 函数查看 Accept header（如 Accept-Encoding 和 Accept-Language），并返回适当的值。
+`accepts()` 函数查看 Accept header（如 Accept-Encoding 和 Accept-Language）并返回适当的值。
 
 ```ts
 import { accepts } from 'hono/accepts'
@@ -26,7 +26,7 @@ app.get('/', (c) => {
 })
 ```
 
-### `AcceptHeader` 类型
+### `AcceptHeader` type
 
 `AcceptHeader` 类型的定义如下。
 
@@ -41,7 +41,7 @@ export type AcceptHeader =
   | 'Accept-Ranges'
 ```
 
-## 选项
+## Options
 
 ### <Badge type="danger" text="required" /> header: `AcceptHeader`
 
