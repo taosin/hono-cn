@@ -1,14 +1,14 @@
-# Context Storage Middleware
+# Context Storage 中间件
 
-The Context Storage Middleware stores the Hono `Context` in the `AsyncLocalStorage`, to make it globally accessible.
+Context Storage 中间件将 Hono `Context` 存储在 `AsyncLocalStorage` 中，使其可以全局访问。
 
 ::: info
-**Note** This middleware uses `AsyncLocalStorage`. The runtime should support it.
+**注意** 此中间件使用 `AsyncLocalStorage`。运行时应该支持它。
 
-**Cloudflare Workers**: To enable `AsyncLocalStorage`, add the [`nodejs_compat` or `nodejs_als` flag](https://developers.cloudflare.com/workers/configuration/compatibility-dates/#nodejs-compatibility-flag) to your `wrangler.toml` file.
+**Cloudflare Workers**：要启用 `AsyncLocalStorage`，请将 [`nodejs_compat` 或 `nodejs_als` 标志](https://developers.cloudflare.com/workers/configuration/compatibility-dates/#nodejs-compatibility-flag) 添加到你的 `wrangler.toml` 文件。
 :::
 
-## Import
+## 导入
 
 ```ts
 import { Hono } from 'hono'
@@ -19,9 +19,9 @@ import {
 } from 'hono/context-storage'
 ```
 
-## Usage
+## 用法
 
-The `getContext()` will return the current Context object if the `contextStorage()` is applied as a middleware.
+如果 `contextStorage()` 作为中间件应用，`getContext()` 将返回当前 Context 对象。
 
 ```ts
 type Env = {
@@ -39,7 +39,7 @@ app.use(async (c, next) => {
   await next()
 })
 
-// You can access the variable outside the handler.
+// 你可以在 handler 之外访问变量。
 const getMessage = () => {
   return getContext<Env>().var.message
 }
@@ -49,7 +49,7 @@ app.get('/', (c) => {
 })
 ```
 
-On Cloudflare Workers, you can access the bindings outside the handler.
+在 Cloudflare Workers 上，你可以在 handler 之外访问 bindings。
 
 ```ts
 type Env = {
@@ -69,12 +69,12 @@ const setKV = (value: string) => {
 
 ## tryGetContext
 
-`tryGetContext()` works like `getContext()`, but returns `undefined` instead of throwing an error when the context is not available:
+`tryGetContext()` 的工作方式类似于 `getContext()`，但在上下文不可用时返回 `undefined` 而不是抛出错误：
 
 ```ts
 const context = tryGetContext<Env>()
 if (context) {
-  // Context is available
+  // 上下文可用
   console.log(context.var.message)
 }
 ```

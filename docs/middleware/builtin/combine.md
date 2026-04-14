@@ -1,21 +1,21 @@
-# Combine Middleware
+# Combine 中间件
 
-Combine Middleware combines multiple middleware functions into a single middleware. It provides three functions:
+Combine 中间件将多个中间件函数组合为单个中间件。它提供三个函数：
 
-- `some` - Runs only one of the given middleware.
-- `every` - Runs all given middleware.
-- `except` - Runs all given middleware only if a condition is not met.
+- `some` - 仅运行给定中间件中的一个。
+- `every` - 运行所有给定中间件。
+- `except` - 仅当不满足条件时运行所有给定中间件。
 
-## Import
+## 导入
 
 ```ts
 import { Hono } from 'hono'
 import { some, every, except } from 'hono/combine'
 ```
 
-## Usage
+## 用法
 
-Here's an example of complex access control rules using Combine Middleware.
+以下是使用 Combine 中间件的复杂访问控制规则示例。
 
 ```ts
 import { Hono } from 'hono'
@@ -34,7 +34,7 @@ app.use(
       ipRestriction(getConnInfo, { allowList: ['192.168.0.2'] }),
       bearerAuth({ token })
     ),
-    // If both conditions are met, rateLimit will not execute.
+    // 如果两个条件都满足，rateLimit 将不会执行。
     rateLimit()
   )
 )
@@ -44,15 +44,15 @@ app.get('/', (c) => c.text('Hello Hono!'))
 
 ### some
 
-Runs the first middleware that returns true. Middleware is applied in order, and if any middleware exits successfully, subsequent middleware will not run.
+运行返回 true 的第一个中间件。中间件按顺序应用，如果任何中间件成功退出，后续中间件将不会运行。
 
 ```ts
 import { some } from 'hono/combine'
 import { bearerAuth } from 'hono/bearer-auth'
 import { myRateLimit } from '@/rate-limit'
 
-// If client has a valid token, skip rate limiting.
-// Otherwise, apply rate limiting.
+// 如果客户端有有效令牌，则跳过速率限制。
+// 否则，应用速率限制。
 app.use(
   '/api/*',
   some(bearerAuth({ token }), myRateLimit({ limit: 100 }))
@@ -61,7 +61,7 @@ app.use(
 
 ### every
 
-Runs all middleware and stops if any of them fail. Middleware is applied in order, and if any middleware throws an error, subsequent middleware will not run.
+运行所有中间件，如果任何中间件失败则停止。中间件按顺序应用，如果任何中间件抛出错误，后续中间件将不会运行。
 
 ```ts
 import { some, every } from 'hono/combine'
@@ -69,8 +69,8 @@ import { bearerAuth } from 'hono/bearer-auth'
 import { myCheckLocalNetwork } from '@/check-local-network'
 import { myRateLimit } from '@/rate-limit'
 
-// If client is in local network, skip authentication and rate limiting.
-// Otherwise, apply authentication and rate limiting.
+// 如果客户端在本地网络中，则跳过认证和速率限制。
+// 否则，应用认证和速率限制。
 app.use(
   '/api/*',
   some(
@@ -82,13 +82,13 @@ app.use(
 
 ### except
 
-Runs all middleware except when the condition is met. You can pass a string or function as the condition. If multiple targets need to be matched, pass them as an array.
+运行所有中间件，除非满足条件。你可以传递字符串或函数作为条件。如果需要匹配多个目标，请将它们作为数组传递。
 
 ```ts
 import { except } from 'hono/combine'
 import { bearerAuth } from 'hono/bearer-auth'
 
-// If client is accessing public API, skip authentication.
-// Otherwise, require a valid token.
+// 如果客户端正在访问公共 API，则跳过认证。
+// 否则，需要有效令牌。
 app.use('/api/*', except('/api/public/*', bearerAuth({ token })))
 ```

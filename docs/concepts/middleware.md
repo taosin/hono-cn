@@ -1,12 +1,10 @@
 # Middleware
 
-We call the primitive that returns `Response` as "Handler".
-"Middleware" is executed before and after the Handler and handles the `Request` and `Response`.
-It's like an onion structure.
+我们将返回 `Response` 的原语称为 "Handler"。"Middleware" 在 Handler 之前和之后执行，并处理 `Request` 和 `Response`。它像洋葱结构。
 
 ![](/images/onion.png)
 
-For example, we can write the middleware to add the "X-Response-Time" header as follows.
+例如，我们可以编写中间件来添加 "X-Response-Time" header，如下所示：
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -20,4 +18,4 @@ app.use(async (c, next) => {
 })
 ```
 
-With this simple method, we can write our own custom middleware and we can use the built-in or third party middleware.
+使用这个简单的方法，我们可以编写自己的自定义中间件，也可以使用内置或第三方中间件。

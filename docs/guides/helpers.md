@@ -1,8 +1,8 @@
 # Helpers
 
-Helpers are available to assist in developing your application. Unlike middleware, they don't act as handlers, but rather provide useful functions.
+Helpers 可用于协助开发你的应用程序。与中间件不同，它们不作为 handlers，而是提供有用的函数。
 
-For instance, here's how to use the [Cookie helper](/docs/helpers/cookie):
+例如，以下是使用 [Cookie helper](/docs/helpers/cookie) 的方法：
 
 ```ts
 import { getCookie, setCookie } from 'hono/cookie'

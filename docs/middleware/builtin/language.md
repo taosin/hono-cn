@@ -1,25 +1,25 @@
-# Language Middleware
+# Language 中间件
 
-The Language Detector middleware automatically determines a user's preferred language (locale) from various sources and makes it available via `c.get('language')`. Detection strategies include query parameters, cookies, headers, and URL path segments. Perfect for internationalization (i18n) and locale-specific content.
+Language Detector 中间件自动从各种来源确定用户的首选语言（区域设置），并通过 `c.get('language')` 提供。检测策略包括查询参数、cookies、headers 和 URL 路径段。非常适合国际化（i18n）和特定区域设置的内容。
 
-## Import
+## 导入
 
 ```ts
 import { Hono } from 'hono'
 import { languageDetector } from 'hono/language'
 ```
 
-## Basic Usage
+## 基本用法
 
-Detect language from query string, cookie, and header (default order), with fallback to English:
+从查询字符串、cookie 和 header 检测语言（默认顺序），并回退到英语：
 
 ```ts
 const app = new Hono()
 
 app.use(
   languageDetector({
-    supportedLanguages: ['en', 'ar', 'ja'], // Must include fallback
-    fallbackLanguage: 'en', // Required
+    supportedLanguages: ['en', 'ar', 'ja'], // 必须包含回退
+    fallbackLanguage: 'en', // 必需
   })
 )
 
@@ -29,23 +29,23 @@ app.get('/', (c) => {
 })
 ```
 
-### Client Examples
+### 客户端示例
 
 ```sh
-# Via path
+# 通过路径
 curl http://localhost:8787/ar/home
 
-# Via query parameter
+# 通过查询参数
 curl http://localhost:8787/?lang=ar
 
-# Via cookie
+# 通过 cookie
 curl -H 'Cookie: language=ja' http://localhost:8787/
 
-# Via header
+# 通过 header
 curl -H 'Accept-Language: ar,en;q=0.9' http://localhost:8787/
 ```
 
-## Default Configuration
+## 默认配置
 
 ```ts
 export const DEFAULT_OPTIONS: DetectorOptions = {
@@ -68,24 +68,24 @@ export const DEFAULT_OPTIONS: DetectorOptions = {
 }
 ```
 
-## Key Behaviors
+## 关键行为
 
-### Detection Workflow
+### 检测工作流程
 
-1. **Order**: Checks sources in this sequence by default:
-   - Query parameter (?lang=ar)
+1. **顺序**：默认按此顺序检查来源：
+   - 查询参数 (?lang=ar)
    - Cookie (language=ar)
    - Accept-Language header
 
-2. **Caching**: Stores detected language in a cookie (1 year by default)
+2. **缓存**：将检测到的语言存储在 cookie 中（默认 1 年）
 
-3. **Fallback**: Uses `fallbackLanguage` if no valid detection (must be in `supportedLanguages`)
+3. **回退**：如果没有有效检测，则使用 `fallbackLanguage`（必须在 `supportedLanguages` 中）
 
-## Advanced Configuration
+## 高级配置
 
-### Custom Detection Order
+### 自定义检测顺序
 
-Prioritize URL path detection (e.g., /en/about):
+优先考虑 URL 路径检测（例如 /en/about）：
 
 ```ts
 app.use(
@@ -98,9 +98,9 @@ app.use(
 )
 ```
 
-### Progressive Locale Matching
+### 渐进式区域设置匹配
 
-When a detected locale code like `ja-JP` is not in `supportedLanguages`, the middleware progressively truncates subtags to find a match. For example, `zh-Hant-CN` will try `zh-Hant`, then `zh`. An exact match is always preferred.
+当检测到的区域设置代码（如 `ja-JP`）不在 `supportedLanguages` 中时，中间件会渐进式地截断子标签以找到匹配项。例如，`zh-Hant-CN` 将尝试 `zh-Hant`，然后尝试 `zh`。始终首选精确匹配。
 
 ```ts
 app.use(
@@ -110,13 +110,13 @@ app.use(
   })
 )
 
-// Accept-Language: ja-JP → matches 'ja'
-// Accept-Language: zh-Hant-CN → matches 'zh-Hant'
+// Accept-Language: ja-JP → 匹配 'ja'
+// Accept-Language: zh-Hant-CN → 匹配 'zh-Hant'
 ```
 
-### Language Code Transformation
+### 语言代码转换
 
-Normalize complex codes (e.g., en-US → en):
+规范化复杂代码（例如 en-US → en）：
 
 ```ts
 app.use(
@@ -128,7 +128,7 @@ app.use(
 )
 ```
 
-### Cookie Configuration
+### Cookie 配置
 
 ```ts
 app.use(
@@ -136,18 +136,18 @@ app.use(
     lookupCookie: 'app_lang',
     caches: ['cookie'],
     cookieOptions: {
-      path: '/', // Cookie path
-      sameSite: 'Lax', // Cookie same-site policy
-      secure: true, // Only send over HTTPS
-      maxAge: 86400 * 365, // 1 year expiration
-      httpOnly: true, // Not accessible via JavaScript
-      domain: '.example.com', // Optional: specific domain
+      path: '/', // Cookie 路径
+      sameSite: 'Lax', // Cookie same-site 策略
+      secure: true, // 仅通过 HTTPS 发送
+      maxAge: 86400 * 365, // 1 年过期
+      httpOnly: true, // 无法通过 JavaScript 访问
+      domain: '.example.com', // 可选：特定域
     },
   })
 )
 ```
 
-To disable cookie caching:
+要禁用 cookie 缓存：
 
 ```ts
 languageDetector({
@@ -155,78 +155,78 @@ languageDetector({
 })
 ```
 
-### Debugging
+### 调试
 
-Log detection steps:
+记录检测步骤：
 
 ```ts
 languageDetector({
-  debug: true, // Shows: "Detected from querystring: ar"
+  debug: true, // 显示："Detected from querystring: ar"
 })
 ```
 
-## Options Reference
+## 选项参考
 
-### Basic Options
+### 基本选项
 
-| Option               | Type             | Default                               | Required | Description            |
+| 选项 | 类型 | 默认值 | 必需 | 描述 |
 | :------------------- | :--------------- | :------------------------------------ | :------- | :--------------------- |
-| `supportedLanguages` | `string[]`       | `['en']`                              | Yes      | Allowed language codes |
-| `fallbackLanguage`   | `string`         | `'en'`                                | Yes      | Default language       |
-| `order`              | `DetectorType[]` | `['querystring', 'cookie', 'header']` | No       | Detection sequence     |
-| `debug`              | `boolean`        | `false`                               | No       | Enable logging         |
+| `supportedLanguages` | `string[]` | `['en']` | 是 | 允许的语言代码 |
+| `fallbackLanguage` | `string` | `'en'` | 是 | 默认语言 |
+| `order` | `DetectorType[]` | `['querystring', 'cookie', 'header']` | 否 | 检测顺序 |
+| `debug` | `boolean` | `false` | 否 | 启用日志记录 |
 
-### Detection Options
+### 检测选项
 
-| Option                | Type     | Default             | Description          |
+| 选项 | 类型 | 默认值 | 描述 |
 | :-------------------- | :------- | :------------------ | :------------------- |
-| `lookupQueryString`   | `string` | `'lang'`            | Query parameter name |
-| `lookupCookie`        | `string` | `'language'`        | Cookie name          |
-| `lookupFromHeaderKey` | `string` | `'accept-language'` | Header name          |
-| `lookupFromPathIndex` | `number` | `0`                 | Path segment index   |
+| `lookupQueryString` | `string` | `'lang'` | 查询参数名称 |
+| `lookupCookie` | `string` | `'language'` | Cookie 名称 |
+| `lookupFromHeaderKey` | `string` | `'accept-language'` | Header 名称 |
+| `lookupFromPathIndex` | `number` | `0` | 路径段索引 |
 
-### Cookie Options
+### Cookie 选项
 
-| Option                   | Type                          | Default      | Description          |
+| 选项 | 类型 | 默认值 | 描述 |
 | :----------------------- | :---------------------------- | :----------- | :------------------- |
-| `caches`                 | `CacheType[] \| false`        | `['cookie']` | Cache settings       |
-| `cookieOptions.path`     | `string`                      | `'/'`        | Cookie path          |
-| `cookieOptions.sameSite` | `'Strict' \| 'Lax' \| 'None'` | `'Strict'`   | SameSite policy      |
-| `cookieOptions.secure`   | `boolean`                     | `true`       | HTTPS only           |
-| `cookieOptions.maxAge`   | `number`                      | `31536000`   | Expiration (seconds) |
-| `cookieOptions.httpOnly` | `boolean`                     | `true`       | JS accessibility     |
-| `cookieOptions.domain`   | `string`                      | `undefined`  | Cookie domain        |
+| `caches` | `CacheType[] \| false` | `['cookie']` | 缓存设置 |
+| `cookieOptions.path` | `string` | `'/'` | Cookie 路径 |
+| `cookieOptions.sameSite` | `'Strict' \| 'Lax' \| 'None'` | `'Strict'` | SameSite 策略 |
+| `cookieOptions.secure` | `boolean` | `true` | 仅 HTTPS |
+| `cookieOptions.maxAge` | `number` | `31536000` | 过期时间（秒） |
+| `cookieOptions.httpOnly` | `boolean` | `true` | JS 可访问性 |
+| `cookieOptions.domain` | `string` | `undefined` | Cookie 域 |
 
-### Advanced Options
+### 高级选项
 
-| Option                    | Type                       | Default     | Description               |
+| 选项 | 类型 | 默认值 | 描述 |
 | :------------------------ | :------------------------- | :---------- | :------------------------ |
-| `ignoreCase`              | `boolean`                  | `true`      | Case-insensitive matching |
-| `convertDetectedLanguage` | `(lang: string) => string` | `undefined` | Language code transformer |
+| `ignoreCase` | `boolean` | `true` | 不区分大小写匹配 |
+| `convertDetectedLanguage` | `(lang: string) => string` | `undefined` | 语言代码转换器 |
 
-## Validation & Error Handling
+## 验证和错误处理
 
-- `fallbackLanguage` must be in `supportedLanguages` (throws error during setup)
-- `lookupFromPathIndex` must be ≥ 0
-- Invalid configurations throw errors during middleware initialization
-- Failed detections silently use `fallbackLanguage`
+- `fallbackLanguage` 必须在 `supportedLanguages` 中（设置时抛出错误）
+- `lookupFromPathIndex` 必须 ≥ 0
+- 无效配置在中间件初始化期间抛出错误
+- 失败的检测静默使用 `fallbackLanguage`
 
-## Common Recipes
+## 常见示例
 
-### Path-Based Routing
+### 基于路径的路由
 
 ```ts
 app.get('/:lang/home', (c) => {
-  const lang = c.get('language') // 'en', 'ar', etc.
+  const lang = c.get('language') // 'en', 'ar' 等
   return c.json({ message: getLocalizedContent(lang) })
 })
 ```
 
-### Multiple Supported Languages
+### 多种支持的语言
 
 ```ts
 languageDetector({
   supportedLanguages: ['en', 'en-GB', 'ar', 'ar-EG'],
-  convertDetectedLanguage: (lang) => lang.replace('_', '-'), // Normalize
+  convertDetectedLanguage: (lang) => lang.replace('_', '-'), // 规范化
 })
 ```

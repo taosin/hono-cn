@@ -1,18 +1,18 @@
-# Basic Auth Middleware
+# Basic Auth 中间件
 
-This middleware can apply Basic authentication to a specified path.
-Implementing Basic authentication with Cloudflare Workers or other platforms is more complicated than it seems, but with this middleware, it's a breeze.
+此中间件可以对指定路径应用 Basic 认证。
+使用 Cloudflare Workers 或其他平台实现 Basic 认证比看起来更复杂，但使用此中间件，这很容易。
 
-For more information about how the Basic auth scheme works under the hood, see the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#basic_authentication_scheme).
+有关 Basic 认证方案如何在底层工作的更多信息，请参阅 [MDN 文档](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#basic_authentication_scheme)。
 
-## Import
+## 导入
 
 ```ts
 import { Hono } from 'hono'
 import { basicAuth } from 'hono/basic-auth'
 ```
 
-## Usage
+## 用法
 
 ```ts
 const app = new Hono()
@@ -30,7 +30,7 @@ app.get('/auth/page', (c) => {
 })
 ```
 
-To restrict to a specific route + method:
+要限制为特定路由 + 方法：
 
 ```ts
 const app = new Hono()
@@ -48,7 +48,7 @@ app.delete(
 )
 ```
 
-If you want to verify the user by yourself, specify the `verifyUser` option; returning `true` means it is accepted.
+如果你想自己验证用户，请指定 `verifyUser` 选项；返回 `true` 表示接受。
 
 ```ts
 const app = new Hono()
@@ -64,36 +64,36 @@ app.use(
 )
 ```
 
-## Options
+## 选项
 
 ### <Badge type="danger" text="required" /> username: `string`
 
-The username of the user who is authenticating.
+正在认证的用户的用户名。
 
 ### <Badge type="danger" text="required" /> password: `string`
 
-The password value for the provided username to authenticate against.
+用于认证的所提供用户名的密码值。
 
 ### <Badge type="info" text="optional" /> realm: `string`
 
-The domain name of the realm, as part of the returned WWW-Authenticate challenge header. The default is `"Secure Area"`.  
-See more: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/WWW-Authenticate#directives
+领域的域名，作为返回的 WWW-Authenticate 挑战 header 的一部分。默认值为 `"Secure Area"`。
+请参阅更多：https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/WWW-Authenticate#directives
 
 ### <Badge type="info" text="optional" /> hashFunction: `Function`
 
-A function to handle hashing for safe comparison of passwords.
+用于处理密码安全比较的散列函数。
 
 ### <Badge type="info" text="optional" /> verifyUser: `(username: string, password: string, c: Context) => boolean | Promise<boolean>`
 
-The function to verify the user.
+用于验证用户的函数。
 
 ### <Badge type="info" text="optional" /> invalidUserMessage: `string | object | MessageFunction`
 
-`MessageFunction` is `(c: Context) => string | object | Promise<string | object>`. The custom message if the user is invalid.
+`MessageFunction` 是 `(c: Context) => string | object | Promise<string | object>`。如果用户无效，则为自定义消息。
 
 ### <Badge type="info" text="optional" /> onAuthSuccess: `(c: Context, username: string) => void | Promise<void>`
 
-A callback function invoked after successful authentication. This allows you to set context variables or perform side effects without re-parsing the Authorization header.
+成功认证后调用的回调函数。这允许你设置上下文变量或执行副作用，而无需重新解析 Authorization header。
 
 ```ts
 app.use(
@@ -113,15 +113,15 @@ app.get('/auth/page', (c) => {
 })
 ```
 
-## More Options
+## 更多选项
 
 ### <Badge type="info" text="optional" /> ...users: `{ username: string, password: string }[]`
 
-## Recipes
+## 示例
 
-### Defining Multiple Users
+### 定义多个用户
 
-This middleware also allows you to pass arbitrary parameters containing objects defining more `username` and `password` pairs.
+此中间件还允许你传递包含定义更多 `username` 和 `password` 对的对象的任意参数。
 
 ```ts
 app.use(
@@ -130,24 +130,24 @@ app.use(
     {
       username: 'hono',
       password: 'acoolproject',
-      // Define other params in the first object
+      // 在第一个对象中定义其他参数
       realm: 'www.example.com',
     },
     {
       username: 'hono-admin',
       password: 'super-secure',
-      // Cannot redefine other params here
+      // 不能在此处重新定义其他参数
     },
     {
       username: 'hono-user-1',
       password: 'a-secret',
-      // Or here
+      // 或在此处
     }
   )
 )
 ```
 
-Or less hardcoded:
+或更少硬编码：
 
 ```ts
 import { users } from '../config/users'

@@ -1,33 +1,33 @@
-# JWK Auth Middleware
+# JWK Auth 中间件
 
-The JWK Auth Middleware authenticates requests by verifying tokens using JWK (JSON Web Key). It checks for an `Authorization` header and other configured sources, such as cookies, if specified. It validates tokens using the provided `keys`, retrieves keys from `jwks_uri` if specified, and supports token extraction from cookies if the `cookie` option is set.
+JWK Auth 中间件通过使用 JWK (JSON Web Key) 验证令牌来认证请求。它检查 `Authorization` header 和其他配置来源（如 cookies，如果指定）。它使用提供的 `keys` 验证令牌，如果指定则从 `jwks_uri` 获取 keys，并且如果设置了 `cookie` 选项则支持从 cookies 提取令牌。
 
-## What this middleware validates
+## 此中间件验证的内容
 
-For each token, `jwk()`:
+对于每个令牌，`jwk()`：
 
-- Parses and validates the JWT header format.
-- Requires a `kid` header and finds a matching key by `kid`.
-- Rejects symmetric algorithms (`HS256`, `HS384`, `HS512`).
-- Requires the header `alg` to be included in the configured `alg` allowlist.
-- If a matched JWK has an `alg` field, requires it to match the JWT header `alg`.
-- Verifies the token signature with the matched key.
-- By default, validates time-based claims: `nbf`, `exp`, and `iat`.
+- 解析并验证 JWT header 格式。
+- 需要 `kid` header 并通过 `kid` 查找匹配的 key。
+- 拒绝对称算法（`HS256`、`HS384`、`HS512`）。
+- 要求 header `alg` 包含在配置的 `alg` 允许列表中。
+- 如果匹配的 JWK 有 `alg` 字段，则要求它与 JWT header `alg` 匹配。
+- 使用匹配的 key 验证令牌签名。
+- 默认情况下，验证基于时间的 claims：`nbf`、`exp` 和 `iat`。
 
-Optional claim validation can be configured with the `verification` option:
+可以使用 `verification` 选项配置可选的 claim 验证：
 
-- `iss`: validates issuer when provided.
-- `aud`: validates audience when provided.
+- `iss`：提供时验证颁发者。
+- `aud`：提供时验证受众。
 
-If you need additional token checks beyond the above (for example, custom application-level authorization rules), add them in your own middleware after `jwk()`.
+如果你需要在上述之外进行额外的令牌检查（例如，自定义应用程序级授权规则），请在 `jwk()` 之后在自己的中间件中添加它们。
 
 :::info
-The Authorization header sent from the client must have a specified scheme.
+从客户端发送的 Authorization header 必须具有指定的方案。
 
-Example: `Bearer my.token.value` or `Basic my.token.value`
+示例：`Bearer my.token.value` 或 `Basic my.token.value`
 :::
 
-## Import
+## 导入
 
 ```ts
 import { Hono } from 'hono'
@@ -35,7 +35,7 @@ import { jwk } from 'hono/jwk'
 import { verifyWithJwks } from 'hono/jwt'
 ```
 
-## Usage
+## 用法
 
 ```ts
 const app = new Hono()
@@ -53,7 +53,7 @@ app.get('/auth/page', (c) => {
 })
 ```
 
-Get payload:
+获取 payload：
 
 ```ts
 const app = new Hono()
@@ -68,11 +68,11 @@ app.use(
 
 app.get('/auth/page', (c) => {
   const payload = c.get('jwtPayload')
-  return c.json(payload) // eg: { "sub": "1234567890", "name": "John Doe", "iat": 1516239022 }
+  return c.json(payload) // 例如：{ "sub": "1234567890", "name": "John Doe", "iat": 1516239022 }
 })
 ```
 
-Anonymous access:
+匿名访问：
 
 ```ts
 const app = new Hono()
@@ -93,9 +93,9 @@ app.get('/auth/page', (c) => {
 })
 ```
 
-## Using `verifyWithJwks` outside of middleware
+## 在中间件之外使用 `verifyWithJwks`
 
-The `verifyWithJwks` utility function can be used to verify JWT tokens outside of Hono's middleware context, such as in SvelteKit SSR pages or other server-side environments:
+`verifyWithJwks` 实用函数可用于在 Hono 中间件上下文之外验证 JWT 令牌，例如在 SvelteKit SSR 页面或其他服务器端环境中：
 
 ```ts
 const id_payload = await verifyWithJwks(
@@ -110,11 +110,11 @@ const id_payload = await verifyWithJwks(
 )
 ```
 
-## Configuring JWKS fetch request options
+## 配置 JWKS fetch 请求选项
 
-To configure how JWKS is retrieved from `jwks_uri`, pass fetch request options as the second argument of `jwk()`.
+要配置如何从 `jwks_uri` 检索 JWKS，请将 fetch 请求选项作为 `jwk()` 的第二个参数传递。
 
-This argument is `RequestInit` and is used only for the JWKS fetch request.
+此参数是 `RequestInit`，仅用于 JWKS fetch 请求。
 
 ```ts
 const app = new Hono()
@@ -135,38 +135,38 @@ app.use(
 )
 ```
 
-## Options
+## 选项
 
 ### <Badge type="danger" text="required" /> alg: `AsymmetricAlgorithm[]`
 
-An array of allowed asymmetric algorithms used for token verification.
+用于令牌验证的允许非对称算法数组。
 
-Available types are `RS256` | `RS384` | `RS512` | `PS256` | `PS384` | `PS512` | `ES256` | `ES384` | `ES512` | `EdDSA`.
+可用类型为 `RS256` | `RS384` | `RS512` | `PS256` | `PS384` | `PS512` | `ES256` | `ES384` | `ES512` | `EdDSA`。
 
 ### <Badge type="info" text="optional" /> keys: `HonoJsonWebKey[] | (c: Context) => Promise<HonoJsonWebKey[]>`
 
-The values of your public keys, or a function that returns them. The function receives the Context object.
+你的公钥的值，或返回它们的函数。函数接收 Context 对象。
 
 ### <Badge type="info" text="optional" /> jwks_uri: `string` | `(c: Context) => Promise<string>`
 
-If this value is set, attempt to fetch JWKs from this URI, expecting a JSON response with `keys`, which are added to the provided `keys` option. You can also pass a callback function to dynamically determine the JWKS URI using the Context.
+如果设置了此值，则尝试从此 URI 获取 JWKs，期望具有 `keys` 的 JSON 响应，并将其添加到提供的 `keys` 选项。你也可以传递回调函数来使用 Context 动态确定 JWKS URI。
 
 ### <Badge type="info" text="optional" /> allow_anon: `boolean`
 
-If this value is set to `true`, requests without a valid token will be allowed to pass through the middleware. Use `c.get('jwtPayload')` to check if the request is authenticated. The default is `false`.
+如果将此值设置为 `true`，则没有有效令牌的请求将被允许通过中间件。使用 `c.get('jwtPayload')` 检查请求是否已认证。默认值为 `false`。
 
 ### <Badge type="info" text="optional" /> cookie: `string`
 
-If this value is set, then the value is retrieved from the cookie header using that value as a key, which is then validated as a token.
+如果设置了此值，则使用该值作为键从 cookie header 中检索值，然后将其验证为令牌。
 
 ### <Badge type="info" text="optional" /> headerName: `string`
 
-The name of the header to look for the JWT token. The default is `Authorization`.
+用于查找 JWT 令牌的 header 名称。默认值为 `Authorization`。
 
 ### <Badge type="info" text="optional" /> verification: `VerifyOptions`
 
-Configure claim validation behavior in addition to signature verification:
+配置除签名验证之外的 claim 验证行为：
 
-- `iss`: expected issuer.
-- `aud`: expected audience.
-- `exp`, `nbf`, `iat`: enabled by default, can be disabled if needed.
+- `iss`：预期颁发者。
+- `aud`：预期受众。
+- `exp`、`nbf`、`iat`：默认启用，如果需要可以禁用。

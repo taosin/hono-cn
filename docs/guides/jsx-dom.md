@@ -1,14 +1,14 @@
 # Client Components
 
-`hono/jsx` supports not only server side but also client side. This means that it is possible to create an interactive UI that runs in the browser. We call it Client Components or `hono/jsx/dom`.
+`hono/jsx` 不仅支持服务器端，也支持客户端。这意味着可以创建在浏览器中运行的交互式 UI。我们称之为 Client Components 或 `hono/jsx/dom`。
 
-It is fast and very small. The counter program in `hono/jsx/dom` is only 2.8KB with Brotli compression, but 47.8KB for React.
+它非常快且非常小。`hono/jsx/dom` 中的计数器程序使用 Brotli 压缩后仅为 2.8KB，而 React 为 47.8KB。
 
-This section introduces Client Components-specific features.
+本节介绍 Client Components 特定的功能。
 
 ## Counter example
 
-Here is an example of a simple counter, the same code works as in React.
+这是一个简单计数器的示例，与 React 中的代码相同。
 
 ```tsx
 import { useState } from 'hono/jsx'
@@ -40,17 +40,17 @@ render(<App />, root)
 
 ## `render()`
 
-You can use `render()` to insert JSX components within a specified HTML element.
+你可以使用 `render()` 在指定的 HTML 元素内插入 JSX 组件。
 
 ```tsx
 render(<Component />, container)
 ```
 
-You can see full example code here: [Counter example](https://github.com/honojs/examples/tree/main/hono-vite-jsx).
+你可以在此处查看完整示例代码：[Counter example](https://github.com/honojs/examples/tree/main/hono-vite-jsx)。
 
 ## Hooks compatible with React
 
-hono/jsx/dom has Hooks that are compatible or partially compatible with React. You can learn about these APIs by looking at [the React documentation](https://react.dev/reference/react/hooks).
+hono/jsx/dom 具有与 React 兼容或部分兼容的 Hooks。你可以通过查看 [React documentation](https://react.dev/reference/react/hooks) 了解这些 APIs。
 
 - `useState()`
 - `useEffect()`
@@ -79,11 +79,11 @@ hono/jsx/dom has Hooks that are compatible or partially compatible with React. Y
 
 ## `startViewTransition()` family
 
-The `startViewTransition()` family contains original hooks and functions to handle [View Transitions API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API) easily. The followings are examples of how to use them.
+`startViewTransition()` 系列包含原始的 hooks 和函数，用于轻松处理 [View Transitions API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API)。以下是如何使用它们的示例。
 
 ### 1. An easiest example
 
-You can write a transition using the `document.startViewTransition` shortly with the `startViewTransition()`.
+你可以使用 `startViewTransition()` 简短地编写使用 `document.startViewTransition` 的过渡。
 
 ```tsx
 import { useState, startViewTransition } from 'hono/jsx'
@@ -126,9 +126,9 @@ export default function App() {
 
 ### 2. Using `viewTransition()` with `keyframes()`
 
-The `viewTransition()` function allows you to get the unique `view-transition-name`.
+`viewTransition()` 函数允许你获取唯一的 `view-transition-name`。
 
-You can use it with the `keyframes()`, The `::view-transition-old()` is converted to `::view-transition-old(${uniqueName))`.
+你可以将其与 `keyframes()` 一起使用，`::view-transition-old()` 转换为 `::view-transition-old(${uniqueName))`。
 
 ```tsx
 import { useState, startViewTransition } from 'hono/jsx'
@@ -192,12 +192,12 @@ export default function App() {
 
 ### 3. Using `useViewTransition`
 
-If you want to change the style only during the animation. You can use `useViewTransition()`. This hook returns the `[boolean, (callback: () => void) => void]`, and they are the `isUpdating` flag and the `startViewTransition()` function.
+如果你想在动画期间仅更改样式。你可以使用 `useViewTransition()`。这个 hook 返回 `[boolean, (callback: () => void) => void]`，它们是 `isUpdating` 标志和 `startViewTransition()` 函数。
 
-When this hook is used, the Component is evaluated at the following two times.
+当使用这个 hook 时，Component 会在以下两次进行评估。
 
-- Inside the callback of a call to `startViewTransition()`.
-- When [the `finish` promise becomes fulfilled](https://developer.mozilla.org/en-US/docs/Web/API/ViewTransition/finished)
+- 在调用 `startViewTransition()` 的回调内。
+- 当 [the `finish` promise becomes fulfilled](https://developer.mozilla.org/en-US/docs/Web/API/ViewTransition/finished)
 
 ```tsx
 import { useState, useViewTransition } from 'hono/jsx'
@@ -272,7 +272,7 @@ export default function App() {
 
 ## The `hono/jsx/dom` runtime
 
-There is a small JSX Runtime for Client Components. Using this will result in smaller bundled results than using `hono/jsx`. Specify `hono/jsx/dom` in `tsconfig.json`. For Deno, modify the deno.json.
+有一个用于 Client Components 的小型 JSX Runtime。使用这将比使用 `hono/jsx` 产生更小的捆绑结果。在 `tsconfig.json` 中指定 `hono/jsx/dom`。对于 Deno，修改 deno.json。
 
 ```json
 {
@@ -283,7 +283,7 @@ There is a small JSX Runtime for Client Components. Using this will result in sm
 }
 ```
 
-Alternatively, you can specify `hono/jsx/dom` in the esbuild transform options in `vite.config.ts`.
+或者，你可以在 `vite.config.ts` 中的 esbuild 转换选项中指定 `hono/jsx/dom`。
 
 ```ts
 import { defineConfig } from 'vite'

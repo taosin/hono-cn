@@ -1,9 +1,9 @@
-# Third-party Middleware
+# 第三方中间件
 
-Third-party middleware refers to middleware not bundled within the Hono package.
-Most of this middleware leverages external libraries.
+第三方中间件是指未捆绑在 Hono 包中的中间件。
+大多数此中间件利用外部库。
 
-### Authentication
+### 认证
 
 - [Auth.js(Next Auth)](https://github.com/honojs/middleware/tree/main/packages/auth-js)
 - [Casbin](https://github.com/honojs/middleware/tree/main/packages/casbin)
@@ -15,7 +15,7 @@ Most of this middleware leverages external libraries.
 - [Verify RSA JWT (JWKS)](https://github.com/wataruoguchi/verify-rsa-jwt-cloudflare-worker)
 - [Stytch Auth](https://github.com/honojs/middleware/tree/main/packages/stytch-auth)
 
-### Validators
+### 验证器
 
 - [Ajv Validator](https://github.com/honojs/middleware/tree/main/packages/ajv-validator)
 - [ArkType Validator](https://github.com/honojs/middleware/tree/main/packages/arktype-validator)
@@ -38,47 +38,47 @@ Most of this middleware leverages external libraries.
 - [Hono OpenAPI](https://github.com/rhinobase/hono-openapi)
 - [hono-zod-openapi](https://github.com/paolostyle/hono-zod-openapi)
 
-### Development
+### 开发
 
 - [ESLint Config](https://github.com/honojs/middleware/tree/main/packages/eslint-config)
 - [SSG Plugin Essential](https://github.com/honojs/middleware/tree/main/packages/ssg-plugins-essential)
 
-### Monitoring / Tracing
+### 监控/追踪
 
-- [Apitally (API monitoring & analytics)](https://docs.apitally.io/frameworks/hono)
+- [Apitally (API 监控和分析)](https://docs.apitally.io/frameworks/hono)
 - [Highlight.io](https://www.highlight.io/docs/getting-started/backend-sdk/js/hono)
-- [LogTape (Logging)](https://logtape.org/manual/integrations#hono)
+- [LogTape (日志记录)](https://logtape.org/manual/integrations#hono)
 - [OpenTelemetry](https://github.com/honojs/middleware/tree/main/packages/otel)
 - [Prometheus Metrics](https://github.com/honojs/middleware/tree/main/packages/prometheus)
 - [Sentry](https://github.com/honojs/middleware/tree/main/packages/sentry)
 - [Pino logger](https://github.com/maou-shonen/hono-pino)
 
-### Server / Adapter
+### 服务器/适配器
 
 - [GraphQL Server](https://github.com/honojs/middleware/tree/main/packages/graphql-server)
 - [Node WebSocket Helper](https://github.com/honojs/middleware/tree/main/packages/node-ws)
 - [tRPC Server](https://github.com/honojs/middleware/tree/main/packages/trpc-server)
 
-### Transpiler
+### 转译器
 
 - [Bun Transpiler](https://github.com/honojs/middleware/tree/main/packages/bun-transpiler)
 - [esbuild Transpiler](https://github.com/honojs/middleware/tree/main/packages/esbuild-transpiler)
 
-### UI / Renderer
+### UI / 渲染器
 
 - [Qwik City](https://github.com/honojs/middleware/tree/main/packages/qwik-city)
 - [React Compatibility](https://github.com/honojs/middleware/tree/main/packages/react-compat)
 - [React Renderer](https://github.com/honojs/middleware/tree/main/packages/react-renderer)
 
-### Queue / Job Processing
+### 队列/作业处理
 
 - [GlideMQ (Message Queue REST API + SSE)](https://github.com/avifenesh/glidemq-hono)
 
-### Internationalization
+### 国际化
 
 - [Intlayer i18n](https://intlayer.org/doc/environment/hono)
 
-### Utilities
+### 实用工具
 
 - [Bun Compress](https://github.com/honojs/middleware/tree/main/packages/bun-compress)
 - [Cap Checkpoint](https://capjs.js.org/guide/middleware/hono.html)
@@ -88,7 +88,7 @@ Most of this middleware leverages external libraries.
 - [Hono Problem Details (RFC 9457)](https://github.com/paveg/hono-problem-details)
 - [Hono Simple DI](https://github.com/maou-shonen/hono-simple-DI)
 - [Idempotency (Stripe-style idempotency keys)](https://github.com/paveg/hono-idempotency)
-- [idempot-js](https://js.idempot.dev) - spec-compliant middleware, supporting multiple storage backends (redis, postgres, mysql, sqlite)
+- [idempot-js](https://js.idempot.dev) - 符合规范的中间件，支持多种存储后端（redis、postgres、mysql、sqlite）
 - [jsonv-ts (Validator, OpenAPI, MCP)](https://github.com/dswbx/jsonv-ts)
 - [MCP](https://github.com/honojs/middleware/tree/main/packages/mcp)
 - [RONIN (Database)](https://github.com/ronin-co/hono-client)

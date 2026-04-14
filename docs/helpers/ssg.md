@@ -1,12 +1,12 @@
-# SSG Helper
+# SSG 辅助工具
 
-SSG Helper generates a static site from your Hono application. It will retrieve the contents of registered routes and save them as static files.
+SSG 辅助工具从你的 Hono 应用程序生成静态站点。它将检索已注册路由的内容并将它们保存为静态文件。
 
-## Usage
+## 用法
 
-### Manual
+### 手动
 
-If you have a simple Hono application like the following:
+如果你有以下简单的 Hono 应用程序：
 
 ```tsx
 // index.tsx
@@ -39,7 +39,7 @@ app.get('/about', (c) => {
 export default app
 ```
 
-For Node.js, create a build script like this:
+对于 Node.js，创建如下构建脚本：
 
 ```ts
 // build.ts
@@ -50,28 +50,28 @@ import fs from 'fs/promises'
 toSSG(app, fs)
 ```
 
-By executing the script, the files will be output as follows:
+执行脚本后，文件将输出如下：
 
 ```bash
 ls ./static
 about.html  index.html
 ```
 
-### Vite Plugin
+### Vite 插件
 
-Using the `@hono/vite-ssg` Vite Plugin, you can easily handle the process.
+使用 `@hono/vite-ssg` Vite 插件，你可以轻松处理此过程。
 
-For more details, see here:
+有关更多详细信息，请参阅：
 
 https://github.com/honojs/vite-plugins/tree/main/packages/ssg
 
 ## toSSG
 
-`toSSG` is the main function for generating static sites, taking an application and a filesystem module as arguments. It is based on the following:
+`toSSG` 是生成静态站点的主要函数，接受应用程序和文件系统模块作为参数。它基于以下内容：
 
-### Input
+### 输入
 
-The arguments for toSSG are specified in ToSSGInterface.
+toSSG 的参数在 ToSSGInterface 中指定。
 
 ```ts
 export interface ToSSGInterface {
@@ -83,8 +83,8 @@ export interface ToSSGInterface {
 }
 ```
 
-- `app` specifies `new Hono()` with registered routes.
-- `fs` specifies the following object, assuming `node:fs/promise`.
+- `app` 指定已注册路由的 `new Hono()`。
+- `fs` 指定以下对象，假设 `node:fs/promise`。
 
 ```ts
 export interface FileSystemModule {
@@ -96,29 +96,29 @@ export interface FileSystemModule {
 }
 ```
 
-### Using adapters for Deno and Bun
+### 使用 Deno 和 Bun 的适配器
 
-If you want to use SSG on Deno or Bun, a `toSSG` function is provided for each file system.
+如果你想在 Deno 或 Bun 上使用 SSG，则为每个文件系统提供了 `toSSG` 函数。
 
-For Deno:
+对于 Deno：
 
 ```ts
 import { toSSG } from 'hono/deno'
 
-toSSG(app) // The second argument is an option typed `ToSSGOptions`.
+toSSG(app) // 第二个参数是类型为 `ToSSGOptions` 的选项。
 ```
 
-For Bun:
+对于 Bun：
 
 ```ts
 import { toSSG } from 'hono/bun'
 
-toSSG(app) // The second argument is an option typed `ToSSGOptions`.
+toSSG(app) // 第二个参数是类型为 `ToSSGOptions` 的选项。
 ```
 
-### Options
+### 选项
 
-Options are specified in the ToSSGOptions interface.
+选项在 ToSSGOptions 接口中指定。
 
 ```ts
 export interface ToSSGOptions {
@@ -129,14 +129,14 @@ export interface ToSSGOptions {
 }
 ```
 
-- `dir` is the output destination for Static files. The default value is `./static`.
-- `concurrency` is the concurrent number of files to be generated at the same time. The default value is `2`.
-- `extensionMap` is a map containing the `Content-Type` as a key and the string of the extension as a value. This is used to determine the file extension of the output file.
-- `plugins` is an array of SSG plugins that extend the functionality of the static site generation process.
+- `dir` 是静态文件的输出目的地。默认值为 `./static`。
+- `concurrency` 是同时生成的文件并发数。默认值为 `2`。
+- `extensionMap` 是包含 `Content-Type` 作为键和扩展名字符串作为值的映射。这用于确定输出文件的文件扩展名。
+- `plugins` 是扩展静态站点生成过程功能的 SSG 插件数组。
 
-### Output
+### 输出
 
-`toSSG` returns the result in the following Result type.
+`toSSG` 返回以下 Result 类型的结果。
 
 ```ts
 export interface ToSSGResult {
@@ -146,26 +146,26 @@ export interface ToSSGResult {
 }
 ```
 
-## Generate File
+## 生成文件
 
-### Route and Filename
+### 路由和文件名
 
-The following rules apply to the registered route information and the generated file name. The default `./static` behaves as follows:
+以下规则适用于已注册的路由信息和生成的文件名。默认 `./static` 的行为如下：
 
 - `/` -> `./static/index.html`
 - `/path` -> `./static/path.html`
 - `/path/` -> `./static/path/index.html`
 
-### File Extension
+### 文件扩展名
 
-The file extension depends on the `Content-Type` returned by each route. For example, responses from `c.html` are saved as `.html`.
+文件扩展名取决于每个路由返回的 `Content-Type`。例如，来自 `c.html` 的响应保存为 `.html`。
 
-If you want to customize the file extensions, set the `extensionMap` option.
+如果你想自定义文件扩展名，请设置 `extensionMap` 选项。
 
 ```ts
 import { toSSG, defaultExtensionMap } from 'hono/ssg'
 
-// Save `application/x-html` content with `.html`
+// 将 `application/x-html` 内容保存为 `.html`
 toSSG(app, fs, {
   extensionMap: {
     'application/x-html': 'html',
@@ -174,25 +174,25 @@ toSSG(app, fs, {
 })
 ```
 
-Note that paths ending with a slash are saved as index.ext regardless of the extension.
+请注意，以斜杠结尾的路径无论扩展名如何都保存为 index.ext。
 
 ```ts
-// save to ./static/html/index.html
+// 保存到 ./static/html/index.html
 app.get('/html/', (c) => c.html('html'))
 
-// save to ./static/text/index.txt
+// 保存到 ./static/text/index.txt
 app.get('/text/', (c) => c.text('text'))
 ```
 
-## Middleware
+## 中间件
 
-Introducing built-in middleware that supports SSG.
+介绍支持 SSG 的内置中间件。
 
 ### ssgParams
 
-You can use an API like `generateStaticParams` of Next.js.
+你可以使用类似于 Next.js 的 `generateStaticParams` 的 API。
 
-Example:
+示例：
 
 ```ts
 app.get(
@@ -217,7 +217,7 @@ app.get(
 
 ### isSSGContext
 
-`isSSGContext` is a helper function that returns `true` if the current application is running within the SSG context triggered by `toSSG`.
+`isSSGContext` 是一个辅助函数，如果当前应用程序在由 `toSSG` 触发的 SSG 上下文中运行，则返回 `true`。
 
 ```ts
 app.get('/page', (c) => {
@@ -230,7 +230,7 @@ app.get('/page', (c) => {
 
 ### disableSSG
 
-Routes with the `disableSSG` middleware set are excluded from static file generation by `toSSG`.
+设置了 `disableSSG` 中间件的路由将从 `toSSG` 的静态文件生成中排除。
 
 ```ts
 app.get('/api', disableSSG(), (c) => c.text('an-api'))
@@ -238,31 +238,31 @@ app.get('/api', disableSSG(), (c) => c.text('an-api'))
 
 ### onlySSG
 
-Routes with the `onlySSG` middleware set will be overridden by `c.notFound()` after `toSSG` execution.
+设置了 `onlySSG` 中间件的路由将在 `toSSG` 执行后被 `c.notFound()` 覆盖。
 
 ```ts
 app.get('/static-page', onlySSG(), (c) => c.html(<h1>Welcome to my site</h1>))
 ```
 
-## Plugins
+## 插件
 
-Plugins allow you to extend the functionality of the static site generation process. They use hooks to customize the generation process at different stages.
+插件允许你扩展静态站点生成过程的功能。它们使用 hooks 在生成过程的不同阶段进行自定义。
 
-### Default Plugin
+### 默认插件
 
-By default, `toSSG` uses `defaultPlugin` which skips non-200 status responses (like redirects, errors, or 404s). This prevents generating files for unsuccessful responses.
+默认情况下，`toSSG` 使用 `defaultPlugin`，它跳过非 200 状态响应（如重定向、错误或 404）。这可以防止为不成功的响应生成文件。
 
 ```ts
 import { toSSG, defaultPlugin } from 'hono/ssg'
 
-// defaultPlugin is automatically applied when no plugins specified
+// 未指定插件时自动应用 defaultPlugin
 toSSG(app, fs)
 
-// Equivalent to:
+// 等价于：
 toSSG(app, fs, { plugins: [defaultPlugin] })
 ```
 
-If you specify custom plugins, `defaultPlugin` is **not** automatically included. To keep the default behavior while adding custom plugins, explicitly include it:
+如果你指定了自定义插件，`defaultPlugin` **不**会自动包含。要在添加自定义插件的同时保持默认行为，请显式包含它：
 
 ```ts
 toSSG(app, fs, {
@@ -270,9 +270,9 @@ toSSG(app, fs, {
 })
 ```
 
-### Redirect Plugin
+### 重定向插件
 
-The `redirectPlugin` generates HTML redirect pages for routes that return HTTP redirect responses (301, 302, 303, 307, 308). The generated HTML includes a `<meta http-equiv="refresh">` tag and a canonical link.
+`redirectPlugin` 为返回 HTTP 重定向响应（301、302、303、307、308）的路由生成 HTML 重定向页面。生成的 HTML 包含 `<meta http-equiv="refresh">` 标签和规范链接。
 
 ```ts
 import { toSSG, redirectPlugin, defaultPlugin } from 'hono/ssg'
@@ -282,20 +282,20 @@ toSSG(app, fs, {
 })
 ```
 
-For example, if your app has:
+例如，如果你的应用程序有：
 
 ```ts
 app.get('/old', (c) => c.redirect('/new'))
 ```
 
-The `redirectPlugin` will generate an HTML file at `/old.html` with a meta refresh redirect to `/new`.
+`redirectPlugin` 将在 `/old.html` 生成一个包含 meta refresh 重定向到 `/new` 的 HTML 文件。
 
 > [!NOTE]
-> When used with `defaultPlugin`, place `redirectPlugin` **before** `defaultPlugin`. Since `defaultPlugin` skips non-200 responses, placing it first would prevent `redirectPlugin` from processing redirect responses.
+> 与 `defaultPlugin` 一起使用时，将 `redirectPlugin` 放在 `defaultPlugin` **之前**。由于 `defaultPlugin` 跳过非 200 响应，先放置它会阻止 `redirectPlugin` 处理重定向响应。
 
-### Hook Types
+### Hook 类型
 
-Plugins can use the following hooks to customize the `toSSG` process:
+插件可以使用以下 hooks 来自定义 `toSSG` 过程：
 
 ```ts
 export type BeforeRequestHook = (req: Request) => Request | false
@@ -305,11 +305,11 @@ export type AfterGenerateHook = (
 ) => void | Promise<void>
 ```
 
-- **BeforeRequestHook**: Called before processing each request. Return `false` to skip the route.
-- **AfterResponseHook**: Called after receiving each response. Return `false` to skip file generation.
-- **AfterGenerateHook**: Called after the entire generation process completes.
+- **BeforeRequestHook**：在处理每个请求之前调用。返回 `false` 跳过路由。
+- **AfterResponseHook**：在接收每个响应之后调用。返回 `false` 跳过文件生成。
+- **AfterGenerateHook**：在整个生成过程完成后调用。
 
-### Plugin Interface
+### 插件接口
 
 ```ts
 export interface SSGPlugin {
@@ -319,9 +319,9 @@ export interface SSGPlugin {
 }
 ```
 
-### Basic Plugin Examples
+### 基本插件示例
 
-Filter only GET requests:
+仅过滤 GET 请求：
 
 ```ts
 const getOnlyPlugin: SSGPlugin = {
@@ -334,7 +334,7 @@ const getOnlyPlugin: SSGPlugin = {
 }
 ```
 
-Filter by status code:
+按状态码过滤：
 
 ```ts
 const statusFilterPlugin: SSGPlugin = {
@@ -347,7 +347,7 @@ const statusFilterPlugin: SSGPlugin = {
 }
 ```
 
-Log generated files:
+记录生成的文件：
 
 ```ts
 const logFilesPlugin: SSGPlugin = {
@@ -359,9 +359,9 @@ const logFilesPlugin: SSGPlugin = {
 }
 ```
 
-### Advanced Plugin Example
+### 高级插件示例
 
-Here's an example of creating a sitemap plugin that generates a `sitemap.xml` file:
+这是一个创建生成 `sitemap.xml` 文件的 sitemap 插件的示例：
 
 ```ts
 // plugins.ts
@@ -388,7 +388,7 @@ ${urls.map((url) => `<url><loc>${url}</loc></url>`).join('\n')}
 }
 ```
 
-Applying plugins:
+应用插件：
 
 ```ts
 import app from './index'

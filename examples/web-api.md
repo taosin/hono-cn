@@ -1,6 +1,6 @@
 # Web API
 
-This is an example of making Web API on Cloudflare Workers and other runtimes.
+这是在 Cloudflare Workers 和其他运行时上创建 Web API 的示例。
 
 ```ts
 import { Hono } from 'hono'
@@ -55,6 +55,6 @@ app.route('/api', api)
 export default app
 ```
 
-## See also
+## 另请参阅
 
 - [Hono Examples - basic](https://github.com/honojs/examples/tree/main/basic)

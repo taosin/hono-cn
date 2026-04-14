@@ -1,8 +1,8 @@
-# Factory Helper
+# Factory 辅助工具
 
-The Factory Helper provides useful functions for creating Hono's components such as Middleware. Sometimes it's difficult to set the proper TypeScript types, but this helper facilitates that.
+Factory 辅助工具提供有用的函数来创建 Hono 的组件（如中间件）。有时设置适当的 TypeScript 类型很困难，但这个辅助工具简化了这一点。
 
-## Import
+## 导入
 
 ```ts
 import { Hono } from 'hono'
@@ -11,7 +11,7 @@ import { createFactory, createMiddleware } from 'hono/factory'
 
 ## `createFactory()`
 
-`createFactory()` will create an instance of the Factory class.
+`createFactory()` 将创建 Factory 类的实例。
 
 ```ts
 import { createFactory } from 'hono/factory'
@@ -19,7 +19,7 @@ import { createFactory } from 'hono/factory'
 const factory = createFactory()
 ```
 
-You can pass your Env types as Generics:
+你可以将 Env 类型作为泛型传递：
 
 ```ts
 type Env = {
@@ -31,24 +31,24 @@ type Env = {
 const factory = createFactory<Env>()
 ```
 
-### Options
+### 选项
 
 ### <Badge type="info" text="optional" /> defaultAppOptions: `HonoOptions`
 
-The default options to pass to the Hono application created by `createApp()`.
+传递给 `createApp()` 创建的 Hono 应用程序的默认选项。
 
 ```ts
 const factory = createFactory({
   defaultAppOptions: { strict: false },
 })
 
-const app = factory.createApp() // `strict: false` is applied
+const app = factory.createApp() // 应用了 `strict: false`
 ```
 
 ## `createMiddleware()`
 
-`createMiddleware()` is shortcut of `factory.createMiddleware()`.
-This function will create your custom middleware.
+`createMiddleware()` 是 `factory.createMiddleware()` 的快捷方式。
+此函数将创建你的自定义中间件。
 
 ```ts
 const messageMiddleware = createMiddleware(async (c, next) => {
@@ -57,7 +57,7 @@ const messageMiddleware = createMiddleware(async (c, next) => {
 })
 ```
 
-Tip: If you want to get an argument like `message`, you can create it as a function like the following.
+提示：如果你想获取像 `message` 这样的参数，你可以按以下方式创建为函数。
 
 ```ts
 const messageMiddleware = (message: string) => {
@@ -72,7 +72,7 @@ app.use(messageMiddleware('Good evening!'))
 
 ## `factory.createHandlers()`
 
-`createHandlers()` helps to define handlers in a different place than `app.get('/')`.
+`createHandlers()` 有助于在与 `app.get('/')` 不同的地方定义 handlers。
 
 ```ts
 import { createFactory } from 'hono/factory'
@@ -96,9 +96,9 @@ app.get('/api', ...handlers)
 
 ## `factory.createApp()`
 
-`createApp()` helps to create an instance of Hono with the proper types. If you use this method with `createFactory()`, you can avoid redundancy in the definition of the `Env` type.
+`createApp()` 有助于创建具有适当类型的 Hono 实例。如果你将此方法与 `createFactory()` 一起使用，你可以避免 `Env` 类型定义中的冗余。
 
-If your application is like this, you have to set the `Env` in two places:
+如果你的应用程序是这样的，你必须在两个地方设置 `Env`：
 
 ```ts
 import { createMiddleware } from 'hono/factory'
@@ -109,10 +109,10 @@ type Env = {
   }
 }
 
-// 1. Set the `Env` to `new Hono()`
+// 1. 将 `Env` 设置为 `new Hono()`
 const app = new Hono<Env>()
 
-// 2. Set the `Env` to `createMiddleware()`
+// 2. 将 `Env` 设置为 `createMiddleware()`
 const mw = createMiddleware<Env>(async (c, next) => {
   await next()
 })
@@ -120,25 +120,25 @@ const mw = createMiddleware<Env>(async (c, next) => {
 app.use(mw)
 ```
 
-By using `createFactory()` and `createApp()`, you can set the `Env` only in one place.
+通过使用 `createFactory()` 和 `createApp()`，你可以只在一个地方设置 `Env`。
 
 ```ts
 import { createFactory } from 'hono/factory'
 
 // ...
 
-// Set the `Env` to `createFactory()`
+// 将 `Env` 设置为 `createFactory()`
 const factory = createFactory<Env>()
 
 const app = factory.createApp()
 
-// factory also has `createMiddleware()`
+// factory 也有 `createMiddleware()`
 const mw = factory.createMiddleware(async (c, next) => {
   await next()
 })
 ```
 
-`createFactory()` can receive the `initApp` option to initialize an `app` created by `createApp()`. The following is an example that uses the option.
+`createFactory()` 可以接收 `initApp` 选项来初始化由 `createApp()` 创建的 `app`。以下是使用该选项的示例。
 
 ```ts
 // factory-with-db.ts

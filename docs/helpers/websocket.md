@@ -1,9 +1,9 @@
-# WebSocket Helper
+# WebSocket 辅助工具
 
-WebSocket Helper is a helper for server-side WebSockets in Hono applications.
-Currently Cloudflare Workers / Pages, Deno, and Bun adapters are available.
+WebSocket 辅助工具是用于 Hono 应用程序中服务器端 WebSocket 的辅助工具。
+目前 Cloudflare Workers / Pages、Deno 和 Bun 适配器可用。
 
-## Import
+## 导入
 
 ::: code-group
 
@@ -31,11 +31,11 @@ export default {
 
 :::
 
-If you use Node.js, you can use [@hono/node-ws](https://github.com/honojs/middleware/tree/main/packages/node-ws).
+如果你使用 Node.js，你可以使用 [@hono/node-ws](https://github.com/honojs/middleware/tree/main/packages/node-ws)。
 
 ## `upgradeWebSocket()`
 
-`upgradeWebSocket()` returns a handler for handling WebSocket.
+`upgradeWebSocket()` 返回用于处理 WebSocket 的 handler。
 
 ```ts
 const app = new Hono()
@@ -56,24 +56,24 @@ app.get(
 )
 ```
 
-Available events:
+可用的事件：
 
-- `onOpen` - Currently, Cloudflare Workers does not support it.
+- `onOpen` - 目前，Cloudflare Workers 不支持。
 - `onMessage`
 - `onClose`
 - `onError`
 
 ::: warning
 
-If you use middleware that modifies headers (e.g., applying CORS) on a route that uses WebSocket Helper, you may encounter an error saying you can't modify immutable headers. This is because `upgradeWebSocket()` also changes headers internally.
+如果你在具有 WebSocket 辅助工具的路由上使用修改 headers 的中间件（例如，应用 CORS），你可能会遇到错误，说你无法修改不可变的 headers。这是因为 `upgradeWebSocket()` 也在内部更改 headers。
 
-Therefore, please be cautious if you are using WebSocket Helper and middleware at the same time.
+因此，如果你同时使用 WebSocket 辅助工具和中间件，请小心。
 
 :::
 
-## RPC-mode
+## RPC 模式
 
-Handlers defined with WebSocket Helper support RPC mode.
+使用 WebSocket 辅助工具定义的 handlers 支持 RPC 模式。
 
 ```ts
 // server.ts
@@ -88,14 +88,14 @@ export type WebSocketApp = typeof wsApp
 
 // client.ts
 const client = hc<WebSocketApp>('http://localhost:8787')
-const socket = client.ws.$ws() // A WebSocket object for a client
+const socket = client.ws.$ws() // 客户端的 WebSocket 对象
 ```
 
-## Examples
+## 示例
 
-See the examples using WebSocket Helper.
+请参阅使用 WebSocket 辅助工具的示例。
 
-### Server and Client
+### 服务器和客户端
 
 ```ts
 // server.ts

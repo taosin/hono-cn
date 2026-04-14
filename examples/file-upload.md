@@ -1,8 +1,8 @@
-# File Upload
+# 文件上传
 
-You can upload files with `multipart/form-data`. Uploaded fields are available via `c.req.parseBody()`.
+你可以使用 `multipart/form-data` 上传文件。上传的字段可通过 `c.req.parseBody()` 获取。
 
-## Basic example
+## 基本示例
 
 ```ts
 import { Hono } from 'hono'
@@ -25,7 +25,7 @@ app.post('/upload', async (c) => {
 })
 ```
 
-## Limit upload size
+## 限制上传大小
 
 ```ts
 import { Hono } from 'hono'
@@ -54,7 +54,7 @@ app.post(
 )
 ```
 
-## Multiple files
+## 多个文件
 
 ```ts
 import { Hono } from 'hono'
@@ -86,12 +86,12 @@ app.post('/upload', async (c) => {
 })
 ```
 
-## Validate before persisting
+## 在持久化之前验证
 
-Before writing uploaded files to disk or forwarding them to another service, validate that the expected fields exist and check metadata such as filename, MIME type, and size.
+在将上传的文件写入磁盘或转发到其他服务之前，验证预期的字段是否存在，并检查元数据（如文件名、MIME 类型和大小）。
 
-## See also
+## 另请参阅
 
 - [API - HonoRequest - parseBody](/docs/api/request#parsebody)
-- [Body Limit Middleware](/docs/middleware/builtin/body-limit)
-- [Validation](/docs/guides/validation)
+- [Body Limit 中间件](/docs/middleware/builtin/body-limit)
+- [验证](/docs/guides/validation)

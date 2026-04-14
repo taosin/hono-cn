@@ -1,14 +1,14 @@
-# Pretty JSON Middleware
+# Pretty JSON 中间件
 
-Pretty JSON middleware enables "_JSON pretty print_" for JSON response body.
-Adding `?pretty` to url query param, the JSON strings are prettified.
+Pretty JSON 中间件为 JSON 响应体启用"_JSON 美化打印_"。
+将 `?pretty` 添加到 URL 查询参数，JSON 字符串将被美化。
 
 ```js
 // GET /
 {"project":{"name":"Hono","repository":"https://github.com/honojs/hono"}}
 ```
 
-will be:
+将变为：
 
 ```js
 // GET /?pretty
@@ -20,34 +20,34 @@ will be:
 }
 ```
 
-## Import
+## 导入
 
 ```ts
 import { Hono } from 'hono'
 import { prettyJSON } from 'hono/pretty-json'
 ```
 
-## Usage
+## 用法
 
 ```ts
 const app = new Hono()
 
-app.use(prettyJSON()) // With options: prettyJSON({ space: 4 })
+app.use(prettyJSON()) // 带有选项：prettyJSON({ space: 4 })
 app.get('/', (c) => {
   return c.json({ message: 'Hono!' })
 })
 ```
 
-## Options
+## 选项
 
 ### <Badge type="info" text="optional" /> space: `number`
 
-Number of spaces for indentation. The default is `2`.
+缩进的空格数。默认值为 `2`。
 
 ### <Badge type="info" text="optional" /> query: `string`
 
-The name of the query string for applying. The default is `pretty`.
+应用的查询字符串名称。默认值为 `pretty`。
 
 ### <Badge type="info" text="optional" /> force: `boolean`
 
-When set to `true`, JSON responses are always prettified regardless of the query parameter. The default is `false`.
+设置为 `true` 时，JSON 响应将始终美化，无论查询参数如何。默认值为 `false`。

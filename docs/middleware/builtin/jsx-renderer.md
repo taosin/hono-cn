@@ -1,15 +1,15 @@
-# JSX Renderer Middleware
+# JSX Renderer 中间件
 
-JSX Renderer Middleware allows you to set up the layout when rendering JSX with the `c.render()` function, without the need for using `c.setRenderer()`. Additionally, it enables access to instances of Context within components through the use of `useRequestContext()`.
+JSX Renderer 中间件允许你在使用 `c.render()` 函数渲染 JSX 时设置布局，而无需使用 `c.setRenderer()`。此外，它通过使用 `useRequestContext()` 使得可以在组件中访问 Context 实例。
 
-## Import
+## 导入
 
 ```ts
 import { Hono } from 'hono'
 import { jsxRenderer, useRequestContext } from 'hono/jsx-renderer'
 ```
 
-## Usage
+## 用法
 
 ```jsx
 const app = new Hono()
@@ -33,11 +33,11 @@ app.get('/page/about', (c) => {
 })
 ```
 
-## Options
+## 选项
 
 ### <Badge type="info" text="optional" /> docType: `boolean` | `string`
 
-If you do not want to add a DOCTYPE at the beginning of the HTML, set the `docType` option to `false`.
+如果你不想在 HTML 开头添加 DOCTYPE，请将 `docType` 选项设置为 `false`。
 
 ```tsx
 app.use(
@@ -55,7 +55,7 @@ app.use(
 )
 ```
 
-And you can specify the DOCTYPE.
+你可以指定 DOCTYPE。
 
 ```tsx
 app.use(
@@ -78,11 +78,11 @@ app.use(
 
 ### <Badge type="info" text="optional" /> stream: `boolean` | `Record<string, string>`
 
-If you set it to `true` or provide a Record value, it will be rendered as a streaming response.
+如果你将其设置为 `true` 或提供 Record 值，它将渲染为流式响应。
 
 ```tsx
 const AsyncComponent = async () => {
-  await new Promise((r) => setTimeout(r, 1000)) // sleep 1s
+  await new Promise((r) => setTimeout(r, 1000)) // 睡眠 1 秒
   return <div>Hi!</div>
 }
 
@@ -112,7 +112,7 @@ app.get('/', (c) => {
 })
 ```
 
-If `true` is set, the following headers are added:
+如果设置了 `true`，则添加以下 headers：
 
 ```ts
 {
@@ -122,11 +122,11 @@ If `true` is set, the following headers are added:
 }
 ```
 
-You can customize the header values by specifying the Record values.
+你可以通过指定 Record 值来自定义 header 值。
 
-### Function-based Options
+### 基于函数的选项
 
-You can pass a function that receives a `Context` object instead of a static options object. This allows you to dynamically set options based on the request context, such as environment variables or request parameters.
+你可以传递接收 `Context` 对象的函数而不是静态选项对象。这允许你根据请求上下文（如环境变量或请求参数）动态设置选项。
 
 ```tsx
 app.use(
@@ -146,7 +146,7 @@ app.use(
 )
 ```
 
-As a concrete example, you can use this to disable streaming when generating static sites (SSG) with `<Suspense>`, by using the [`isSSGContext`](/docs/helpers/ssg#isssgcontext) helper:
+作为一个具体示例，你可以使用它在使用 `<Suspense>` 生成静态站点 (SSG) 时禁用流式，通过使用 [`isSSGContext`](/docs/helpers/ssg#isssgcontext) 辅助工具：
 
 ```tsx
 app.use(
@@ -168,9 +168,9 @@ app.use(
 )
 ```
 
-## Nested Layouts
+## 嵌套布局
 
-The `Layout` component enables nesting the layouts.
+`Layout` 组件支持嵌套布局。
 
 ```tsx
 app.use(
@@ -200,7 +200,7 @@ app.route('/blog', blog)
 
 ## `useRequestContext()`
 
-`useRequestContext()` returns an instance of Context.
+`useRequestContext()` 返回 Context 实例。
 
 ```tsx
 import { useRequestContext, jsxRenderer } from 'hono/jsx-renderer'
@@ -223,7 +223,7 @@ app.get('/page/info', (c) => {
 ```
 
 ::: warning
-You can't use `useRequestContext()` with the Deno's `precompile` JSX option. Use the `react-jsx`:
+你不能在 Deno 的 `precompile` JSX 选项中使用 `useRequestContext()`。请使用 `react-jsx`：
 
 ```json
    "compilerOptions": {
@@ -236,9 +236,9 @@ You can't use `useRequestContext()` with the Deno's `precompile` JSX option. Use
 
 :::
 
-## Extending `ContextRenderer`
+## 扩展 `ContextRenderer`
 
-By defining `ContextRenderer` as shown below, you can pass additional content to the renderer. This is handy, for instance, when you want to change the contents of the head tag depending on the page.
+通过按以下方式定义 `ContextRenderer`，你可以将附加内容传递给渲染器。例如，当你想根据页面更改 head 标签的内容时，这很方便。
 
 ```tsx
 declare module 'hono' {

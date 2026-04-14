@@ -1,6 +1,6 @@
 # Adapter Helper
 
-The Adapter Helper provides a seamless way to interact with various platforms through a unified interface.
+Adapter Helper 提供了一种通过统一接口与各种平台交互的无缝方式。
 
 ## Import
 
@@ -11,20 +11,20 @@ import { env, getRuntimeKey } from 'hono/adapter'
 
 ## `env()`
 
-The `env()` function facilitates retrieving environment variables across different runtimes, extending beyond just Cloudflare Workers' Bindings. The value that can be retrieved with `env(c)` may be different for each runtimes.
+`env()` 函数有助于在不同的 runtimes 中检索环境变量，不仅限于 Cloudflare Workers 的 Bindings。可以使用 `env(c)` 检索的值因 runtimes 而异。
 
 ```ts
 import { env } from 'hono/adapter'
 
 app.get('/env', (c) => {
-  // NAME is process.env.NAME on Node.js or Bun
-  // NAME is the value written in `wrangler.toml` on Cloudflare
+  // NAME 在 Node.js 或 Bun 上是 process.env.NAME
+  // NAME 在 Cloudflare 上是 `wrangler.toml` 中写入的值
   const { NAME } = env<{ NAME: string }>(c)
   return c.text(NAME)
 })
 ```
 
-Supported Runtimes, Serverless Platforms and Cloud Services:
+支持的 Runtimes、Serverless Platforms 和 Cloud Services：
 
 - Cloudflare Workers
   - `wrangler.toml`
@@ -42,15 +42,15 @@ Supported Runtimes, Serverless Platforms and Cloud Services:
 - AWS Lambda
   - [Environment Variables on AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/samples-blank.html#samples-blank-architecture)
 - Lambda@Edge\
-  Environment Variables on Lambda are [not supported](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/add-origin-custom-headers.html) by Lambda@Edge, you need to use [Lamdba@Edge event](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-event-structure.html) as an alternative.
+  Lambda 上的环境变量 [不支持](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/add-origin-custom-headers.html) Lambda@Edge，你需要使用 [Lambda@Edge event](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-event-structure.html) 作为替代。
 - Fastly Compute\
-  On Fastly Compute, you can use the ConfigStore to manage user-defined data.
+  在 Fastly Compute 上，你可以使用 ConfigStore 来管理用户定义的数据。
 - Netlify\
-  On Netlify, you can use the [Netlify Contexts](https://docs.netlify.com/site-deploys/overview/#deploy-contexts) to manage user-defined data.
+  在 Netlify 上，你可以使用 [Netlify Contexts](https://docs.netlify.com/site-deploys/overview/#deploy-contexts) 来管理用户定义的数据。
 
 ### Specify the runtime
 
-You can specify the runtime to get environment variables by passing the runtime key as the second argument.
+你可以通过将 runtime key 作为第二个参数传递来指定 runtime 以获取环境变量。
 
 ```ts
 app.get('/env', (c) => {
@@ -61,7 +61,7 @@ app.get('/env', (c) => {
 
 ## `getRuntimeKey()`
 
-The `getRuntimeKey()` function returns the identifier of the current runtime.
+`getRuntimeKey()` 函数返回当前 runtime 的标识符。
 
 ```ts
 app.get('/', (c) => {
@@ -76,7 +76,7 @@ app.get('/', (c) => {
 
 ### Available Runtimes Keys
 
-Here are the available runtimes keys, unavailable runtime key runtimes may be supported and labeled as `other`, with some being inspired by [WinterCG's Runtime Keys](https://runtime-keys.proposal.wintercg.org/):
+以下是可用的 runtimes keys，不可用的 runtime key runtimes 可能被支持并标记为 `other`，其中一些受到 [WinterCG's Runtime Keys](https://runtime-keys.proposal.wintercg.org/) 的启发：
 
 - `workerd` - Cloudflare Workers
 - `deno`
@@ -84,4 +84,4 @@ Here are the available runtimes keys, unavailable runtime key runtimes may be su
 - `node`
 - `edge-light` - Vercel Edge Functions
 - `fastly` - Fastly Compute
-- `other` - Other unknown runtimes keys
+- `other` - 其他未知 runtimes keys

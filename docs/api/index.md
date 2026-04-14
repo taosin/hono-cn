@@ -1,12 +1,10 @@
 # API
 
-Hono's API is simple.
-Just composed by extended objects from Web Standards.
-So, you can understand it well quickly.
+Hono 的 API 很简单。仅由 Web Standards 的扩展对象组成。因此，你可以很快地理解它。
 
-In this section, we introduce API of Hono like below.
+在本节中，我们介绍 Hono 的 API，如下所示：
 
-- Hono object
-- About routing
-- Context object
-- About middleware
+- Hono 对象
+- 关于路由
+- Context 对象
+- 关于中间件

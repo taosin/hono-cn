@@ -1,22 +1,22 @@
 # Google Cloud Run
 
-[Google Cloud Run](https://cloud.google.com/run) is a serverless platform built by Google Cloud. You can run your code in response to events and Google automatically manages the underlying compute resources for you.
+[Google Cloud Run](https://cloud.google.com/run) 是由 Google Cloud 构建的无服务器平台。你可以在响应事件时运行代码，Google 会自动为你管理底层计算资源。
 
-Google Cloud Run uses containers to run your service. This means you can use any runtime you like (E.g., Deno or Bun) by providing a Dockerfile. If no Dockerfile is provided Google Cloud Run will use the default Node.js buildpack.
+Google Cloud Run 使用容器来运行你的服务。这意味着你可以通过提供 Dockerfile 来使用任何你喜欢的 runtime（例如，Deno 或 Bun）。如果未提供 Dockerfile，Google Cloud Run 将使用默认的 Node.js buildpack。
 
-This guide assumes you already have a Google Cloud account and a billing account.
+本指南假设你已经拥有 Google Cloud 账户和计费账户。
 
 ## 1. Install the CLI
 
-When working with Google Cloud Platform, it is easiest to work with the [gcloud CLI](https://cloud.google.com/sdk/docs/install).
+当使用 Google Cloud Platform 时，使用 [gcloud CLI](https://cloud.google.com/sdk/docs/install) 最简单。
 
-For example, on MacOS using Homebrew:
+例如，在 MacOS 上使用 Homebrew：
 
 ```sh
 brew install --cask gcloud-cli
 ```
 
-Authenticate with the CLI.
+使用 CLI 进行身份验证。
 
 ```sh
 gcloud auth login
@@ -24,13 +24,13 @@ gcloud auth login
 
 ## 2. Project setup
 
-Create a project. Accept the auto-generated project ID at the prompt.
+创建项目。在提示符处接受自动生成的项目 ID。
 
 ```sh
 gcloud projects create --set-as-default --name="my app"
 ```
 
-Create environment variables for your project ID and project number for easy reuse. It may take ~30 seconds before the project successfully returns with the `gcloud projects list` command.
+为你的项目 ID 和项目号创建环境变量以便于重复使用。可能需要约 30 秒后项目才能通过 `gcloud projects list` 命令成功返回。
 
 ```sh
 PROJECT_ID=$(gcloud projects list \
@@ -44,27 +44,27 @@ PROJECT_NUMBER=$(gcloud projects list \
 echo $PROJECT_ID $PROJECT_NUMBER
 ```
 
-Find your billing account ID.
+查找你的计费账户 ID。
 
 ```sh
 gcloud billing accounts list
 ```
 
-Add your billing account from the prior command to the project.
+将之前命令中的计费账户添加到项目。
 
 ```sh
 gcloud billing projects link $PROJECT_ID \
     --billing-account=[billing_account_id]
 ```
 
-Enable the required APIs.
+启用所需的 APIs。
 
 ```sh
 gcloud services enable run.googleapis.com \
     cloudbuild.googleapis.com
 ```
 
-Update the service account permissions to have access to Cloud Build.
+更新服务账户权限以访问 Cloud Build。
 
 ```sh
 gcloud projects add-iam-policy-binding $PROJECT_ID \
@@ -74,20 +74,20 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 ## 3. Hello World
 
-Start your project with "create-hono" command. Select `nodejs`.
+使用 "create-hono" 命令开始你的项目。选择 `nodejs`。
 
 ```sh
 npm create hono@latest my-app
 ```
 
-Move to `my-app` and install the dependencies.
+进入 `my-app` 并安装依赖项。
 
 ```sh
 cd my-app
 npm i
 ```
 
-Update the port in `src/index.ts` to be `8080`.
+将 `src/index.ts` 中的端口更新为 `8080`。
 
 <!-- prettier-ignore -->
 ```ts
@@ -109,7 +109,7 @@ serve({
 })
 ```
 
-Run the development server locally. Then, access http://localhost:8080 in your Web browser.
+在本地运行开发服务器。然后在 Web 浏览器中访问 http://localhost:8080。
 
 ```sh
 npm run dev
@@ -117,7 +117,7 @@ npm run dev
 
 ## 4. Deploy
 
-Start the deployment and follow the interactive prompts (E.g., select a region).
+开始部署并按照交互式提示操作（例如，选择一个 region）。
 
 ```sh
 gcloud run deploy my-app --source . --allow-unauthenticated
@@ -125,9 +125,9 @@ gcloud run deploy my-app --source . --allow-unauthenticated
 
 ## Changing runtimes
 
-If you want to deploy using Deno or Bun runtimes (or a customised Nodejs container), add a `Dockerfile` (and optionally `.dockerignore`) with your desired environment.
+如果你想使用 Deno 或 Bun runtimes（或定制的 Nodejs 容器）进行部署，添加一个 `Dockerfile`（可选 `.dockerignore`）与你所需的环境。
 
-For information on containerizing, please refer to:
+有关容器化的信息，请参考：
 
 - [Node.js](/docs/getting-started/nodejs#building-deployment)
 - [Bun](https://bun.com/guides/ecosystem/docker)

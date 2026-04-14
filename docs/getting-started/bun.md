@@ -1,24 +1,22 @@
 # Bun
 
-[Bun](https://bun.com) is another JavaScript runtime. It's not Node.js or Deno. Bun includes a transcompiler, we can write the code with TypeScript.
-Hono also works on Bun.
+[Bun](https://bun.com) 是另一个 JavaScript runtime。它不是 Node.js 或 Deno。Bun 包含一个转译器，我们可以用 TypeScript 编写代码。Hono 也可以在 Bun 上运行。
 
 ## 1. Install Bun
 
-To install `bun` command, follow the instruction in [the official web site](https://bun.com).
+要安装 `bun` 命令，请遵循 [官方网站](https://bun.com) 的说明。
 
 ## 2. Setup
 
 ### 2.1. Setup a new project
 
-A starter for Bun is available. Start your project with "bun create" command.
-Select `bun` template for this example.
+Bun 有一个 starter。使用 "bun create" 命令开始你的项目。为此示例选择 `bun` template。
 
 ```sh
 bun create hono@latest my-app
 ```
 
-Move into my-app and install the dependencies.
+进入 my-app 并安装依赖项。
 
 ```sh
 cd my-app
@@ -27,13 +25,13 @@ bun install
 
 ### 2.2. Setup an existing project
 
-On an existing Bun project, we only need to install `hono` dependencies on the project root directory via
+在现有的 Bun 项目中，我们只需要通过以下命令在项目根目录安装 `hono` 依赖项：
 
 ```sh
 bun add hono
 ```
 
-Then add the `dev` command to your existing `package.json`.
+然后将 `dev` 命令添加到现有的 `package.json` 中。
 
 ```json
 {
@@ -43,11 +41,11 @@ Then add the `dev` command to your existing `package.json`.
 }
 ```
 
-See the [Bun starter template](https://github.com/honojs/starter/tree/main/templates/bun) for a minimal example setup. This is the output of running `bun create hono@latest`.
+查看 [Bun starter template](https://github.com/honojs/starter/tree/main/templates/bun) 获取最小示例设置。这是运行 `bun create hono@latest` 的输出。
 
 ## 3. Hello World
 
-"Hello World" script is below. Almost the same as writing on other platforms.
+"Hello World" 脚本如下。几乎与在其他平台上编写相同。
 
 ```ts
 import { Hono } from 'hono'
@@ -58,21 +56,21 @@ app.get('/', (c) => c.text('Hello Bun!'))
 export default app
 ```
 
-If you are setting up Hono on an existing project, the `bun run dev` command expects the "Hello World" script to be placed in `src/index.tx`
+如果你在现有项目上设置 Hono，`bun run dev` 命令期望 "Hello World" 脚本放在 `src/index.tx` 中。
 
 ## 4. Run
 
-Run the command.
+运行命令。
 
 ```sh
 bun run dev
 ```
 
-Then, access `http://localhost:3000` in your browser.
+然后，在浏览器中访问 `http://localhost:3000`。
 
 ## Change port number
 
-You can specify the port number with exporting the `port`.
+你可以通过导出 `port` 来指定端口号。
 
 <!-- prettier-ignore -->
 ```ts
@@ -90,7 +88,7 @@ export default { // [!code ++]
 
 ## Serve static files
 
-To serve static files, use `serveStatic` which is imported from `hono/bun`.
+要提供静态文件，使用从 `hono/bun` 导入的 `serveStatic`。
 
 ```ts
 import { serveStatic } from 'hono/bun'
@@ -103,7 +101,7 @@ app.get('/', (c) => c.text('You can access: /static/hello.txt'))
 app.get('*', serveStatic({ path: './static/fallback.txt' }))
 ```
 
-For the above code, it will work well with the following directory structure.
+对于上面的代码，它将适用于以下目录结构。
 
 ```
 ./
@@ -120,7 +118,7 @@ For the above code, it will work well with the following directory structure.
 
 ### `rewriteRequestPath`
 
-If you want to map `http://localhost:3000/static/*` to `./statics`, you can use the `rewriteRequestPath` option:
+如果你想将 `http://localhost:3000/static/*` 映射到 `./statics`，可以使用 `rewriteRequestPath` 选项：
 
 ```ts
 app.get(
@@ -135,7 +133,7 @@ app.get(
 
 ### `mimes`
 
-You can add MIME types with `mimes`:
+你可以使用 `mimes` 添加 MIME 类型：
 
 ```ts
 app.get(
@@ -151,7 +149,7 @@ app.get(
 
 ### `onFound`
 
-You can specify handling when the requested file is found with `onFound`:
+你可以使用 `onFound` 指定找到请求文件时的处理：
 
 ```ts
 app.get(
@@ -167,7 +165,7 @@ app.get(
 
 ### `onNotFound`
 
-You can specify handling when the requested file is not found with `onNotFound`:
+你可以使用 `onNotFound` 指定未找到请求文件时的处理：
 
 ```ts
 app.get(
@@ -182,7 +180,7 @@ app.get(
 
 ### `precompressed`
 
-The `precompressed` option checks if files with extensions like `.br` or `.gz` are available and serves them based on the `Accept-Encoding` header. It prioritizes Brotli, then Zstd, and Gzip. If none are available, it serves the original file.
+`precompressed` 选项检查具有 `.br` 或 `.gz` 等扩展名的文件是否可用，并根据 `Accept-Encoding` header 提供它们。它优先考虑 Brotli，然后是 Zstd 和 Gzip。如果都不可用，则提供原始文件。
 
 ```ts
 app.get(
@@ -195,7 +193,7 @@ app.get(
 
 ## Testing
 
-You can use `bun:test` for testing on Bun.
+你可以在 Bun 上使用 `bun:test` 进行测试。
 
 ```ts
 import { describe, expect, it } from 'bun:test'
@@ -210,7 +208,7 @@ describe('My first test', () => {
 })
 ```
 
-Then, run the command.
+然后，运行命令。
 
 ```sh
 bun test index.test.ts

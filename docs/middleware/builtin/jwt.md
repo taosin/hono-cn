@@ -1,15 +1,15 @@
-# JWT Auth Middleware
+# JWT Auth 中间件
 
-The JWT Auth Middleware provides authentication by verifying the token with JWT.
-The middleware will check for an `Authorization` header if the `cookie` option is not set. You can customize the header name using the `headerName` option.
+JWT Auth 中间件通过验证 JWT 令牌提供认证。
+如果未设置 `cookie` 选项，中间件将检查 `Authorization` header。你可以使用 `headerName` 选项自定义 header 名称。
 
 :::info
-The Authorization header sent from the client must have a specified scheme.
+从客户端发送的 Authorization header 必须具有指定的方案。
 
-Example: `Bearer my.token.value` or `Basic my.token.value`
+示例：`Bearer my.token.value` 或 `Basic my.token.value`
 :::
 
-## Import
+## 导入
 
 ```ts
 import { Hono } from 'hono'
@@ -17,10 +17,10 @@ import { jwt } from 'hono/jwt'
 import type { JwtVariables } from 'hono/jwt'
 ```
 
-## Usage
+## 用法
 
 ```ts
-// Specify the variable types to infer the `c.get('jwtPayload')`:
+// 指定变量类型以推断 `c.get('jwtPayload')`：
 type Variables = JwtVariables
 
 const app = new Hono<{ Variables: Variables }>()
@@ -38,7 +38,7 @@ app.get('/auth/page', (c) => {
 })
 ```
 
-Get payload:
+获取 payload：
 
 ```ts
 const app = new Hono()
@@ -54,13 +54,13 @@ app.use(
 
 app.get('/auth/page', (c) => {
   const payload = c.get('jwtPayload')
-  return c.json(payload) // eg: { "sub": "1234567890", "name": "John Doe", "iat": 1516239022, "iss": "my-trusted-issuer" }
+  return c.json(payload) // 例如：{ "sub": "1234567890", "name": "John Doe", "iat": 1516239022, "iss": "my-trusted-issuer" }
 })
 ```
 
 ::: tip
 
-`jwt()` is just a middleware function. If you want to use an environment variable (eg: `c.env.JWT_SECRET`), you can use it as follows:
+`jwt()` 只是一个中间件函数。如果你想使用环境变量（例如 `c.env.JWT_SECRET`），你可以按以下方式使用：
 
 ```js
 app.use('/auth/*', (c, next) => {
@@ -74,25 +74,25 @@ app.use('/auth/*', (c, next) => {
 
 :::
 
-## Options
+## 选项
 
 ### <Badge type="danger" text="required" /> secret: `string`
 
-A value of your secret key.
+你的密钥的值。
 
 ### <Badge type="danger" text="required" /> alg: `string`
 
-An algorithm type that is used for verifying.
+用于验证的算法类型。
 
-Available types are `HS256` | `HS384` | `HS512` | `RS256` | `RS384` | `RS512` | `PS256` | `PS384` | `PS512` | `ES256` | `ES384` | `ES512` | `EdDSA`.
+可用类型为 `HS256` | `HS384` | `HS512` | `RS256` | `RS384` | `RS512` | `PS256` | `PS384` | `PS512` | `ES256` | `ES384` | `ES512` | `EdDSA`。
 
 ### <Badge type="info" text="optional" /> cookie: `string`
 
-If this value is set, then the value is retrieved from the cookie header using that value as a key, which is then validated as a token.
+如果设置了此值，则使用该值作为键从 cookie header 中检索值，然后将其验证为令牌。
 
 ### <Badge type="info" text="optional" /> headerName: `string`
 
-The name of the header to look for the JWT token. The default is `Authorization`.
+用于查找 JWT 令牌的 header 名称。默认值为 `Authorization`。
 
 ```ts
 app.use(
@@ -107,20 +107,20 @@ app.use(
 
 ### <Badge type="info" text="optional" /> verifyOptions: `VerifyOptions`
 
-Options controlling verification of the token.
+控制令牌验证的选项。
 
 #### <Badge type="info" text="optional" /> verifyOptions.iss: `string | RexExp`
 
-The expected issuer used for token verification. The `iss` claim will **not** be checked if this isn't set.
+用于令牌验证的预期颁发者。如果未设置此选项，则**不**检查 `iss` claim。
 
 #### <Badge type="info" text="optional" /> verifyOptions.nbf: `boolean`
 
-The `nbf` (not before) claim will be verified if present and this is set to `true`. The default is `true`.
+如果存在 `nbf`（not before）claim 并且设置为 `true`，则将验证它。默认值为 `true`。
 
 #### <Badge type="info" text="optional" /> verifyOptions.iat: `boolean`
 
-The `iat` (issued at) claim will be verified if present and this is set to `true`. The default is `true`.
+如果存在 `iat`（issued at）claim 并且设置为 `true`，则将验证它。默认值为 `true`。
 
 #### <Badge type="info" text="optional" /> verifyOptions.exp: `boolean`
 
-The `exp` (expiration time) claim will be verified if present and this is set to `true`. The default is `true`.
+如果存在 `exp`（expiration time）claim 并且设置为 `true`，则将验证它。默认值为 `true`。

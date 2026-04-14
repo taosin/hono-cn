@@ -1,8 +1,8 @@
 # Alibaba Cloud Function Compute
 
-[Alibaba Cloud Function Compute](https://www.alibabacloud.com/en/product/function-compute) is a fully managed, event-driven compute service. Function Compute allows you to focus on writing and uploading code without having to manage infrastructure such as servers.
+[Alibaba Cloud Function Compute](https://www.alibabacloud.com/en/product/function-compute) 是一个完全托管的事件驱动计算服务。Function Compute 允许你专注于编写和上传代码，而无需管理服务器等基础设施。
 
-This guide uses a third-party adapter [rwv/hono-alibaba-cloud-fc3-adapter](https://github.com/rwv/hono-alibaba-cloud-fc3-adapter) to run Hono on Alibaba Cloud Function Compute.
+本指南使用第三方适配器 [rwv/hono-alibaba-cloud-fc3-adapter](https://github.com/rwv/hono-alibaba-cloud-fc3-adapter) 在 Alibaba Cloud Function Compute 上运行 Hono。
 
 ## 1. Setup
 
@@ -48,7 +48,7 @@ touch src/index.ts
 
 ## 2. Hello World
 
-Edit `src/index.ts`.
+编辑 `src/index.ts`。
 
 ```ts
 import { Hono } from 'hono'
@@ -63,9 +63,9 @@ export const handler = handle(app)
 
 ## 3. Setup serverless-devs
 
-> [serverless-devs](https://github.com/Serverless-Devs/Serverless-Devs) is an open source and open serverless developer platform dedicated to providing developers with a powerful tool chain system. Through this platform, developers can not only experience multi cloud serverless products with one click and rapidly deploy serverless projects, but also manage projects in the whole life cycle of serverless applications, and combine serverless devs with other tools / platforms very simply and quickly to further improve the efficiency of R & D, operation and maintenance.
+> [serverless-devs](https://github.com/Serverless-Devs/Serverless-Devs) 是一个开源开放的无服务器开发者平台，致力于提供强大的工具链系统。通过该平台，开发者不仅可以一键体验多云无服务器产品、快速部署无服务器项目，还可以管理无服务器应用的整个生命周期，并将 serverless devs 与其他工具/平台非常简单快速地结合，进一步提高研发、运营和维护效率。
 
-Add the Alibaba Cloud AccessKeyID & AccessKeySecret
+添加 Alibaba Cloud AccessKeyID & AccessKeySecret
 
 ```sh
 npx s config add
@@ -73,7 +73,7 @@ npx s config add
 # Input your AccessKeyID & AccessKeySecret
 ```
 
-Edit `s.yaml`
+编辑 `s.yaml`
 
 ```yaml
 edition: 3.0.0
@@ -97,7 +97,7 @@ resources:
       timeout: 300
 ```
 
-Edit `scripts` section in `package.json`:
+编辑 `package.json` 中的 `scripts` 部分：
 
 ```json
 {
@@ -110,9 +110,9 @@ Edit `scripts` section in `package.json`:
 
 ## 4. Deploy
 
-Finally, run the command to deploy:
+最后，运行命令部署：
 
 ```sh
-npm run build # Compile the TypeScript code to JavaScript
-npm run deploy # Deploy the function to Alibaba Cloud Function Compute
+npm run build # 将 TypeScript 代码编译为 JavaScript
+npm run deploy # 将函数部署到 Alibaba Cloud Function Compute
 ```

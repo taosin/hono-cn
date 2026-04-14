@@ -1,6 +1,6 @@
 # Accepts Helper
 
-Accepts Helper helps to handle Accept headers in the Requests.
+Accepts Helper 有助于处理请求中的 Accept headers。
 
 ## Import
 
@@ -11,7 +11,7 @@ import { accepts } from 'hono/accepts'
 
 ## `accepts()`
 
-The `accepts()` function looks at the Accept header, such as Accept-Encoding and Accept-Language, and returns the proper value.
+`accepts()` 函数查看 Accept header（如 Accept-Encoding 和 Accept-Language）并返回适当的值。
 
 ```ts
 import { accepts } from 'hono/accepts'
@@ -28,7 +28,7 @@ app.get('/', (c) => {
 
 ### `AcceptHeader` type
 
-The definition of the `AcceptHeader` type is as follows.
+`AcceptHeader` 类型的定义如下。
 
 ```ts
 export type AcceptHeader =
@@ -45,16 +45,16 @@ export type AcceptHeader =
 
 ### <Badge type="danger" text="required" /> header: `AcceptHeader`
 
-The target accept header.
+目标 accept header。
 
 ### <Badge type="danger" text="required" /> supports: `string[]`
 
-The header values which your application supports.
+你的应用程序支持的头值。
 
 ### <Badge type="danger" text="required" /> default: `string`
 
-The default values.
+默认值。
 
 ### <Badge type="info" text="optional" /> match: `(accepts: Accept[], config: acceptsConfig) => string`
 
-The custom match function.
+自定义匹配函数。

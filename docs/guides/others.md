@@ -2,19 +2,19 @@
 
 ## Contributing
 
-Contributions Welcome! You can contribute in the following ways.
+欢迎贡献！你可以通过以下方式贡献。
 
-- Create an Issue - Propose a new feature. Report a bug.
-- Pull Request - Fix a bug and typo. Refactor the code.
-- Create third-party middleware - Instruct below.
-- Share - Share your thoughts on the Blog, X(Twitter), and others.
-- Make your application - Please try to use Hono.
+- 创建 Issue - 提议新功能。报告错误。
+- Pull Request - 修复错误和拼写错误。重构代码。
+- 创建第三方中间件 - 如下指导。
+- 分享 - 在博客、X(Twitter) 等分享你的想法。
+- 制作你的应用程序 - 请尝试使用 Hono。
 
-For more details, see [Contribution Guide](https://github.com/honojs/hono/blob/main/docs/CONTRIBUTING.md).
+更多详情，查看 [Contribution Guide](https://github.com/honojs/hono/blob/main/docs/CONTRIBUTING.md)。
 
 ## Sponsoring
 
-You can sponsor Hono authors via the GitHub sponsor program.
+你可以通过 GitHub sponsor 程序赞助 Hono 作者。
 
 - [Sponsor @yusukebe on GitHub Sponsors](https://github.com/sponsors/yusukebe)
 - [Sponsor @usualoma on GitHub Sponsors](https://github.com/sponsors/usualoma)

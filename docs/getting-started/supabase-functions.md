@@ -1,49 +1,49 @@
 # Supabase Edge Functions
 
-[Supabase](https://supabase.com/) is an open-source alternative to Firebase, offering a suite of tools similar to Firebase's capabilities, including database, authentication, storage, and now, serverless functions.
+[Supabase](https://supabase.com/) 是 Firebase 的开源替代方案，提供类似 Firebase 功能的一系列工具，包括数据库、身份验证、存储，现在还有无服务器函数。
 
-Supabase Edge Functions are server-side TypeScript functions that are distributed globally, running closer to your users for improved performance. These functions are developed using [Deno](https://deno.com/), which brings several benefits, including improved security and a modern JavaScript/TypeScript runtime.
+Supabase Edge Functions 是服务器端 TypeScript 函数，全球分布，在离用户更近的地方运行以提高性能。这些函数使用 [Deno](https://deno.com/) 开发，带来了多种好处，包括改进的安全性和现代 JavaScript/TypeScript runtime。
 
-Here's how you can get started with Supabase Edge Functions:
+以下是如何开始使用 Supabase Edge Functions：
 
 ## 1. Setup
 
 ### Prerequisites
 
-Before you begin, make sure you have the Supabase CLI installed. If you haven't installed it yet, follow the instructions in the [official documentation](https://supabase.com/docs/guides/cli/getting-started).
+在开始之前，请确保已安装 Supabase CLI。如果尚未安装，请按照 [官方文档](https://supabase.com/docs/guides/cli/getting-started) 中的说明操作。
 
 ### Creating a New Project
 
-1. Open your terminal or command prompt.
+1. 打开终端或命令提示符。
 
-2. Create a new Supabase project in a directory on your local machine by running:
+2. 通过运行以下命令在本地机器上的目录中创建新的 Supabase 项目：
 
 ```bash
 supabase init
 
 ```
 
-This command initializes a new Supabase project in the current directory.
+此命令在当前目录中初始化新的 Supabase 项目。
 
 ### Adding an Edge Function
 
-3. Inside your Supabase project, create a new Edge Function named `hello-world`:
+3. 在 Supabase 项目内，创建名为 `hello-world` 的新 Edge Function：
 
 ```bash
 supabase functions new hello-world
 
 ```
 
-This command creates a new Edge Function with the specified name in your project.
+此命令在项目中创建指定名称的新 Edge Function。
 
 ## 2. Hello World
 
-Edit the `hello-world` function by modifying the file `supabase/functions/hello-world/index.ts`:
+通过修改文件 `supabase/functions/hello-world/index.ts` 编辑 `hello-world` 函数：
 
 ```ts
 import { Hono } from 'jsr:@hono/hono'
 
-// change this to your function name
+// 更改为你的函数名称
 const functionName = 'hello-world'
 const app = new Hono().basePath(`/${functionName}`)
 
@@ -54,38 +54,38 @@ Deno.serve(app.fetch)
 
 ## 3. Run
 
-To run the function locally, use the following command:
+要本地运行函数，使用以下命令：
 
-1. Use the following command to serve the function:
+1. 使用以下命令提供函数：
 
 ```bash
-supabase start # start the supabase stack
-supabase functions serve --no-verify-jwt # start the Functions watcher
+supabase start # 启动 supabase stack
+supabase functions serve --no-verify-jwt # 启动 Functions 监视器
 ```
 
-The `--no-verify-jwt` flag allows you to bypass JWT verification during local development.
+`--no-verify-jwt` 标志允许你在本地开发期间绕过 JWT 验证。
 
-2. Make a GET request using cURL or Postman to `http://127.0.0.1:54321/functions/v1/hello-world/hello`:
+2. 使用 cURL 或 Postman 向 `http://127.0.0.1:54321/functions/v1/hello-world/hello` 发出 GET 请求：
 
 ```bash
 curl  --location  'http://127.0.0.1:54321/functions/v1/hello-world/hello'
 ```
 
-This request should return the text "Hello from hono-server!".
+此请求应返回文本 "Hello from hono-server!"。
 
 ## 4. Deploy
 
-You can deploy all of your Edge Functions in Supabase with a single command:
+你可以使用单个命令部署 Supabase 中的所有 Edge Functions：
 
 ```bash
 supabase functions deploy
 ```
 
-Alternatively, you can deploy individual Edge Functions by specifying the name of the function in the deploy command:
+或者，你可以通过在 deploy 命令中指定函数名称来部署单个 Edge Functions：
 
 ```bash
 supabase functions deploy hello-world
 
 ```
 
-For more deployment methods, visit the Supabase documentation on [Deploying to Production](https://supabase.com/docs/guides/functions/deploy).
+有关更多部署方法，请访问 Supabase 文档的 [Deploying to Production](https://supabase.com/docs/guides/functions/deploy)。

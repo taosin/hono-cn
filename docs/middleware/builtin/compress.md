@@ -1,19 +1,19 @@
-# Compress Middleware
+# Compress 中间件
 
-This middleware compresses the response body, according to `Accept-Encoding` request header.
+此中间件根据 `Accept-Encoding` 请求 header 压缩响应体。
 
 ::: info
-**Note**: On Cloudflare Workers and Deno Deploy, the response body will be compressed automatically, so there is no need to use this middleware.
+**注意**：在 Cloudflare Workers 和 Deno Deploy 上，响应体将自动压缩，因此无需使用此中间件。
 :::
 
-## Import
+## 导入
 
 ```ts
 import { Hono } from 'hono'
 import { compress } from 'hono/compress'
 ```
 
-## Usage
+## 用法
 
 ```ts
 const app = new Hono()
@@ -21,12 +21,12 @@ const app = new Hono()
 app.use(compress())
 ```
 
-## Options
+## 选项
 
 ### <Badge type="info" text="optional" /> encoding: `'gzip'` | `'deflate'`
 
-The compression scheme to allow for response compression. Either `gzip` or `deflate`. If not defined, both are allowed and will be used based on the `Accept-Encoding` header. `gzip` is prioritized if this option is not provided and the client provides both in the `Accept-Encoding` header.
+允许响应压缩的压缩方案。`gzip` 或 `deflate`。如果未定义，则两者都允许，并将基于 `Accept-Encoding` header 使用。如果未提供此选项且客户端在 `Accept-Encoding` header 中同时提供两者，则优先使用 `gzip`。
 
 ### <Badge type="info" text="optional" /> threshold: `number`
 
-The minimum size in bytes to compress. Defaults to 1024 bytes.
+要压缩的最小大小（以字节为单位）。默认为 1024 字节。

@@ -1,17 +1,17 @@
-# IP Restriction Middleware
+# IP Restriction 中间件
 
-IP Restriction Middleware is middleware that limits access to resources based on the IP address of the user.
+IP Restriction 中间件是根据用户的 IP 地址限制对资源访问的中间件。
 
-## Import
+## 导入
 
 ```ts
 import { Hono } from 'hono'
 import { ipRestriction } from 'hono/ip-restriction'
 ```
 
-## Usage
+## 用法
 
-For your application running on Bun, if you want to allow access only from local, you can write it as follows. Specify the rules you want to deny in the `denyList` and the rules you want to allow in the `allowList`.
+对于在 Bun 上运行的应用程序，如果你只想允许来自本地的访问，你可以按以下方式编写。在 `denyList` 中指定你想要拒绝的规则，在 `allowList` 中指定你想要允许的规则。
 
 ```ts
 import { Hono } from 'hono'
@@ -31,7 +31,7 @@ app.use(
 app.get('/', (c) => c.text('Hello Hono!'))
 ```
 
-Pass the `getConninfo` from the [ConnInfo helper](/docs/helpers/conninfo) appropriate for your environment as the first argument of `ipRestriction`. For example, for Deno, it would look like this:
+将适合你的环境的 [ConnInfo 辅助工具](/docs/helpers/conninfo) 中的 `getConninfo` 作为 `ipRestriction` 的第一个参数传递。例如，对于 Deno，它将如下所示：
 
 ```ts
 import { getConnInfo } from 'hono/deno'
@@ -47,25 +47,25 @@ app.use(
 )
 ```
 
-## Rules
+## 规则
 
-Follow the instructions below for writing rules.
+请按照以下说明编写规则。
 
 ### IPv4
 
-- `192.168.2.0` - Static IP Address
-- `192.168.2.0/24` - CIDR Notation
-- `*` - ALL Addresses
+- `192.168.2.0` - 静态 IP 地址
+- `192.168.2.0/24` - CIDR 表示法
+- `*` - 所有地址
 
 ### IPv6
 
-- `::1` - Static IP Address
-- `::1/10` - CIDR Notation
-- `*` - ALL Addresses
+- `::1` - 静态 IP 地址
+- `::1/10` - CIDR 表示法
+- `*` - 所有地址
 
-## Error handling
+## 错误处理
 
-To customize the error, return a `Response` in the third argument.
+要自定义错误，请在第三个参数中返回 `Response`。
 
 ```ts
 app.use(

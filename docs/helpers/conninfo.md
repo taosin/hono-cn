@@ -1,6 +1,6 @@
 # ConnInfo Helper
 
-The ConnInfo Helper helps you to get the connection information. For example, you can get the client's remote address easily.
+ConnInfo Helper 帮助你获取连接信息。例如，你可以轻松获取客户端的远程地址。
 
 ## Import
 
@@ -59,25 +59,25 @@ import { getConnInfo } from '@hono/node-server/conninfo'
 const app = new Hono()
 
 app.get('/', (c) => {
-  const info = getConnInfo(c) // info is `ConnInfo`
+  const info = getConnInfo(c) // info 是 `ConnInfo`
   return c.text(`Your remote address is ${info.remote.address}`)
 })
 ```
 
 ## Type Definitions
 
-The type definitions of the values that you can get from `getConnInfo()` are the following:
+你可以从 `getConnInfo()` 获取的值的类型定义如下：
 
 ```ts
 type AddressType = 'IPv6' | 'IPv4' | undefined
 
 type NetAddrInfo = {
   /**
-   * Transport protocol type
+   * 传输协议类型
    */
   transport?: 'tcp' | 'udp'
   /**
-   * Transport port number
+   * 传输端口号
    */
   port?: number
 
@@ -86,12 +86,12 @@ type NetAddrInfo = {
 } & (
   | {
       /**
-       * Host name such as IP Addr
+       * 主机名（如 IP 地址）
        */
       address: string
 
       /**
-       * Host name type
+       * 主机名类型
        */
       addressType: AddressType
     }
@@ -99,11 +99,11 @@ type NetAddrInfo = {
 )
 
 /**
- * HTTP Connection information
+ * HTTP 连接信息
  */
 interface ConnInfo {
   /**
-   * Remote information
+   * 远程信息
    */
   remote: NetAddrInfo
 }

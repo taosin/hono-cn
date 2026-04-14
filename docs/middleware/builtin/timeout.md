@@ -1,39 +1,39 @@
-# Timeout Middleware
+# Timeout 中间件
 
-The Timeout Middleware enables you to easily manage request timeouts in your application. It allows you to set a maximum duration for requests and optionally define custom error responses if the specified timeout is exceeded.
+Timeout 中间件使你能够轻松管理应用程序中的请求超时。它允许你设置请求的最大持续时间，并可选地定义如果超过指定超时的自定义错误响应。
 
-## Import
+## 导入
 
 ```ts
 import { Hono } from 'hono'
 import { timeout } from 'hono/timeout'
 ```
 
-## Usage
+## 用法
 
-Here's how to use the Timeout Middleware with both default and custom settings:
+以下是如何使用具有默认和自定义设置的 Timeout 中间件：
 
-Default Settings:
+默认设置：
 
 ```ts
 const app = new Hono()
 
-// Applying a 5-second timeout
+// 应用 5 秒超时
 app.use('/api', timeout(5000))
 
-// Handling a route
+// 处理路由
 app.get('/api/data', async (c) => {
-  // Your route handler logic
+  // 你的路由 handler 逻辑
   return c.json({ data: 'Your data here' })
 })
 ```
 
-Custom settings:
+自定义设置：
 
 ```ts
 import { HTTPException } from 'hono/http-exception'
 
-// Custom exception factory function
+// 自定义异常工厂函数
 const customTimeoutException = (context) =>
   new HTTPException(408, {
     message: `Request timeout after waiting ${context.req.headers.get(
@@ -41,26 +41,26 @@ const customTimeoutException = (context) =>
     )} seconds. Please try again later.`,
   })
 
-// for Static Exception Message
+// 对于静态异常消息
 // const customTimeoutException = new HTTPException(408, {
 //   message: 'Operation timed out. Please try again later.'
 // });
 
-// Applying a 1-minute timeout with a custom exception
+// 应用 1 分钟超时并带有自定义异常
 app.use('/api/long-process', timeout(60000, customTimeoutException))
 
 app.get('/api/long-process', async (c) => {
-  // Simulate a long process
+  // 模拟长时间过程
   await new Promise((resolve) => setTimeout(resolve, 61000))
   return c.json({ data: 'This usually takes longer' })
 })
 ```
 
-## Notes
+## 注意事项
 
-- The duration for the timeout can be specified in milliseconds. The middleware will automatically reject the promise and potentially throw an error if the specified duration is exceeded.
+- 超时的持续时间可以以毫秒为单位指定。如果超过指定的持续时间，中间件将自动拒绝 promise 并可能抛出错误。
 
-- The timeout middleware cannot be used with stream Thus, use `stream.close` and `setTimeout` together.
+- timeout 中间件不能与 stream 一起使用因此，请一起使用 `stream.close` 和 `setTimeout`。
 
 ```ts
 app.get('/sse', async (c) => {
@@ -93,6 +93,6 @@ app.get('/sse', async (c) => {
 })
 ```
 
-## Middleware Conflicts
+## 中间件冲突
 
-Be cautious about the order of middleware, especially when using error-handling or other timing-related middleware, as it might affect the behavior of this timeout middleware.
+注意中间件的顺序，特别是使用错误处理或其他与时间相关的中间件时，因为它可能会影响此 timeout 中间件的行为。

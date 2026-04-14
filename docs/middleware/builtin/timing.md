@@ -1,14 +1,12 @@
-# Server-Timing Middleware
+# Server-Timing 中间件
 
-The [Server-Timing](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing) Middleware provides
-performance metrics in the response headers.
+[Server-Timing](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing) 中间件在响应 headers 中提供性能指标。
 
 ::: info
-Note: On Cloudflare Workers, the timer metrics may not be accurate,
-since [timers only show the time of last I/O](https://developers.cloudflare.com/workers/learning/security-model/#step-1-disallow-timers-and-multi-threading).
+注意：在 Cloudflare Workers 上，计时器指标可能不准确，因为 [计时器仅显示上次 I/O 的时间](https://developers.cloudflare.com/workers/learning/security-model/#step-1-disallow-timers-and-multi-threading)。
 :::
 
-## Import
+## 导入
 
 ```ts [npm]
 import { Hono } from 'hono'
@@ -22,40 +20,40 @@ import {
 import type { TimingVariables } from 'hono/timing'
 ```
 
-## Usage
+## 用法
 
 ```js
-// Specify the variable types to infer the `c.get('metric')`:
+// 指定变量类型以推断 `c.get('metric')`：
 type Variables = TimingVariables
 
 const app = new Hono<{ Variables: Variables }>()
 
-// add the middleware to your router
+// 将中间件添加到你的路由
 app.use(timing());
 
 app.get('/', async (c) => {
 
-  // add custom metrics
+  // 添加自定义指标
   setMetric(c, 'region', 'europe-west3')
 
-  // add custom metrics with timing, must be in milliseconds
+  // 添加带有计时的自定义指标，必须以毫秒为单位
   setMetric(c, 'custom', 23.8, 'My custom Metric')
 
-  // start a new timer
+  // 启动新计时器
   startTime(c, 'db');
   const data = await db.findMany(...);
 
-  // end the timer
+  // 结束计时器
   endTime(c, 'db');
 
-  // ...or you can also just wrap a Promise using this function:
+  // ...或者你也可以使用此函数包装 Promise：
   const data = await wrapTime(c, 'db', db.findMany(...));
 
   return c.json({ response: data });
 });
 ```
 
-### Conditionally enabled
+### 有条件启用
 
 ```ts
 const app = new Hono()
@@ -63,41 +61,41 @@ const app = new Hono()
 app.use(
   '*',
   timing({
-    // c: Context of the request
+    // c: 请求的 Context
     enabled: (c) => c.req.method === 'POST',
   })
 )
 ```
 
-## Result
+## 结果
 
 ![](/images/timing-example.png)
 
-## Options
+## 选项
 
 ### <Badge type="info" text="optional" /> total: `boolean`
 
-Show the total response time. The default is `true`.
+显示总响应时间。默认值为 `true`。
 
 ### <Badge type="info" text="optional" /> enabled: `boolean` | `(c: Context) => boolean`
 
-Whether timings should be added to the headers or not. The default is `true`.
+是否应将计时添加到 headers。默认值为 `true`。
 
 ### <Badge type="info" text="optional" /> totalDescription: `boolean`
 
-Description for the total response time. The default is `Total Response Time`.
+总响应时间的描述。默认值为 `Total Response Time`。
 
 ### <Badge type="info" text="optional" /> autoEnd: `boolean`
 
-If `startTime()` should end automatically at the end of the request.
-If disabled, not manually ended timers will not be shown.
+`startTime()` 是否应在请求结束时自动结束。
+如果禁用，未手动结束的计时器将不会显示。
 
 ### <Badge type="info" text="optional" /> crossOrigin: `boolean` | `string` | `(c: Context) => boolean | string`
 
-The origin this timings header should be readable.
+此计时 header 应该可读的来源。
 
-- If false, only from current origin.
-- If true, from all origin.
-- If string, from this domain(s). Multiple domains must be separated with a comma.
+- 如果为 false，仅来自当前来源。
+- 如果为 true，来自所有来源。
+- 如果为字符串，来自此域。多个域必须用逗号分隔。
 
-The default is `false`. See more [docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Timing-Allow-Origin).
+默认值为 `false`。请参阅更多 [文档](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Timing-Allow-Origin)。

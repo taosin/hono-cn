@@ -2,9 +2,9 @@
 import { data } from './menu.data.ts'
 </script>
 
-# Examples
+# 示例
 
-In this section, you can see practical examples to create your application with Hono.
+在本节中，你可以查看使用 Hono 创建应用程序的实用示例。
 
 <div v-for="sections of data">
   <section v-for="category of sections">
@@ -15,6 +15,6 @@ In this section, you can see practical examples to create your application with 
   </section>
 </div>
 
-## GitHub repository
+## GitHub 仓库
 
-You can also see the examples in the GitHub repository: [Hono Examples](https://github.com/honojs/examples)
+你也可以在 GitHub 仓库中查看示例：[Hono Examples](https://github.com/honojs/examples)

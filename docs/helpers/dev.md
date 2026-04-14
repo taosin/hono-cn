@@ -1,6 +1,6 @@
-# Dev Helper
+# Dev 辅助工具
 
-Dev Helper provides useful methods you can use in development.
+Dev 辅助工具提供你在开发中可使用的有用方法。
 
 ```ts
 import { Hono } from 'hono'
@@ -9,7 +9,7 @@ import { getRouterName, showRoutes } from 'hono/dev'
 
 ## `getRouterName()`
 
-You can get the name of the currently used router with `getRouterName()`.
+你可以使用 `getRouterName()` 获取当前使用的路由器的名称。
 
 ```ts
 const app = new Hono()
@@ -21,9 +21,9 @@ console.log(getRouterName(app))
 
 ## `showRoutes()`
 
-`showRoutes()` function displays the registered routes in your console.
+`showRoutes()` 函数在你的控制台中显示已注册的路由。
 
-Consider an application like the following:
+考虑如下应用程序：
 
 ```ts
 const app = new Hono().basePath('/v1')
@@ -45,7 +45,7 @@ showRoutes(app, {
 })
 ```
 
-When this application starts running, the routes will be shown in your console as follows:
+当此应用程序开始运行时，路由将如下显示在你的控制台中：
 
 ```txt
 GET   /v1/posts
@@ -53,12 +53,12 @@ GET   /v1/posts/:id
 POST  /v1/posts
 ```
 
-## Options
+## 选项
 
 ### <Badge type="info" text="optional" /> verbose: `boolean`
 
-When set to `true`, it displays verbose information.
+设置为 `true` 时，显示详细信息。
 
 ### <Badge type="info" text="optional" /> colorize: `boolean`
 
-When set to `false`, the output will not be colored.
+设置为 `false` 时，输出将不着色。

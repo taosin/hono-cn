@@ -1,15 +1,12 @@
 # Next.js
 
-Next.js is a flexible React framework that gives you building blocks to create fast web applications.
+Next.js 是一个灵活的 React 框架，为你提供构建快速 web 应用程序的构建块。
 
-You can run Hono on Next.js when using the Node.js runtime.\
-On Vercel, deploying Hono with Next.js is easy by using Vercel Functions.
+当使用 Node.js runtime 时，你可以在 Next.js 上运行 Hono。在 Vercel 上，使用 Vercel Functions 可以轻松部署带有 Hono 的 Next.js。
 
 ## 1. Setup
 
-A starter for Next.js is available.
-Start your project with "create-hono" command.
-Select `nextjs` template for this example.
+Next.js 有一个 starter。使用 "create-hono" 命令开始你的项目。为此示例选择 `nextjs` template。
 
 ::: code-group
 
@@ -35,7 +32,7 @@ deno init --npm hono my-app
 
 :::
 
-Move into `my-app` and install the dependencies.
+进入 `my-app` 并安装依赖项。
 
 ::: code-group
 
@@ -63,7 +60,7 @@ bun i
 
 ## 2. Hello World
 
-If you use the App Router, Edit `app/api/[[...route]]/route.ts`. Refer to the [Supported HTTP Methods](https://nextjs.org/docs/app/building-your-application/routing/route-handlers#supported-http-methods) section for more options.
+如果你使用 App Router，编辑 `app/api/[[...route]]/route.ts`。更多信息参考 [Supported HTTP Methods](https://nextjs.org/docs/app/building-your-application/routing/route-handlers#supported-http-methods) 部分。
 
 ```ts
 import { Hono } from 'hono'
@@ -83,7 +80,7 @@ export const POST = handle(app)
 
 ## 3. Run
 
-Run the development server locally. Then, access `http://localhost:3000` in your Web browser.
+在本地运行开发服务器。然后在 Web 浏览器中访问 `http://localhost:3000`。
 
 ::: code-group
 
@@ -105,15 +102,15 @@ bun run dev
 
 :::
 
-Now, `/api/hello` just returns JSON, but if you build React UIs, you can create a full-stack application with Hono.
+现在，`/api/hello` 只返回 JSON，但如果你构建 React UIs，你可以用 Hono 创建全栈应用程序。
 
 ## 4. Deploy
 
-If you have a Vercel account, you can deploy by linking the Git repository.
+如果你有 Vercel 账户，你可以通过链接 Git 仓库进行部署。
 
 ## Pages Router
 
-If you use the Pages Router, you'll need to install the Node.js adapter first.
+如果你使用 Pages Router，你需要首先安装 Node.js adapter。
 
 ::: code-group
 
@@ -135,7 +132,7 @@ bun add @hono/node-server
 
 :::
 
-Then, you can utilize the `handle` function imported from `@hono/node-server/vercel` in `pages/api/[[...route]].ts`.
+然后，你可以在 `pages/api/[[...route]].ts` 中使用从 `@hono/node-server/vercel` 导入的 `handle` 函数。
 
 ```ts
 import { Hono } from 'hono'
@@ -159,7 +156,7 @@ app.get('/hello', (c) => {
 export default handle(app)
 ```
 
-In order for this to work with the Pages Router, it's important to disable Vercel Node.js helpers by setting up an environment variable in your project dashboard or in your `.env` file.
+为了使其与 Pages Router 一起工作，重要的是通过在你的项目 dashboard 或 `.env` 文件中设置环境变量来禁用 Vercel Node.js helpers。
 
 ```text
 NODEJS_HELPERS=0

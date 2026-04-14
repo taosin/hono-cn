@@ -1,7 +1,6 @@
 # App - Hono
 
-`Hono` is the primary object.
-It will be imported first and used until the end.
+`Hono` 是主要对象。它会被首先导入并一直使用到最后。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -9,12 +8,12 @@ import { Hono } from 'hono'
 const app = new Hono()
 //...
 
-export default app // for Cloudflare Workers or Bun
+export default app // 用于 Cloudflare Workers 或 Bun
 ```
 
 ## Methods
 
-An instance of `Hono` has the following methods.
+`Hono` 实例有以下方法：
 
 - app.**HTTP_METHOD**(\[path,\]handler|middleware...)
 - app.**all**(\[path,\]handler|middleware...)
@@ -29,11 +28,11 @@ An instance of `Hono` has the following methods.
 - app.**fetch**(request, env, event)
 - app.**request**(path, options)
 
-The first part of them is used for routing, please refer to the [routing section](/docs/api/routing).
+其中第一部分用于路由，请参阅 [routing section](/docs/api/routing)。
 
 ## Not Found
 
-`app.notFound` allows you to customize a Not Found Response.
+`app.notFound` 允许你自定义 Not Found 响应。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -45,12 +44,12 @@ app.notFound((c) => {
 ```
 
 :::warning
-The `notFound` method is only called from the top-level app. For more information, see this [issue](https://github.com/honojs/hono/issues/3465#issuecomment-2381210165).
+`notFound` 方法仅从顶级 app 调用。更多信息见这个 [issue](https://github.com/honojs/hono/issues/3465#issuecomment-2381210165)。
 :::
 
 ## Error Handling
 
-`app.onError` allows you to handle uncaught errors and return a custom Response.
+`app.onError` 允许你处理未捕获的错误并返回自定义响应。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -63,20 +62,20 @@ app.onError((err, c) => {
 ```
 
 ::: info
-If both a parent app and its routes have `onError` handlers, the route-level handlers get priority.
+如果父 app 和其 routes 都有 `onError` 处理器，route 级别的处理器优先级更高。
 :::
 
 ## fire()
 
 ::: warning
-**`app.fire()` is deprecated**. Use `fire()` from `hono/service-worker` instead. See the [Service Worker documentation](/docs/getting-started/service-worker) for details.
+**`app.fire()` 已弃用**。改用 `hono/service-worker` 中的 `fire()`。详情见 [Service Worker documentation](/docs/getting-started/service-worker)。
 :::
 
-`app.fire()` automatically adds a global `fetch` event listener.
+`app.fire()` 自动添加全局 `fetch` 事件监听器。
 
-This can be useful for environments that adhere to the [Service Worker API](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API), such as [non-ES module Cloudflare Workers](https://developers.cloudflare.com/workers/reference/migrate-to-module-workers/).
+这对于遵循 [Service Worker API](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) 的环境很有用，例如 [非 ES module Cloudflare Workers](https://developers.cloudflare.com/workers/reference/migrate-to-module-workers/)。
 
-`app.fire()` executes the following for you:
+`app.fire()` 为你执行以下操作：
 
 ```ts
 addEventListener('fetch', (event: FetchEventLike): void => {
@@ -86,9 +85,9 @@ addEventListener('fetch', (event: FetchEventLike): void => {
 
 ## fetch()
 
-`app.fetch` will be the entry point of your application.
+`app.fetch` 将成为你的应用程序入口点。
 
-For Cloudflare Workers, you can use the following:
+对于 Cloudflare Workers，你可以使用以下代码：
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -103,7 +102,7 @@ export default {
 }
 ```
 
-or just do:
+或者只需：
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -112,7 +111,7 @@ const app = new Hono()
 export default app
 ```
 
-Bun:
+Bun：
 
 <!-- prettier-ignore -->
 ```ts
@@ -125,10 +124,9 @@ export default {  // [!code ++]
 
 ## request()
 
-`request` is a useful method for testing.
+`request` 是一个用于测试的实用方法。
 
-You can pass a URL or pathname to send a GET request.
-`app` will return a `Response` object.
+你可以传递 URL 或路径名来发送 GET 请求。`app` 将返回 `Response` 对象。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -142,7 +140,7 @@ test('GET /hello is ok', async () => {
 })
 ```
 
-You can also pass a `Request` object:
+你也可以传递 `Request` 对象：
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -161,35 +159,35 @@ test('POST /message is ok', async () => {
 
 ## mount()
 
-The `mount()` allows you to mount applications built with other frameworks into your Hono application.
+`mount()` 允许你将用其他框架构建的应用程序挂载到你的 Hono 应用程序中。
 
 ```ts
 import { Router as IttyRouter } from 'itty-router'
 import { Hono } from 'hono'
 
-// Create itty-router application
+// 创建 itty-router 应用程序
 const ittyRouter = IttyRouter()
 
-// Handle `GET /itty-router/hello`
+// 处理 `GET /itty-router/hello`
 ittyRouter.get('/hello', () => new Response('Hello from itty-router'))
 
-// Hono application
+// Hono 应用程序
 const app = new Hono()
 
-// Mount!
+// 挂载！
 app.mount('/itty-router', ittyRouter.handle)
 ```
 
 ## strict mode
 
-Strict mode defaults to `true` and distinguishes the following routes.
+strict mode 默认为 `true`，区分以下 routes：
 
 - `/hello`
 - `/hello/`
 
-`app.get('/hello')` will not match `GET /hello/`.
+`app.get('/hello')` 不会匹配 `GET /hello/`。
 
-By setting strict mode to `false`, both paths will be treated equally.
+通过将 strict mode 设置为 `false`，两条路径将被同等对待。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -199,7 +197,7 @@ const app = new Hono({ strict: false })
 
 ## router option
 
-The `router` option specifies which router to use. The default router is `SmartRouter`. If you want to use `RegExpRouter`, pass it to a new `Hono` instance:
+`router` 选项指定使用哪个 router。默认 router 是 `SmartRouter`。如果你想使用 `RegExpRouter`，将其传递给新的 `Hono` 实例：
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -211,7 +209,7 @@ const app = new Hono({ router: new RegExpRouter() })
 
 ## Generics
 
-You can pass Generics to specify the types of Cloudflare Workers Bindings and variables used in `c.set`/`c.get`.
+你可以传递泛型来指定 Cloudflare Workers Bindings 和 `c.set`/`c.get` 中使用的变量的类型。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -232,9 +230,9 @@ const app = new Hono<{
 }>()
 
 app.use('/auth/*', async (c, next) => {
-  const token = c.env.TOKEN // token is `string`
+  const token = c.env.TOKEN // token 是 `string`
   // ...
-  c.set('user', user) // user should be `User`
+  c.set('user', user) // user 应该是 `User`
   await next()
 })
 ```

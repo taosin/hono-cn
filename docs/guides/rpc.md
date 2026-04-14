@@ -1,17 +1,17 @@
 # RPC
 
-The RPC feature allows sharing of the API specifications between the server and the client.
+RPC 功能允许在服务器和客户端之间共享 API 规范。
 
-First, export the `typeof` your Hono app (commonly called `AppType`)—or just the routes you want available to the client—from your server code.
+首先，从服务器代码导出你的 Hono app 的 `typeof`（通常称为 `AppType`）——或者只是你想要客户端可用的 routes。
 
-By accepting `AppType` as a generic parameter, the Hono Client can infer both the input type(s) specified by the Validator, and the output type(s) emitted by handlers returning `c.json()`.
+通过接受 `AppType` 作为泛型参数，Hono Client 可以推断 Validator 指定的输入类型和 handlers 返回 `c.json()` 发出的输出类型。
 
 > [!NOTE]
-> For the RPC types to work properly in a monorepo, in both the Client's and Server's tsconfig.json files, set `"strict": true` in `compilerOptions`. [Read more.](https://github.com/honojs/hono/issues/2270#issuecomment-2143745118)
+> 为了使 RPC 类型在 monorepo 中正常工作，在客户端和服务端的 tsconfig.json 文件中，在 `compilerOptions` 中设置 `"strict": true`。[了解更多。](https://github.com/honojs/hono/issues/2270#issuecomment-2143745118)
 
 ## Server
 
-All you need to do on the server side is to write a validator and create a variable `route`. The following example uses [Zod Validator](https://github.com/honojs/middleware/tree/main/packages/zod-validator).
+在服务器端你需要做的就是编写 validator 并创建变量 `route`。以下示例使用 [Zod Validator](https://github.com/honojs/middleware/tree/main/packages/zod-validator)。
 
 ```ts{1}
 const route = app.post(
@@ -36,7 +36,7 @@ const route = app.post(
 )
 ```
 
-Then, export the type to share the API spec with the Client.
+然后，导出类型以与客户端共享 API 规范。
 
 ```ts
 export type AppType = typeof route
@@ -44,20 +44,20 @@ export type AppType = typeof route
 
 ## Client
 
-On the Client side, import `hc` and `AppType` first.
+在客户端，首先导入 `hc` 和 `AppType`。
 
 ```ts
 import type { AppType } from '.'
 import { hc } from 'hono/client'
 ```
 
-`hc` is a function to create a client. Pass `AppType` as Generics and specify the server URL as an argument.
+`hc` 是创建客户端的函数。将 `AppType` 作为泛型传递并将服务器 URL 指定为参数。
 
 ```ts
 const client = hc<AppType>('http://localhost:8787/')
 ```
 
-Call `client.{path}.{method}` and pass the data you wish to send to the server as an argument.
+调用 `client.{path}.{method}` 并将你希望发送到服务器的数据作为参数传递。
 
 ```ts
 const res = await client.posts.$post({
@@ -68,7 +68,7 @@ const res = await client.posts.$post({
 })
 ```
 
-The `res` is compatible with the "fetch" Response. You can retrieve data from the server with `res.json()`.
+`res` 与 "fetch" Response 兼容。你可以使用 `res.json()` 从服务器检索数据。
 
 ```ts
 if (res.ok) {
@@ -79,7 +79,7 @@ if (res.ok) {
 
 ### Cookies
 
-To make the client send cookies with every request, add `{ 'init': { 'credentials": 'include' } }` to the options when you're creating the client.
+要使客户端在每次请求时发送 cookies，在创建客户端时将 `{ 'init': { 'credentials": 'include' } }` 添加到选项。
 
 ```ts
 // client.ts
@@ -89,7 +89,7 @@ const client = hc<AppType>('http://localhost:8787/', {
   },
 })
 
-// This request will now include any cookies you might have set
+// 此请求现在将包含你可能设置的任何 cookies
 const res = await client.posts.$get({
   query: {
     id: '123',
@@ -99,7 +99,7 @@ const res = await client.posts.$get({
 
 ## Status code
 
-If you explicitly specify the status code, such as `200` or `404`, in `c.json()`, it will be added as a type for passing to the client.
+如果你在 `c.json()` 中显式指定状态码（如 `200` 或 `404`），它将作为传递给客户端的类型添加。
 
 ```ts
 // server.ts
@@ -116,17 +116,17 @@ const app = new Hono().get(
     const post: Post | undefined = await getPost(id)
 
     if (post === undefined) {
-      return c.json({ error: 'not found' }, 404) // Specify 404
+      return c.json({ error: 'not found' }, 404) // 指定 404
     }
 
-    return c.json({ post }, 200) // Specify 200
+    return c.json({ post }, 200) // 指定 200
   }
 )
 
 export type AppType = typeof app
 ```
 
-You can get the data by the status code.
+你可以通过状态码获取数据。
 
 ```ts
 // client.ts
@@ -160,7 +160,7 @@ type ResponseType200 = InferResponseType<
 
 ## Global Response
 
-Hono RPC client doesn't automatically infer response types from global error handlers like `app.onError()` or global middleware. You can use the `ApplyGlobalResponse` type helper to merge global error response types into all routes.
+Hono RPC 客户端不会自动从全局错误处理器（如 `app.onError()`）或全局中间件推断响应类型。你可以使用 `ApplyGlobalResponse` 类型 helper 将全局错误响应类型合并到所有 routes 中。
 
 ```ts
 import type { ApplyGlobalResponse } from 'hono/client'
@@ -179,7 +179,7 @@ type AppWithErrors = ApplyGlobalResponse<
 const client = hc<AppWithErrors>('http://localhost')
 ```
 
-Now the client knows about both success and error responses:
+现在客户端知道成功和错误响应：
 
 ```ts
 const res = await client.api.users.$get()
@@ -188,12 +188,12 @@ if (res.ok) {
   const data = await res.json() // { users: string[] }
 }
 
-// InferResponseType includes the global error type
+// InferResponseType 包括全局错误类型
 type ResType = InferResponseType<typeof client.api.users.$get>
 // { users: string[] } | { error: string }
 ```
 
-You can also define multiple global error status codes at once:
+你也可以一次定义多个全局错误状态码：
 
 ```ts
 type AppWithErrors = ApplyGlobalResponse<
@@ -207,7 +207,7 @@ type AppWithErrors = ApplyGlobalResponse<
 
 ## Not Found
 
-If you want to use a client, you should not use `c.notFound()` for the Not Found response. The data that the client gets from the server cannot be inferred correctly.
+如果你想使用客户端，你不应该对 Not Found 响应使用 `c.notFound()`。客户端从服务器获取的数据无法正确推断。
 
 ```ts
 // server.ts
@@ -245,7 +245,7 @@ const res = await client.posts[':id'].$get({
 const data = await res.json() // 🙁 data is unknown
 ```
 
-Please use `c.json()` and specify the status code for the Not Found Response.
+请使用 `c.json()` 并为 Not Found Response 指定状态码。
 
 ```ts
 export const routes = new Hono().get(
@@ -261,15 +261,15 @@ export const routes = new Hono().get(
     const post = await getPost(id)
 
     if (!post) {
-      return c.json({ error: 'not found' }, 404) // Specify 404
+      return c.json({ error: 'not found' }, 404) // 指定 404
     }
 
-    return c.json({ post }, 200) // Specify 200
+    return c.json({ post }, 200) // 指定 200
   }
 )
 ```
 
-Alternatively, you can use module augmentation to extend `NotFoundResponse` interface. This allows `c.notFound()` to return a typed response:
+或者，你可以使用模块 augmentation 扩展 `NotFoundResponse` 接口。这允许 `c.notFound()` 返回类型化响应：
 
 ```ts
 // server.ts
@@ -294,11 +294,11 @@ const app = new Hono()
 export type AppType = typeof app
 ```
 
-Now the client can correctly infer the 404 response type.
+现在客户端可以正确推断 404 响应类型。
 
 ## Path parameters
 
-You can also handle routes that include path parameters or query values.
+你也可以处理包含路径参数或查询值的 routes。
 
 ```ts
 const route = app.get(
@@ -306,7 +306,7 @@ const route = app.get(
   zValidator(
     'query',
     z.object({
-      page: z.coerce.number().optional(), // coerce to convert to number
+      page: z.coerce.number().optional(), // coerce 转换为 number
     })
   ),
   (c) => {
@@ -319,9 +319,9 @@ const route = app.get(
 )
 ```
 
-Both path parameters and query values **must** be passed as `string`, even if the underlying value is of a different type.
+路径参数和查询值**必须**作为 `string` 传递，即使底层值是不同的类型。
 
-Specify the string you want to include in the path with `param`, and any query values with `query`.
+使用 `param` 指定要包含在路径中的字符串，使用 `query` 指定任何查询值。
 
 ```ts
 const res = await client.posts[':id'].$get({
@@ -329,14 +329,14 @@ const res = await client.posts[':id'].$get({
     id: '123',
   },
   query: {
-    page: '1', // `string`, converted by the validator to `number`
+    page: '1', // `string`，由 validator 转换为 `number`
   },
 })
 ```
 
 ### Multiple parameters
 
-Handle routes with multiple parameters.
+处理具有多个参数的 routes。
 
 ```ts
 const route = app.get(
@@ -357,7 +357,7 @@ const route = app.get(
 )
 ```
 
-Add multiple `['']` to specify params in path.
+添加多个 `['']` 以指定路径中的 params。
 
 ```ts
 const res = await client.posts[':postId'][':authorId'].$get({
@@ -371,12 +371,12 @@ const res = await client.posts[':postId'][':authorId'].$get({
 
 ### Include slashes
 
-`hc` function does not URL-encode the values of `param`. To include slashes in parameters, use [regular expressions](/docs/api/routing#regexp).
+`hc` 函数不会对 `param` 的值进行 URL 编码。要在参数中包含斜杠，使用 [regular expressions](/docs/api/routing#regexp)。
 
 ```ts
 // client.ts
 
-// Requests /posts/123/456
+// 请求 /posts/123/456
 const res = await client.posts[':id'].$get({
   param: {
     id: '123/456',
@@ -401,11 +401,11 @@ const route = app.get(
 ```
 
 > [!NOTE]
-> Basic path parameters without regular expressions do not match slashes. If you pass a `param` containing slashes using the hc function, the server might not route as intended. Encoding the parameters using `encodeURIComponent` is the recommended approach to ensure correct routing.
+> 没有正则表达式的基本路径参数不匹配斜杠。如果你使用 hc 函数传递包含斜杠的 `param`，服务器可能不会按预期路由。使用 `encodeURIComponent` 编码参数是确保正确路由的推荐方法。
 
 ## Headers
 
-You can append the headers to the request.
+你可以将 headers 附加到请求。
 
 ```ts
 const res = await client.search.$get(
@@ -421,7 +421,7 @@ const res = await client.search.$get(
 )
 ```
 
-To add a common header to all requests, specify it as an argument to the `hc` function.
+要为所有请求添加公共 header，将其指定为 `hc` 函数的参数。
 
 ```ts
 const client = hc<AppType>('/api', {
@@ -433,7 +433,7 @@ const client = hc<AppType>('/api', {
 
 ## `init` option
 
-You can pass the fetch's `RequestInit` object to the request as the `init` option. Below is an example of aborting a Request.
+你可以将 fetch 的 `RequestInit` 对象作为 `init` 选项传递给请求。以下是中止请求的示例。
 
 ```ts
 import { hc } from 'hono/client'
@@ -444,11 +444,11 @@ const abortController = new AbortController()
 const res = await client.api.posts.$post(
   {
     json: {
-      // Request body
+      // 请求体
     },
   },
   {
-    // RequestInit object
+    // RequestInit 对象
     init: {
       signal: abortController.signal,
     },
@@ -461,24 +461,24 @@ abortController.abort()
 ```
 
 ::: info
-A `RequestInit` object defined by `init` takes the highest priority. It could be used to overwrite things set by other options like `body | method | headers`.
+由 `init` 定义的 `RequestInit` 对象具有最高优先级。它可用于覆盖由其他选项（如 `body | method | headers`）设置的内容。
 :::
 
 ## `$url()`
 
-You can get a `URL` object for accessing the endpoint by using `$url()`.
+你可以使用 `$url()` 获取用于访问端点的 `URL` 对象。
 
 ::: warning
-You have to pass in an absolute URL for this to work. Passing in a relative URL `/` will result in the following error.
+你必须传递绝对 URL 才能使其工作。传递相对 URL `/` 将导致以下错误。
 
 `Uncaught TypeError: Failed to construct 'URL': Invalid URL`
 
 ```ts
-// ❌ Will throw error
+// ❌ 将抛出错误
 const client = hc<AppType>('/')
 client.api.post.$url()
 
-// ✅ Will work as expected
+// ✅ 将按预期工作
 const client = hc<AppType>('http://localhost:8787/')
 client.api.post.$url()
 ```
@@ -505,7 +505,7 @@ console.log(url.pathname) // `/api/posts/123`
 
 ### Typed URL
 
-You can pass the base URL as the second type parameter to `hc` to get more precise URL types:
+你可以将 base URL 作为第二个类型参数传递给 `hc` 以获得更精确的 URL 类型：
 
 ```ts
 const client = hc<typeof route, 'http://localhost:8787'>(
@@ -513,15 +513,15 @@ const client = hc<typeof route, 'http://localhost:8787'>(
 )
 
 const url = client.api.posts.$url()
-// url is TypedURL with precise type information
-// including protocol, host, and path
+// url 是 TypedURL，具有精确的类型信息
+// 包括 protocol、host 和 path
 ```
 
-This is useful when you want to use the URL as a type-safe key for libraries like SWR.
+这在你想要将 URL 用作类型安全的 key（如 SWR 等库）时很有用。
 
 ## `$path()`
 
-`$path()` is similar to `$url()`, but returns a path string instead of a `URL` object. Unlike `$url()`, it does not include the base URL origin, so it works regardless of the base URL you pass to `hc`.
+`$path()` 与 `$url()` 类似，但返回路径字符串而不是 `URL` 对象。与 `$url()` 不同，它不包含 base URL origin，因此无论你将什么 base URL 传递给 `hc` 都能工作。
 
 ```ts
 const route = app
@@ -541,7 +541,7 @@ path = client.api.posts[':id'].$path({
 console.log(path) // `/api/posts/123`
 ```
 
-You can also pass query parameters:
+你也可以传递查询参数：
 
 ```ts
 const path = client.api.posts.$path({
@@ -555,7 +555,7 @@ console.log(path) // `/api/posts?page=1&limit=10`
 
 ## File Uploads
 
-You can upload files using a form body:
+你可以使用 form body 上传文件：
 
 ```ts
 // client
@@ -584,9 +584,9 @@ const route = app.put(
 
 ## Custom `fetch` method
 
-You can set the custom `fetch` method.
+你可以设置自定义 `fetch` 方法。
 
-In the following example script for Cloudflare Worker, the Service Bindings' `fetch` method is used instead of the default `fetch`.
+在以下 Cloudflare Worker 脚本中，使用 Service Bindings 的 `fetch` 方法而不是默认 `fetch`。
 
 ```toml
 # wrangler.toml
@@ -604,7 +604,7 @@ const client = hc<CreateProfileType>('http://localhost', {
 
 ## Custom query serializer
 
-You can customize how query parameters are serialized using the `buildSearchParams` option. This is useful when you need bracket notation for arrays or other custom formats:
+你可以使用 `buildSearchParams` 选项自定义查询参数的序列化方式。当你需要数组的方括号表示法或其他自定义格式时，这很有用：
 
 ```ts
 const client = hc<AppType>('http://localhost', {
@@ -627,7 +627,7 @@ const client = hc<AppType>('http://localhost', {
 
 ## Infer
 
-Use `InferRequestType` and `InferResponseType` to know the type of object to be requested and the type of object to be returned.
+使用 `InferRequestType` 和 `InferResponseType` 了解要请求的对象类型和要返回的对象类型。
 
 ```ts
 import type { InferRequestType, InferResponseType } from 'hono/client'
@@ -642,23 +642,23 @@ type ResType = InferResponseType<typeof $post>
 
 ## Parsing a Response with type-safety helper
 
-You can use `parseResponse()` helper to easily parse a Response from `hc` with type-safety.
+你可以使用 `parseResponse()` helper 轻松解析来自 `hc` 的 Response，并具有类型安全。
 
 ```ts
 import { parseResponse, DetailedError } from 'hono/client'
 
-// result contains the parsed response body (automatically parsed based on Content-Type)
+// result 包含解析的响应体（根据 Content-Type 自动解析）
 const result = await parseResponse(client.hello.$get()).catch(
   (e: DetailedError) => {
     console.error(e)
   }
 )
-// parseResponse automatically throws an error if response is not ok
+// 如果响应不 ok，parseResponse 会自动抛出错误
 ```
 
 ## Using SWR
 
-You can also use a React Hook library such as [SWR](https://swr.vercel.app).
+你也可以使用 [SWR](https://swr.vercel.app) 等 React Hook 库。
 
 ```tsx
 import useSWR from 'swr'
@@ -696,8 +696,8 @@ export default App
 
 ## Using RPC with larger applications
 
-In the case of a larger application, such as the example mentioned in [Building a larger application](/docs/guides/best-practices#building-a-larger-application), you need to be careful about the type of inference.
-A simple way to do this is to chain the handlers so that the types are always inferred.
+在更大的应用程序中，如 [Building a larger application](/docs/guides/best-practices#building-a-larger-application) 中提到的示例，你需要注意推断类型。
+一个简单的方法是链接 handlers，以便始终推断类型。
 
 ```ts
 // authors.ts
@@ -723,7 +723,7 @@ const app = new Hono()
 export default app
 ```
 
-You can then import the sub-routers as you usually would, and make sure you chain their handlers as well, since this is the top level of the app in this case, this is the type we'll want to export.
+然后你可以像往常一样导入子 routers，并确保也链接它们的 handlers，因为这是应用程序的顶层，这是我们要导出的类型。
 
 ```ts
 // index.ts
@@ -739,15 +739,15 @@ export default app
 export type AppType = typeof routes
 ```
 
-You can now create a new client using the registered AppType and use it as you would normally.
+你现在可以使用注册的 AppType 创建新客户端并像往常一样使用它。
 
 ## Known issues
 
 ### IDE performance
 
-When using RPC, the more routes you have, the slower your IDE will become. One of the main reasons for this is that massive amounts of type instantiations are executed to infer the type of your app.
+使用 RPC 时，routes 越多，IDE 越慢。主要原因之一是执行大量类型实例化来推断 app 的类型。
 
-For example, suppose your app has a route like this:
+例如，假设你的 app 有这样的 route：
 
 ```ts
 // app.ts
@@ -756,7 +756,7 @@ export const app = new Hono().get('foo/:id', (c) =>
 )
 ```
 
-Hono will infer the type as follows:
+Hono 将推断类型如下：
 
 ```ts
 export const app = Hono<BlankEnv, BlankSchema, '/'>().get<
@@ -768,38 +768,38 @@ export const app = Hono<BlankEnv, BlankSchema, '/'>().get<
 >('foo/:id', (c) => c.json({ ok: true }, 200))
 ```
 
-This is a type instantiation for a single route. While the user doesn't need to write these type arguments manually, which is a good thing, it's known that type instantiation takes much time. `tsserver` used in your IDE does this time consuming task every time you use the app. If you have a lot of routes, this can slow down your IDE significantly.
+这是单个 route 的类型实例化。虽然用户不需要手动编写这些类型参数（这是好事），但已知类型实例化需要很长时间。你的 IDE 中使用的 `tsserver` 每次使用 app 时都会执行这个耗时的任务。如果你有很多 routes，这会显著降低 IDE 速度。
 
-However, we have some tips to mitigate this issue.
+然而，我们有一些技巧来缓解这个问题。
 
 #### Hono version mismatch
 
-If your backend is separated from the frontend and lives in a different directory, you need to ensure that the Hono versions match. If you use one Hono version on the backend and another on the frontend, you'll run into issues such as "_Type instantiation is excessively deep and possibly infinite_".
+如果你的后端与前端的目录不同，你需要确保 Hono 版本匹配。如果你在 backend 使用一个 Hono 版本，在 frontend 使用另一个版本，你会遇到问题，如 "_Type instantiation is excessively deep and possibly infinite_"。
 
 ![](https://github.com/user-attachments/assets/e4393c80-29dd-408d-93ab-d55c11ccca05)
 
 #### TypeScript project references
 
-Like in the case of [Hono version mismatch](#hono-version-mismatch), you'll run into issues if your backend and frontend are separate. If you want to access code from the backend (`AppType`, for example) on the frontend, you need to use [project references](https://www.typescriptlang.org/docs/handbook/project-references.html). TypeScript's project references allow one TypeScript codebase to access and use code from another TypeScript codebase. _(source: [Hono RPC And TypeScript Project References](https://catalins.tech/hono-rpc-in-monorepos/))_.
+与 [Hono version mismatch](#hono-version-mismatch) 的情况一样，如果你的 backend 和 frontend 是分开的，你会遇到问题。如果你想在前端访问后端的代码（如 `AppType`），你需要使用 [project references](https://www.typescriptlang.org/docs/handbook/project-references.html)。TypeScript 的 project references 允许一个 TypeScript 代码库访问和使用另一个 TypeScript 代码库的代码。（来源：[Hono RPC And TypeScript Project References](https://catalins.tech/hono-rpc-in-monorepos/)）。
 
 #### Compile your code before using it (recommended)
 
-`tsc` can do heavy tasks like type instantiation at compile time! Then, `tsserver` doesn't need to instantiate all the type arguments every time you use it. It will make your IDE a lot faster!
+`tsc` 可以在编译时执行繁重的任务（如类型实例化）！这样，`tsserver` 就不需要每次使用时实例化所有类型参数。这将使你的 IDE 更快！
 
-Compiling your client including the server app gives you the best performance. Put the following code in your project:
+编译包含服务器 app 的客户端可获得最佳性能。将以下代码放在你的项目中：
 
 ```ts
 import { app } from './app'
 import { hc } from 'hono/client'
 
-// this is a trick to calculate the type when compiling
+// 这是一个在编译时计算类型的技巧
 export type Client = ReturnType<typeof hc<typeof app>>
 
 export const hcWithType = (...args: Parameters<typeof hc>): Client =>
   hc<typeof app>(...args)
 ```
 
-After compiling, you can use `hcWithType` instead of `hc` to get the client with the type already calculated.
+编译后，你可以使用 `hcWithType` 而不是 `hc` 来获取已经计算类型的客户端。
 
 ```ts
 const client = hcWithType('http://localhost:8787/')
@@ -811,13 +811,13 @@ const res = await client.posts.$post({
 })
 ```
 
-If your project is a monorepo, this solution does fit well. Using a tool like [`turborepo`](https://turbo.build/repo/docs), you can easily separate the server project and the client project and get better integration managing dependencies between them. Here is [a working example](https://github.com/m-shaka/hono-rpc-perf-tips-example).
+如果你的项目是 monorepo，此解决方案非常合适。使用 [`turborepo`](https://turbo.build/repo/docs) 等工具，你可以轻松分离服务器项目和客户端项目，并更好地管理它们之间的依赖关系。这是一个 [working example](https://github.com/m-shaka/hono-rpc-perf-tips-example)。
 
-You can also coordinate your build process manually with tools like `concurrently` or `npm-run-all`.
+你也可以使用 `concurrently` 或 `npm-run-all` 等工具手动协调构建过程。
 
 #### Specify type arguments manually
 
-This is a bit cumbersome, but you can specify type arguments manually to avoid type instantiation.
+这有点麻烦，但你可以手动指定类型参数以避免类型实例化。
 
 ```ts
 const app = new Hono().get<'foo/:id'>('foo/:id', (c) =>
@@ -825,11 +825,11 @@ const app = new Hono().get<'foo/:id'>('foo/:id', (c) =>
 )
 ```
 
-Specifying just a single type argument makes a difference in performance, while it may take you a lot of time and effort if you have a lot of routes.
+仅指定单个类型参数就会在性能上产生差异，但如果你有很多 routes，这可能需要很多时间和精力。
 
 #### Split your app and client into multiple files
 
-As described in [Using RPC with larger applications](#using-rpc-with-larger-applications), you can split your app into multiple apps. You can also create a client for each app:
+如 [Using RPC with larger applications](#using-rpc-with-larger-applications) 中所述，你可以将 app 拆分为多个 apps。你也可以为每个 app 创建客户端：
 
 ```ts
 // authors-cli.ts
@@ -845,4 +845,4 @@ import { hc } from 'hono/client'
 const booksClient = hc<typeof booksApp>('/books')
 ```
 
-This way, `tsserver` doesn't need to instantiate types for all routes at once.
+这样，`tsserver` 就不需要一次性为所有 routes 实例化类型。

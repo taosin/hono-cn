@@ -1,23 +1,23 @@
 # HonoRequest
 
-The `HonoRequest` is an object that can be taken from `c.req` which wraps a [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request) object.
+`HonoRequest` 是一个可以从 `c.req` 获取的对象，它包装了 [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request) 对象。
 
 ## param()
 
-Get the values of path parameters.
+获取路径参数的值。
 
 ```ts twoslash
 import { Hono } from 'hono'
 const app = new Hono()
 // ---cut---
-// Captured params
+// 捕获的 params
 app.get('/entry/:id', async (c) => {
   const id = c.req.param('id')
   //    ^?
   // ...
 })
 
-// Get all params at once
+// 一次性获取所有 params
 app.get('/entry/:id/comment/:commentId', async (c) => {
   const { id, commentId } = c.req.param()
   //      ^?
@@ -26,7 +26,7 @@ app.get('/entry/:id/comment/:commentId', async (c) => {
 
 ## query()
 
-Get querystring parameters.
+获取 querystring 参数。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -38,7 +38,7 @@ app.get('/search', async (c) => {
   //     ^?
 })
 
-// Get all params at once
+// 一次性获取所有 params
 app.get('/search', async (c) => {
   const { q, limit, offset } = c.req.query()
   //      ^?
@@ -47,14 +47,14 @@ app.get('/search', async (c) => {
 
 ## queries()
 
-Get multiple querystring parameter values, e.g. `/search?tags=A&tags=B`
+获取多个 querystring 参数值，例如 `/search?tags=A&tags=B`
 
 ```ts twoslash
 import { Hono } from 'hono'
 const app = new Hono()
 // ---cut---
 app.get('/search', async (c) => {
-  // tags will be string[]
+  // tags 将是 string[]
   const tags = c.req.queries('tags')
   //     ^?
   // ...
@@ -63,7 +63,7 @@ app.get('/search', async (c) => {
 
 ## header()
 
-Get the request header value.
+获取请求 header 值。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -77,17 +77,16 @@ app.get('/', (c) => {
 ```
 
 ::: warning
-When `c.req.header()` is called with no arguments, all keys in the returned record are **lowercase**.
+当 `c.req.header()` 不带参数调用时，返回的记录中的所有键都是**小写的**。
 
-If you want to get the value of a header with an uppercase name,
-use `c.req.header(“X-Foo”)`.
+如果你想获取大写名称的 header 值，使用 `c.req.header("X-Foo")`。
 
 ```ts
-// ❌ Will not work
+// ❌ 不会工作
 const headerRecord = c.req.header()
 const foo = headerRecord['X-Foo']
 
-// ✅ Will work
+// ✅ 会工作
 const foo = c.req.header('X-Foo')
 ```
 
@@ -95,7 +94,7 @@ const foo = c.req.header('X-Foo')
 
 ## parseBody()
 
-Parse Request body of type `multipart/form-data` or `application/x-www-form-urlencoded`
+解析 `multipart/form-data` 或 `application/x-www-form-urlencoded` 类型的 Request body
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -107,9 +106,9 @@ app.post('/entry', async (c) => {
 })
 ```
 
-`parseBody()` supports the following behaviors.
+`parseBody()` 支持以下行为。
 
-**Single file**
+**单个文件**
 
 ```ts twoslash
 import { Context } from 'hono'
@@ -120,11 +119,11 @@ const data = body['foo']
 //    ^?
 ```
 
-`body['foo']` is `(string | File)`.
+`body['foo']` 是 `(string | File)`。
 
-If multiple files are uploaded, the last one will be used.
+如果上传了多个文件，将使用最后一个。
 
-### Multiple files
+### 多个文件
 
 ```ts twoslash
 import { Context } from 'hono'
@@ -134,13 +133,13 @@ const body = await c.req.parseBody()
 body['foo[]']
 ```
 
-`body['foo[]']` is always `(string | File)[]`.
+`body['foo[]']` 始终是 `(string | File)[]`。
 
-`[]` postfix is required.
+需要 `[]` 后缀。
 
-### Multiple files or fields with same name
+### 多个文件或同名字段
 
-If you have an input field that allows multiple `<input type="file" multiple />` or multiple checkboxes with the same name `<input type="checkbox" name="favorites" value="Hono"/>`.
+如果你有一个允许多个 `<input type="file" multiple />` 的输入字段或多个具有相同名称的复选框 `<input type="checkbox" name="favorites" value="Hono"/>`。
 
 ```ts twoslash
 import { Context } from 'hono'
@@ -150,16 +149,16 @@ const body = await c.req.parseBody({ all: true })
 body['foo']
 ```
 
-`all` option is disabled by default.
+`all` 选项默认禁用。
 
-- If `body['foo']` is multiple files, it will be parsed to `(string | File)[]`.
-- If `body['foo']` is single file, it will be parsed to `(string | File)`.
+- 如果 `body['foo']` 是多个文件，它将被解析为 `(string | File)[]`。
+- 如果 `body['foo']` 是单个文件，它将被解析为 `(string | File)`。
 
-### Dot notation
+### 点表示法
 
-If you set the `dot` option `true`, the return value is structured based on the dot notation.
+如果你将 `dot` 选项设置为 `true`，返回值将根据点表示法进行结构化。
 
-Imagine receiving the following data:
+想象接收以下数据：
 
 ```ts twoslash
 const data = new FormData()
@@ -167,19 +166,19 @@ data.append('obj.key1', 'value1')
 data.append('obj.key2', 'value2')
 ```
 
-You can get the structured value by setting the `dot` option `true`:
+你可以通过设置 `dot` 选项为 `true` 来获取结构化值：
 
 ```ts twoslash
 import { Context } from 'hono'
 declare const c: Context
 // ---cut---
 const body = await c.req.parseBody({ dot: true })
-// body is `{ obj: { key1: 'value1', key2: 'value2' } }`
+// body 是 `{ obj: { key1: 'value1', key2: 'value2' } }`
 ```
 
 ## json()
 
-Parses the request body of type `application/json`
+解析 `application/json` 类型的请求 body
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -193,7 +192,7 @@ app.post('/entry', async (c) => {
 
 ## text()
 
-Parses the request body of type `text/plain`
+解析 `text/plain` 类型的请求 body
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -207,7 +206,7 @@ app.post('/entry', async (c) => {
 
 ## arrayBuffer()
 
-Parses the request body as an `ArrayBuffer`
+将请求 body 解析为 `ArrayBuffer`
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -221,7 +220,7 @@ app.post('/entry', async (c) => {
 
 ## blob()
 
-Parses the request body as a `Blob`.
+将请求 body 解析为 `Blob`。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -235,7 +234,7 @@ app.post('/entry', async (c) => {
 
 ## formData()
 
-Parses the request body as a `FormData`.
+将请求 body 解析为 `FormData`。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -249,7 +248,7 @@ app.post('/entry', async (c) => {
 
 ## valid()
 
-Get the validated data.
+获取验证后的数据。
 
 ```ts
 app.post('/posts', async (c) => {
@@ -258,7 +257,7 @@ app.post('/posts', async (c) => {
 })
 ```
 
-Available targets are below.
+可用目标如下：
 
 - `form`
 - `json`
@@ -267,15 +266,15 @@ Available targets are below.
 - `cookie`
 - `param`
 
-See the [Validation section](/docs/guides/validation) for usage examples.
+使用示例见 [Validation section](/docs/guides/validation)。
 
 ## routePath
 
 ::: warning
-**Deprecated in v4.8.0**: This property is deprecated. Use `routePath()` from [Route Helper](/docs/helpers/route) instead.
+**在 v4.8.0 中已弃用**：此属性已弃用。改用 [Route Helper](/docs/helpers/route) 中的 `routePath()`。
 :::
 
-You can retrieve the registered path within the handler like this:
+你可以像这样在处理器中检索注册的路径：
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -286,7 +285,7 @@ app.get('/posts/:id', (c) => {
 })
 ```
 
-If you access `/posts/123`, it will return `/posts/:id`:
+如果你访问 `/posts/123`，它将返回 `/posts/:id`：
 
 ```json
 { "path": "/posts/:id" }
@@ -295,10 +294,10 @@ If you access `/posts/123`, it will return `/posts/:id`:
 ## matchedRoutes
 
 ::: warning
-**Deprecated in v4.8.0**: This property is deprecated. Use `matchedRoutes()` from [Route Helper](/docs/helpers/route) instead.
+**在 v4.8.0 中已弃用**：此属性已弃用。改用 [Route Helper](/docs/helpers/route) 中的 `matchedRoutes()`。
 :::
 
-It returns matched routes within the handler, which is useful for debugging.
+它在处理器中返回匹配的路由，这对于调试很有用。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -324,7 +323,7 @@ app.use(async function logger(c, next) {
 
 ## path
 
-The request pathname.
+请求 pathname。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -338,7 +337,7 @@ app.get('/about/me', async (c) => {
 
 ## url
 
-The request url strings.
+请求 url 字符串。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -352,7 +351,7 @@ app.get('/about/me', async (c) => {
 
 ## method
 
-The method name of the request.
+请求的方法名。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -366,10 +365,10 @@ app.get('/about/me', async (c) => {
 
 ## raw
 
-The raw [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) object.
+原始 [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) 对象。
 
 ```ts
-// For Cloudflare Workers
+// 对于 Cloudflare Workers
 app.post('/', async (c) => {
   const metadata = c.req.raw.cf?.hostMetadata?
   // ...
@@ -378,7 +377,7 @@ app.post('/', async (c) => {
 
 ## cloneRawRequest()
 
-Clones the raw Request object from a HonoRequest. Works even after the request body has been consumed by validators or HonoRequest methods.
+从 HonoRequest 克隆原始 Request 对象。即使在请求 body 已被验证器或 HonoRequest 方法消费后也能工作。
 
 ```ts twoslash
 import { Hono } from 'hono'
@@ -391,9 +390,9 @@ app.post(
   '/forward',
   validator('json', (data) => data),
   async (c) => {
-    // Clone after validation
+    // 验证后克隆
     const clonedReq = await cloneRawRequest(c.req)
-    // Does not throw the error
+    // 不会抛出错误
     await clonedReq.json()
     // ...
   }

@@ -1,8 +1,8 @@
-# Testing Helper
+# Testing 辅助工具
 
-The Testing Helper provides functions to make testing of Hono applications easier.
+Testing 辅助工具提供函数，使 Hono 应用程序的测试更容易。
 
-## Import
+## 导入
 
 ```ts
 import { Hono } from 'hono'
@@ -11,17 +11,17 @@ import { testClient } from 'hono/testing'
 
 ## `testClient()`
 
-The `testClient()` function takes an instance of Hono as its first argument and returns an object typed according to your Hono application's routes, similar to the [Hono Client](/docs/guides/rpc#client). This allows you to call your defined routes in a type-safe manner with editor autocompletion within your tests.
+`testClient()` 函数将 Hono 实例作为第一个参数，并返回根据 Hono 应用程序的路由进行类型化的对象，类似于 [Hono Client](/docs/guides/rpc#client)。这允许你在测试中以类型安全的方式调用已定义的路由，并具有编辑器自动完成功能。
 
-**Important Note on Type Inference:**
+**关于类型推断的重要说明：**
 
-For the `testClient` to correctly infer the types of your routes and provide autocompletion, **you must define your routes using chained methods directly on the `Hono` instance**.
+为了让 `testClient` 正确推断路由类型并提供自动完成，**你必须使用链接方法直接在 `Hono` 实例上定义路由**。
 
-The type inference relies on the type flowing through the chained `.get()`, `.post()`, etc., calls. If you define routes separately after creating the Hono instance (like the common pattern shown in the "Hello World" example: `const app = new Hono(); app.get(...)`), the `testClient` will not have the necessary type information for specific routes, and you won't get the type-safe client features.
+类型推断依赖于类型通过链接的 `.get()`、`.post()` 等调用流动。如果你在创建 Hono 实例后单独定义路由（如 "Hello World" 示例中显示的常见模式：`const app = new Hono(); app.get(...)`），`testClient` 将没有特定路由的必要类型信息，你将无法获得类型安全的客户端功能。
 
-**Example:**
+**示例：**
 
-This example works because the `.get()` method is chained directly onto the `new Hono()` call:
+此示例有效，因为 `.get()` 方法直接链接到 `new Hono()` 调用：
 
 ```ts
 // index.ts
@@ -37,22 +37,22 @@ export default app
 // index.test.ts
 import { Hono } from 'hono'
 import { testClient } from 'hono/testing'
-import { describe, it, expect } from 'vitest' // Or your preferred test runner
+import { describe, it, expect } from 'vitest' // 或你首选的测试运行器
 import app from './app'
 
 describe('Search Endpoint', () => {
-  // Create the test client from the app instance
+  // 从应用程序实例创建测试客户端
   const client = testClient(app)
 
   it('should return search results', async () => {
-    // Call the endpoint using the typed client
-    // Notice the type safety for query parameters (if defined in the route)
-    // and the direct access via .$get()
+    // 使用类型化客户端调用端点
+    // 注意查询参数的类型安全性（如果在路由中定义）
+    // 以及通过 .$get() 直接访问
     const res = await client.search.$get({
       query: { q: 'hono' },
     })
 
-    // Assertions
+    // 断言
     expect(res.status).toBe(200)
     expect(await res.json()).toEqual({
       query: 'hono',
@@ -62,21 +62,21 @@ describe('Search Endpoint', () => {
 })
 ```
 
-To include headers in your test, pass them as the second parameter in the call. The second parameter can also take an `init` property as a `RequestInit` object, allowing you to set headers, method, body, etc. Learn more about the `init` property [here](/docs/guides/rpc#init-option).
+要在测试中包含 headers，请将它们作为调用中的第二个参数传递。第二个参数还可以将 `init` 属性作为 `RequestInit` 对象，允许你设置 headers、method、body 等。在此处了解有关 `init` 属性的更多信息 [here](/docs/guides/rpc#init-option)。
 
 ```ts
 // index.test.ts
 import { Hono } from 'hono'
 import { testClient } from 'hono/testing'
-import { describe, it, expect } from 'vitest' // Or your preferred test runner
+import { describe, it, expect } from 'vitest' // 或你首选的测试运行器
 import app from './app'
 
 describe('Search Endpoint', () => {
-  // Create the test client from the app instance
+  // 从应用程序实例创建测试客户端
   const client = testClient(app)
 
   it('should return search results', async () => {
-    // Include the token in the headers and set the content type
+    // 在 headers 中包含令牌并设置内容类型
     const token = 'this-is-a-very-clean-token'
     const res = await client.search.$get(
       {
@@ -90,7 +90,7 @@ describe('Search Endpoint', () => {
       }
     )
 
-    // Assertions
+    // 断言
     expect(res.status).toBe(200)
     expect(await res.json()).toEqual({
       query: 'hono',

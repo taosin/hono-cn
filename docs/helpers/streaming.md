@@ -1,8 +1,8 @@
-# Streaming Helper
+# Streaming 辅助工具
 
-The Streaming Helper provides methods for streaming responses.
+Streaming 辅助工具提供用于流式响应的方法。
 
-## Import
+## 导入
 
 ```ts
 import { Hono } from 'hono'
@@ -11,18 +11,18 @@ import { stream, streamText, streamSSE } from 'hono/streaming'
 
 ## `stream()`
 
-It returns a simple streaming response as `Response` object.
+它返回简单的流式响应作为 `Response` 对象。
 
 ```ts
 app.get('/stream', (c) => {
   return stream(c, async (stream) => {
-    // Write a process to be executed when aborted.
+    // 写入中止时执行的过程。
     stream.onAbort(() => {
       console.log('Aborted!')
     })
-    // Write a Uint8Array.
+    // 写入 Uint8Array。
     await stream.write(new Uint8Array([0x48, 0x65, 0x6c, 0x6c, 0x6f]))
-    // Pipe a readable stream.
+    // 管道可读流。
     await stream.pipe(anotherReadableStream)
   })
 })
@@ -30,16 +30,16 @@ app.get('/stream', (c) => {
 
 ## `streamText()`
 
-It returns a streaming response with `Content-Type:text/plain`, `Transfer-Encoding:chunked`, and `X-Content-Type-Options:nosniff` headers.
+它返回带有 `Content-Type:text/plain`、`Transfer-Encoding:chunked` 和 `X-Content-Type-Options:nosniff` headers 的流式响应。
 
 ```ts
 app.get('/streamText', (c) => {
   return streamText(c, async (stream) => {
-    // Write a text with a new line ('\n').
+    // 写入带有新行 ('\n') 的文本。
     await stream.writeln('Hello')
-    // Wait 1 second.
+    // 等待 1 秒。
     await stream.sleep(1000)
-    // Write a text without a new line.
+    // 写入不带新行的文本。
     await stream.write(`Hono!`)
   })
 })
@@ -47,7 +47,7 @@ app.get('/streamText', (c) => {
 
 ::: warning
 
-If you are developing an application for Cloudflare Workers, a streaming may not work well on Wrangler. If so, add `Identity` for `Content-Encoding` header.
+如果你正在为 Cloudflare Workers 开发应用程序，流式可能在 Wrangler 上无法正常工作。如果是这样，请为 `Content-Encoding` header 添加 `Identity`。
 
 ```ts
 app.get('/streamText', (c) => {
@@ -62,7 +62,7 @@ app.get('/streamText', (c) => {
 
 ## `streamSSE()`
 
-It allows you to stream Server-Sent Events (SSE) seamlessly.
+它允许你无缝流式传输 Server-Sent Events (SSE)。
 
 ```ts
 const app = new Hono()
@@ -83,25 +83,25 @@ app.get('/sse', async (c) => {
 })
 ```
 
-## Error Handling
+## 错误处理
 
-The third argument of the streaming helper is an error handler.
-This argument is optional, if you don't specify it, the error will be output as a console error.
+流式辅助工具的第三个参数是错误处理器。
+此参数是可选的，如果你不指定它，错误将作为控制台错误输出。
 
 ```ts
 app.get('/stream', (c) => {
   return stream(
     c,
     async (stream) => {
-      // Write a process to be executed when aborted.
+      // 写入中止时执行的过程。
       stream.onAbort(() => {
         console.log('Aborted!')
       })
-      // Write a Uint8Array.
+      // 写入 Uint8Array。
       await stream.write(
         new Uint8Array([0x48, 0x65, 0x6c, 0x6c, 0x6f])
       )
-      // Pipe a readable stream.
+      // 管道可读流。
       await stream.pipe(anotherReadableStream)
     },
     (err, stream) => {
@@ -112,12 +112,12 @@ app.get('/stream', (c) => {
 })
 ```
 
-The stream will be automatically closed after the callbacks are executed.
+流将在回调执行后自动关闭。
 
 ::: warning
 
-If the callback function of the streaming helper throws an error, the `onError` event of Hono will not be triggered.
+如果流式辅助工具的回调函数抛出错误，Hono 的 `onError` 事件将不会触发。
 
-`onError` is a hook to handle errors before the response is sent and overwrite the response. However, when the callback function is executed, the stream has already started, so it cannot be overwritten.
+`onError` 是在发送响应之前处理错误并覆盖响应的钩子。但是，当回调函数执行时，流式已经开始，因此无法覆盖。
 
 :::

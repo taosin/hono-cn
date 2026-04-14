@@ -1,15 +1,14 @@
 # Best Practices
 
-Hono is very flexible. You can write your app as you like.
-However, there are best practices that are better to follow.
+Hono 非常灵活。你可以随心所欲地编写应用程序。然而，有一些最佳实践最好遵循。
 
 ## Don't make "Controllers" when possible
 
-When possible, you should not create "Ruby on Rails-like Controllers".
+在可能的情况下，你不应该创建"Ruby on Rails-like Controllers"。
 
 ```ts
 // 🙁
-// A RoR-like Controller
+// 一个 RoR-like Controller
 const booksList = (c: Context) => {
   return c.json('list books')
 }
@@ -17,30 +16,30 @@ const booksList = (c: Context) => {
 app.get('/books', booksList)
 ```
 
-The issue is related to types. For example, the path parameter cannot be inferred in the Controller without writing complex generics.
+问题与类型有关。例如，路径参数无法在 Controller 中推断，除非编写复杂的泛型。
 
 ```ts
 // 🙁
-// A RoR-like Controller
+// 一个 RoR-like Controller
 const bookPermalink = (c: Context) => {
-  const id = c.req.param('id') // Can't infer the path param
+  const id = c.req.param('id') // 无法推断路径参数
   return c.json(`get ${id}`)
 }
 ```
 
-Therefore, you don't need to create RoR-like controllers and should write handlers directly after path definitions.
+因此，你不需要创建 RoR-like controllers，应该在路径定义后直接编写 handlers。
 
 ```ts
 // 😃
 app.get('/books/:id', (c) => {
-  const id = c.req.param('id') // Can infer the path param
+  const id = c.req.param('id') // 可以推断路径参数
   return c.json(`get ${id}`)
 })
 ```
 
 ## `factory.createHandlers()` in `hono/factory`
 
-If you still want to create a RoR-like Controller, use `factory.createHandlers()` in [`hono/factory`](/docs/helpers/factory). If you use this, type inference will work correctly.
+如果你仍然想创建 RoR-like Controller，使用 `hono/factory` 中的 `factory.createHandlers()`。如果使用这个，类型推断将正常工作。
 
 ```ts
 import { createFactory } from 'hono/factory'
@@ -65,9 +64,9 @@ app.get('/api', ...handlers)
 
 ## Building a larger application
 
-Use `app.route()` to build a larger application without creating "Ruby on Rails-like Controllers".
+使用 `app.route()` 来构建更大的应用程序，而无需创建"Ruby on Rails-like Controllers"。
 
-If your application has `/authors` and `/books` endpoints and you wish to separate files from `index.ts`, create `authors.ts` and `books.ts`.
+如果你的应用程序有 `/authors` 和 `/books` 端点，并且你想从 `index.ts` 分离文件，创建 `authors.ts` 和 `books.ts`。
 
 ```ts
 // authors.ts
@@ -95,7 +94,7 @@ app.get('/:id', (c) => c.json(`get ${c.req.param('id')}`))
 export default app
 ```
 
-Then, import them and mount on the paths `/authors` and `/books` with `app.route()`.
+然后，导入它们并使用 `app.route()` 挂载到路径 `/authors` 和 `/books`。
 
 ```ts
 // index.ts
@@ -114,8 +113,7 @@ export default app
 
 ### If you want to use RPC features
 
-The code above works well for normal use cases.
-However, if you want to use the `RPC` feature, you can get the correct type by chaining as follows.
+上面的代码在普通用例中效果很好。但是，如果你想使用 `RPC` 功能，你可以通过链式获取正确的类型。
 
 ```ts
 // authors.ts
@@ -130,14 +128,14 @@ export default app
 export type AppType = typeof app
 ```
 
-If you pass the type of the `app` to `hc`, it will get the correct type.
+如果你将 `app` 的类型传递给 `hc`，它将获得正确的类型。
 
 ```ts
 import type { AppType } from './authors'
 import { hc } from 'hono/client'
 
 // 😃
-const client = hc<AppType>('http://localhost') // Typed correctly
+const client = hc<AppType>('http://localhost') // 正确推断类型
 ```
 
-For more detailed information, please see [the RPC page](/docs/guides/rpc#using-rpc-with-larger-applications).
+更多详细信息，请查看 [RPC page](/docs/guides/rpc#using-rpc-with-larger-applications)。

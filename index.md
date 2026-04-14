@@ -1,22 +1,22 @@
 ---
-title: Hono - Web framework built on Web Standards
+title: Hono - 基于 Web Standards 构建的 Web 框架
 titleTemplate: ':title'
 head:
   - [
       'meta',
       {
         property: 'og:description',
-        content: 'Hono is a small, simple, and ultrafast web framework built on Web Standards. It works on Cloudflare Workers, Fastly Compute, Deno, Bun, Vercel, Netlify, AWS Lambda, Lambda@Edge, and Node.js. Fast, but not only fast.',
+        content: 'Hono 是一个小型、简单且超快的 Web 框架，基于 Web Standards 构建。它可以在 Cloudflare Workers、Fastly Compute、Deno、Bun、Vercel、Netlify、AWS Lambda、Lambda@Edge 和 Node.js 上运行。快速，但不止于快速。',
       },
     ]
 layout: home
 hero:
   name: Hono
-  text: Web application framework
-  tagline: Fast, lightweight, built on Web Standards. Support for any JavaScript runtime.
+  text: Web 应用程序框架
+  tagline: 快速、轻量、基于 Web Standards 构建。支持任何 JavaScript 运行时。
   image:
     src: /images/code.webp
-    alt: "An example of code for Hono. \
+    alt: "Hono 代码示例。\
       import { Hono } from 'hono' \
       const app = new Hono() \
       app.get('/', (c) => c.text('Hello Hono!')) \
@@ -24,28 +24,28 @@ hero:
       export default app"
   actions:
     - theme: brand
-      text: Get Started
+      text: 开始使用
       link: /docs/
     - theme: alt
-      text: View on GitHub
+      text: 在 GitHub 上查看
       link: https://github.com/honojs/hono
 features:
   - icon: 🚀
-    title: Ultrafast & Lightweight
-    details: The router RegExpRouter is really fast. The hono/tiny preset is under 14kB. Using only Web Standard APIs.
+    title: 超快且轻量
+    details: RegExpRouter 路由器非常快。hono/tiny 预设小于 14kB。仅使用 Web Standard APIs。
   - icon: 🌍
-    title: Multi-runtime
-    details: Works on Cloudflare, Fastly, Deno, Bun, AWS, or Node.js. The same code runs on all platforms.
+    title: 多运行时
+    details: 可在 Cloudflare、Fastly、Deno、Bun、AWS 或 Node.js 上运行。相同的代码在所有平台上都能运行。
   - icon: 🔋
-    title: Batteries Included
-    details: Hono has built-in middleware, custom middleware, third-party middleware, and helpers. Batteries included.
+    title: 功能齐全
+    details: Hono 内置了中间件、自定义中间件、第三方中间件和辅助函数。功能齐全。
   - icon: 😃
-    title: Delightful DX
-    details: Super clean APIs. First-class TypeScript support. Now, we've got "Types".
+    title: 愉悦的开发体验
+    details: 超干净的 API。一流的 TypeScript 支持。现在，我们有了"类型"。
 ---
 
 <script setup>
-// Heavily inspired by React
+// 灵感 heavily 来自 React
 // https://github.com/reactjs/react.dev/pull/6817
 import { onMounted } from 'vue'
 onMounted(() => {
@@ -59,7 +59,7 @@ onMounted(() => {
     const images = document.querySelectorAll('.VPImage.image-src')
     images.forEach((img) => {
       img.src = '/images/hono-kawaii.png'
-      img.alt = 'A Kawai Version of the Hono Logo. The first "o" is replaced with a flame, with japanese characters in the bottom right, and a JSX fragment closing tag above the flame.'
+      img.alt = 'Hono 标志的可爱版本。第一个"o"被火焰替换，右下角有日文字符，火焰上方有 JSX 片段闭合标签。'
       img.classList.add("kawaii")
     })
   }
@@ -67,7 +67,7 @@ onMounted(() => {
     try {
       localStorage.setItem('kawaii', true)
     } catch (err) {}
-    console.log('kawaii mode enabled. logo credits to @sawaratsuki1004 via https://github.com/SAWARATSUKI/KawaiiLogos');
+    console.log('kawaii 模式已启用。标志感谢 @sawaratsuki1004 via https://github.com/SAWARATSUKI/KawaiiLogos');
     setKawaii()
   } else if (kawaii === 'false') {
     try {

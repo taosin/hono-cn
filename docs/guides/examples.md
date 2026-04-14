@@ -1,3 +1,3 @@
 # Examples
 
-See the [Examples section](/examples/).
+查看 [Examples section](/examples/)。
